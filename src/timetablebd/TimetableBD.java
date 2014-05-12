@@ -5,6 +5,7 @@
  */
 package timetablebd;
 
+import Interfaces.InterfacePrincipal;
 import timetablebd.hibernate.EventManager;
 
 /**
@@ -17,9 +18,10 @@ public class TimetableBD {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        InterfacePrincipal p = new InterfacePrincipal();
         
-        Disciplina disc = Disciplina.getTableLine(11);
-        System.out.println(disc.getCreditos());
+        p.preparaJanela();;
+        p.mostraJanela();
         
 
     }
