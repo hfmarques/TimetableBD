@@ -1,142 +1,160 @@
-BEGIN;
+﻿/*drop table CURSO;
 
-DROP schema TimetableBD cascade;
+drop table DISCIPLINA;
 
-CREATE schema TimetableBD;
+drop table DOCENTE;
 
-create table TimetableBD.Disciplina (
-	idDiciplina int not null,
-	codigo char[] not null,
-	credito int not null,
-	nome char[] not null,
-	perfil char[] not null,
-	primary key (idDiciplina)	
+drop table TURMA;
+
+drop table CREDITOMINISTRADO;
+
+drop table SALA;
+
+drop table DISCCURR;
+
+drop table CURRICULO;
+
+drop table CALOUROS;
+
+drop table HORARIOS; */
+
+create table Curso (
+	ID NUMERIC(19,0) not null,
+	HIBERNATE_VERSION int default 0 not null,
+	NOME VARCHAR(21) not null,
+	TURNO VARCHAR(10) not null,
+	CODIGO VARCHAR(21) not null,
+	TIMETABLEBD_DISICPLINA_FK NUMERIC(19,0) not null,
+	primary key (ID),
+	unique (CODIGO)
+);
+	
+create table Disciplina (
+	ID NUMERIC(19,0) not null,
+	HIBERNATE_VERSION int default 0 not null,
+	CODIGO VARCHAR(21) not null,
+	CREDITO int not null,
+	NOME VARCHAR(50) not null,
+	PERFIL VARCHAR(50) not null,
+	primary key (ID),
+	UNIQUE (CODIGO)
 );
 
-create table TimetableBD.Docente (
-	idDocente int not null,
-	codigo char[] not null,
-	nome char[] not null,
-	nomeCompleto char[] not null,
-	creditacaoEsperada int not null,
-	primary key (idDocente)
+create table Docente (
+	ID NUMERIC(19,0) not null,
+	HIBERNATE_VERSION int default 0 not null,
+	CODIGO VARCHAR(21) not null,
+	NOME VARCHAR(50) not null,
+	NOME_COMPLETO VARCHAR(100) not null,
+	CREDITACAO_ESPERADA int not null,
+	primary key (ID),
+	UNIQUE (CODIGO)
 );
 
-create table TimetableBD.Turma(
-	idTurma int not null,
-	codigo char[] not null,
-	turno char[] not null,
-	maxVagas int not null,
-	idDisciplina int not null,
-	idSala int not null,
-	primary key(idTurma)
+create table Turma(
+	ID NUMERIC(19,0) not null,
+	HIBERNATE_VERSION int default 0 not null,
+	CODIGO VARCHAR(21) not null,
+	TURNO VARCHAR (10) not null,
+	MAX_VAGAS INT not null,
+	TIMETABLEBD_DISICPLINA_FK NUMERIC(19,0) not null,
+	TIMETABLEBD_SALA_FK NUMERIC(19,0) not null,
+	primary key(ID),
+	UNIQUE (CODIGO)
 );
 
-create table TimetableBD.CreditoMinistrado(
-	credito double precision not null,
-	idDocente int not null,
-	idTurma int not null
+create table CreditoMinistrado(
+	CREDITO FLOAT not null,
+	TIMETABLEBD_DOCENTE_FK NUMERIC(19,0) not null,
+	TIMETABLEBD_TURMA_FK NUMERIC(19,0) not null
 );
 
-create table TimetableBD.Sala(
-	idSala int not null,
-	numero char[] not null,
-	local char[] not null,
-	primary key(idSala)
+create table Sala(
+	ID NUMERIC(19,0) not null,
+	HIBERNATE_VERSION int default 0 not null,
+	NUMERO VARCHAR(10) not null,
+	LOCAL VARCHAR(21) not null,
+	primary key(ID),
+	UNIQUE (NUMERO)
 );
 
-create table TimetableBD.DiscCurr(
-	periodo int not null,
-	carater char[] not null,
-	idDisciplina int not null,
-	idCurriculo int not null
+create table DiscCurr(
+	PERIODO INT not null,
+	CARACTER VARCHAR(50) not null,
+	TIMETABLEBD_DISCIPLINA_FK NUMERIC(19,0) not null,
+	TIMETABLEBD_CURRICULO_FK NUMERIC(19,0) not null,
+	UNIQUE (TIMETABLEBD_DISCIPLINA_FK)
 );
 
-create table TimetableBD.Curriculo(
-	idCurriculo int not null,
-	anoInicio int not null,
-	ativo boolean not null,
-	idCurso int not null,
-	primary key(idCurriculo)
+create table Curriculo(
+	ID NUMERIC(19,0) not null,
+	HIBERNATE_VERSION int default 0 not null,
+	ANO_INICIO INT not null,
+	ATIVO BOOLEAN not null,
+	TIMETABLEBD_CURSO_FK NUMERIC(19,0) not null,
+	primary key(ID)
 );
 
-create table TimetableBD.Curso(
-	idCurso int not null,
-	nome char[] not null,
-	codigo char[] not null,
-	turno char[] not null,
-	idCalouros int not null,
-	primary key(idCurso)
+create table Calouros(
+	ID NUMERIC(19,0) not null,
+	HIBERNATE_VERSION int default 0 not null,
+	SEMESTRE INT not null,
+	NUM_VAGAS INT not null,
+	TIMETABLEBD_CURSO_FK NUMERIC(19,0) not null,
+	primary key(ID)
 );
 
-create table TimetableBD.Calouros(
-	idCalouros int not null;
-	semestre int not null,
-	numVagas int not null,
-	idCurso int not null,
-	primary key(idCalouros)
+create table Horario(
+	HORARIO VARCHAR(21) not null,
+	TIMETABLEBD_TURMA_FK NUMERIC(19,0) not null
 );
 
-create table TimetableBD.Horario(
-	horario char[] not null,
-	idTurma char[] not null
-);
+alter table CURSO 
+       add constraint FKC_CURSO_DISICPLINA
+       foreign key (TIMETABLEBD_DISICPLINA_FK) 
+       references DISCIPLINA;
+	   
+alter table TURMA
+       add constraint FKC_TURMA_DISICPLINA
+       foreign key (TIMETABLEBD_DISICPLINA_FK) 
+       references DISCIPLINA;
 
---FOREIGN KEYs
-ALTER TABLE TimetableBD.Turma 
-ADD FOREIGN KEY (idDisciplina) REFERENCES TimetableBD.Disciplina(idDiciplina),
-ADD FOREIGN KEY (idSala) REFERENCES TimetableBD.Sala(idSala);
+alter table TURMA 
+       add constraint FKC_TURMA_SALA
+       foreign key (TIMETABLEBD_SALA_FK) 
+       references SALA;
+	   
+alter table CREDITOMINISTRADO 
+       add constraint FKC_CREDITOMINASTRADO_DOCENTE
+       foreign key (TIMETABLEBD_DOCENTE_FK) 
+       references DOCENTE;
+	   
+alter table CREDITOMINISTRADO 
+       add constraint FKC_CREDITOMINASTRADO_TURMA
+       foreign key (TIMETABLEBD_TURMA_FK) 
+       references TURMA;
+	   
+alter table DISCCURR 
+       add constraint FKC_DISCCURR_DISCIPLINA
+       foreign key (TIMETABLEBD_DISCIPLINA_FK) 
+       references DISCIPLINA;
+	   
+alter table DISCCURR 
+       add constraint FKC_DISCCURR_CURRICULO
+       foreign key (TIMETABLEBD_CURRICULO_FK) 
+       references CURRICULO;
+	   
+alter table CURRICULO 
+       add constraint FKC_CURRICULO_CURSO
+       foreign key (TIMETABLEBD_CURSO_FK) 
+       references CURSO;
+	   
+alter table CALOUROS
+       add constraint FKC_CALOUROS_CURSO
+       foreign key (TIMETABLEBD_CURSO_FK)
+       references CURSO;
 
-ALTER TABLE TimetableBD.Credito_Ministrado 
-ADD FOREIGN KEY (idDocente) REFERENCES TimetableBD.Docente(idDocente),
-ADD FOREIGN KEY (idTurma) REFERENCES TimetableBD.Turma(idTurma);
-
-ALTER TABLE TimetableBD.Disc_Curr 
-ADD FOREIGN KEY (idDisciplina) REFERENCES TimetableBD.Disciplina(idDiciplina),
-ADD FOREIGN KEY (idCurriculo) REFERENCES TimetableBD.Curriculo(idCurriculo);
-
-ALTER TABLE TimetableBD.Curriculo 
-ADD FOREIGN KEY (idCurso) REFERENCES TimetableBD.Curso(idCurso);
-
-ALTER TABLE TimetableBD.Curso
-ADD FOREIGN KEY (idCalouros) REFERENCES TimetableBD.Calouros(idCalouros);
-
-ALTER TABLE TimetableBD.Horario 
-ADD FOREIGN KEY (idTurma) REFERENCES TimetableBD.Turma(idTurma);
-
---Relacionamentos
---ALTER TABLE stroele.perfumaria_venda
---ADD FOREIGN KEY (numero_perfume) REFERENCES stroele.perfumaria(numero);
-
---ALTER TABLE stroele.perfumaria_venda
---ADD FOREIGN KEY (numero_nota) REFERENCES stroele.venda(numero_nota);
-
---ALTER TABLE stroele.medicamento_receita_venda
---ADD FOREIGN KEY (numero_med) REFERENCES stroele.medicamento(numero);
-
---ALTER TABLE stroele.medicamento_receita_venda
---ADD FOREIGN KEY (numero_nota) REFERENCES stroele.venda(numero_nota);
-
---ALTER TABLE stroele.medicamento_receita_venda
---ADD FOREIGN KEY (crm, numero_receita) REFERENCES stroele.receita_medica(crm, numero);
-
---ALTER TABLE stroele.receita_medica
---ADD nome_medico varchar not null;
-
---Alteracoes na tabela VENDA
---ALTER TABLE stroele.venda
---ALTER COLUMN cidade_cliente SET DEFAULT 'Juiz de Fora';
-
---ALTER TABLE stroele.venda
---ADD cpf_cliente varchar(11) DEFAULT 0 not null;
-
---Receita medica
---A data da receita nao pode ser menor que a data de hoje menos 6 meses
---ALTER TABLE stroele.receita_medica
---ADD CONSTRAINT ck_data_receita CHECK (data >= (current_date - '6 month'::INTERVAL));
-
---ALTER TABLE stroele.produto
---ADD CONSTRAINT uk_nome_comercial UNIQUE (nome_comercial);
-
-
-COMMIT;
+alter table HORARIO
+       add constraint FKC_HORARIO_TURMA
+       foreign key (TIMETABLEBD_TURMA_FK)
+       references TURMA;

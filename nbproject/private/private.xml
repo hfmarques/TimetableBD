@@ -3,24 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/Interfaces/InterfacePrincipal.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Curso.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Disciplina.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/DiscCurr.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/Interfaces/LayoutConstraints.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/Interfaces/Curso.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/CreditoMinistrado.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Calouros.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Sala.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Docente.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/nbproject/build-impl.xml</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Turma.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/Interfaces/CursoTableModel.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/hibernate/EventManager.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Curriculo.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/hibernate/util/HibernateUtil.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/Horario.java</file>
-            <file>file:/C:/Users/Héber/Copy/Bolsa/GETComp/TimetableBD/src/timetablebd/TimetableBD.java</file>
+            <file>file:/C:/Users/Héber/Documents/NetBeansProjects/TimetableBD/src/timetablebd/TimetableBD.java</file>
         </group>
     </open-files>
 </project-private>
