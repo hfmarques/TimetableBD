@@ -6,7 +6,6 @@
 package timetablebd;
 
 import Interfaces.InterfacePrincipal;
-import timetablebd.hibernate.EventManager;
 
 /**
  *
@@ -20,10 +19,8 @@ public class TimetableBD {
     public static void main(String[] args) {
         InterfacePrincipal p = new InterfacePrincipal();
         
-        p.preparaJanela();;
+        p.preparaJanela();
         p.mostraJanela();
-        
-
+             
     }
-
 }

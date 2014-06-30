@@ -33,6 +33,10 @@ public class Curso {
         this.turno = turno;
         this.idCalouro = idCalouro;
     }
+    
+    public Curso(){
+    
+    }
 
     public int getIdCurso() {
         return idCurso;

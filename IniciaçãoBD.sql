@@ -1,37 +1,35 @@
-﻿/*drop table CURSO;
+﻿drop table CURSO cascade;
 
-drop table DISCIPLINA;
+drop table DISCIPLINA cascade;
 
-drop table DOCENTE;
+drop table DOCENTE cascade;
 
-drop table TURMA;
+drop table TURMA cascade;
 
-drop table CREDITOMINISTRADO;
+drop table CREDITOMINISTRADO cascade;
 
-drop table SALA;
+drop table SALA cascade;
 
-drop table DISCCURR;
+drop table DISCCURR cascade;
 
-drop table CURRICULO;
+drop table CURRICULO cascade;
 
-drop table CALOUROS;
+drop table CALOUROS cascade;
 
-drop table HORARIOS; */
+drop table HORARIO cascade;
 
 create table Curso (
 	ID NUMERIC(19,0) not null,
-	HIBERNATE_VERSION int default 0 not null,
 	NOME VARCHAR(21) not null,
 	TURNO VARCHAR(10) not null,
 	CODIGO VARCHAR(21) not null,
-	TIMETABLEBD_DISICPLINA_FK NUMERIC(19,0) not null,
+	TIMETABLEBD_CALOUROS_FK NUMERIC(19,0) not null,
 	primary key (ID),
 	unique (CODIGO)
 );
 	
 create table Disciplina (
 	ID NUMERIC(19,0) not null,
-	HIBERNATE_VERSION int default 0 not null,
 	CODIGO VARCHAR(21) not null,
 	CREDITO int not null,
 	NOME VARCHAR(50) not null,
@@ -110,9 +108,9 @@ create table Horario(
 );
 
 alter table CURSO 
-       add constraint FKC_CURSO_DISICPLINA
-       foreign key (TIMETABLEBD_DISICPLINA_FK) 
-       references DISCIPLINA;
+       add constraint FKC_CURSO_CALOUROS
+       foreign key (TIMETABLEBD_CALOUROS_FK) 
+       references CALOUROS;
 	   
 alter table TURMA
        add constraint FKC_TURMA_DISICPLINA

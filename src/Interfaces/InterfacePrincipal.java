@@ -6,11 +6,7 @@
 
 package Interfaces;
 
-import java.awt.BorderLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
@@ -23,7 +19,7 @@ public class InterfacePrincipal {
     
   // main e montaTela
 
-  public void preparaJanela() {
+  public void preparaJanela() {   
     Curso janelaCurso = new Curso();
     DiscCurr discCurr = new DiscCurr();
     

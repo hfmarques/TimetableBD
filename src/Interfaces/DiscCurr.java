@@ -29,15 +29,15 @@ public class DiscCurr {
     private JTable tabela;
     JScrollPane scroll;
     private JButton botaoCarregar;
-    private JButton botaoSair;
+    private JButton botaoGerarSolucao;
     
     
     public DiscCurr() {
         JPanel painelBotao = new JPanel();
         DefaultTableModel modeloTabela = new DefaultTableModel();
         
-        botaoCarregar = new JButton("Inserir Curso");
-        botaoSair = new JButton("Sair");
+        botaoCarregar = new JButton("Inserir Curriculo");
+        botaoGerarSolucao = new JButton("Gerar Solução");
         painel = new JPanel();        
         tabela = new JTable(modeloTabela);
         scroll = new JScrollPane();
@@ -60,20 +60,20 @@ public class DiscCurr {
         scroll.setSize(450, 450);        
         
         painelBotao.add(botaoCarregar);
-        painelBotao.add(botaoSair);
+        painelBotao.add(botaoGerarSolucao);
         painel.add(scroll);
         painel.add(painelBotao);
         
         ////////////////// arrumar a posição dos botões
         
         LayoutConstraints.setConstraints(constraints, 1, 1, 1, 1, 1, 1);
-        constraints.insets = new Insets(0, 0, 0, 50);
+        constraints.insets = new Insets(0, 0, 0, 40);
         constraints.fill=GridBagConstraints.NONE;
         constraints.anchor=GridBagConstraints.EAST;
-        btnGridBag.setConstraints(botaoSair, constraints);
+        btnGridBag.setConstraints(botaoGerarSolucao, constraints);
         
         LayoutConstraints.setConstraints(constraints, 0, 1, 1, 1, 1, 1);
-        constraints.insets = new Insets(0, 1020, 0, 0);
+        constraints.insets = new Insets(0, 970, 0, 0);
         constraints.fill=GridBagConstraints.NONE;
         constraints.anchor=GridBagConstraints.WEST;
         btnGridBag.setConstraints(botaoCarregar, constraints);
@@ -101,8 +101,8 @@ public class DiscCurr {
                for(int i=0;i<100;i++){                                
                     listCursos.add(new timetablebd.Curso(1, "ab", "dcc0", "diurno", 1));
                }
-               CursoTableModel ntm = new CursoTableModel(listCursos);
-               tabela.setModel(ntm);
+//               CursoTableModel ntm = new CursoTableModel(listCursos);
+//               tabela.setModel(ntm);
                tabela.getColumnModel().getColumn(0).setHeaderValue("Diciplina");
                tabela.getColumnModel().getColumn(1).setHeaderValue("Ano");
                tabela.getColumnModel().getColumn(2).setHeaderValue("Carater");
@@ -110,7 +110,7 @@ public class DiscCurr {
             }
         });
         
-        botaoSair.addActionListener(new ActionListener() {
+        botaoGerarSolucao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
