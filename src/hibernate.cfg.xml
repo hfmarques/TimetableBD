@@ -5,5 +5,7 @@
       <property name="show_sql">true</property>
       
     <mapping class="timetablebd.Disciplina"/>
+    <mapping class="timetablebd.Curso"/>
+    <mapping class="timetablebd.Calouros"/>
   </session-factory>
 </hibernate-configuration>

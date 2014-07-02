@@ -24,7 +24,7 @@ import timetablebd.hibernate.util.HibernateUtil;
 @Table(name = "disciplina")
 public class Disciplina implements Serializable {
     @Id
-    @Column(name = "idDisciplina", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     private int idDisciplina;
     @Column(name = "codigo", unique = true, nullable = false)
     private String codigo;

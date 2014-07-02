@@ -95,10 +95,8 @@ create table Curriculo(
 
 create table Calouros(
 	ID NUMERIC(19,0) not null,
-	HIBERNATE_VERSION int default 0 not null,
 	SEMESTRE INT not null,
 	NUM_VAGAS INT not null,
-	TIMETABLEBD_CURSO_FK NUMERIC(19,0) not null,
 	primary key(ID)
 );
 
@@ -145,11 +143,6 @@ alter table DISCCURR
 alter table CURRICULO 
        add constraint FKC_CURRICULO_CURSO
        foreign key (TIMETABLEBD_CURSO_FK) 
-       references CURSO;
-	   
-alter table CALOUROS
-       add constraint FKC_CALOUROS_CURSO
-       foreign key (TIMETABLEBD_CURSO_FK)
        references CURSO;
 
 alter table HORARIO

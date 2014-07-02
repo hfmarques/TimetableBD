@@ -6,16 +6,32 @@
 
 package timetablebd;
 
+import java.io.Serializable;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.annotations.GenericGenerator;
+import timetablebd.hibernate.util.HibernateUtil;
 
 /**
  *
  * @author Héber
  */
-public class Curso {
+
+@Entity
+@Table(name = "Curso")
+public class Curso implements Serializable{
     @Id
-    @Column(name = "idCurso", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private int idCurso;
     @Column(name = "nome", unique = true, nullable = false)
     private String nome;
@@ -23,15 +39,15 @@ public class Curso {
     private String codigo;
     @Column(name = "turno", unique = false, nullable = false)
     private String turno;
-    @Column(name = "idCalouro", unique = false, nullable = false)
-    private int idCalouro;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "timetablebd_calouros_fk", nullable = false)
+    private Calouros calouros;
 
-    public Curso(int idCurso, String nome, String codigo, String turno, int idCalouro) {
-        this.idCurso = idCurso;
+    public Curso(String nome, String codigo, String turno, Calouros calouros) {
         this.nome = nome;
         this.codigo = codigo;
         this.turno = turno;
-        this.idCalouro = idCalouro;
+        this.calouros = calouros;
     }
     
     public Curso(){
@@ -70,11 +86,37 @@ public class Curso {
         this.turno = turno;
     }
 
-    public int getIdCalouro() {
-        return idCalouro;
+    public Calouros getIdCalouro() {
+        return calouros;
     }
 
-    public void setIdCalouro(int idCalouro) {
-        this.idCalouro = idCalouro;
+    public void setIdCalouro(Calouros calouros) {
+        this.calouros = calouros;
+    }
+    
+    public static Curso getTableLine(int id) {
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("select u from Curso as u where u.idCurso = :idCurso");
+            query.setParameter("idCurso", id);
+
+            Curso resultado = (Curso) query.uniqueResult();
+
+            session.close();
+
+            HibernateUtil.getSessionFactory().close();
+
+            if (resultado != null) {
+                return resultado;
+            }
+
+        }
+            
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

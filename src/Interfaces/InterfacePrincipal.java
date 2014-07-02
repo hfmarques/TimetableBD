@@ -21,12 +21,12 @@ public class InterfacePrincipal {
 
   public void preparaJanela() {   
     Curso janelaCurso = new Curso();
-    DiscCurr discCurr = new DiscCurr();
+    Calouros janelaCalouros = new Calouros();
     
     janelaPrincipal = new JFrame("Gerador de Grade");
     abas = new JTabbedPane();
     abas.addTab("Cursos", janelaCurso.getPainel());
-    abas.addTab("Curriculo das Diciplinas", discCurr.getPainel());
+    abas.addTab("Calouros", janelaCalouros.getPainel());
     janelaPrincipal.add(abas);
     janelaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }

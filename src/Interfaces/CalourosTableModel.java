@@ -18,15 +18,16 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import timetablebd.hibernate.util.HibernateUtil;
 
+
 /**
  *
  * @author Héber
  */
-public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
+public class CalourosTableModel extends JPanel{
     private final boolean DEBUG = false;
     private JTable table;
     
-    public CursoTableModel() {
+    public CalourosTableModel() {
         super(new GridLayout(1,0));
 
         table = new JTable(new MyTableModel());
@@ -47,7 +48,7 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
     }
 
     class MyTableModel extends AbstractTableModel {
-        private String[] columnNames = {"Nome","Código", "Turno"};
+        private String[] columnNames = {"ID", "Semestre", "Numero de Vagas"};
         
         private ArrayList<ArrayList<Object>> data;
 
@@ -55,13 +56,13 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
             data = new ArrayList(); //row
             //col
             
-            List<?> lista = HibernateUtil.findAll(timetablebd.Curso.class);
+            List<?> lista = HibernateUtil.findAll(timetablebd.Calouros.class);
             
             for(int i=0;i<lista.size();i++){
-                ArrayList<Object> row = new ArrayList();                
-                row.add(((timetablebd.Curso)lista.get(i)).getNome());
-                row.add(((timetablebd.Curso)lista.get(i)).getCodigo());
-                row.add(((timetablebd.Curso)lista.get(i)).getTurno());
+                ArrayList<Object> row = new ArrayList();
+                row.add(((timetablebd.Calouros)lista.get(i)).getIdCalouro());
+                row.add(((timetablebd.Calouros)lista.get(i)).getSemestre());
+                row.add(((timetablebd.Calouros)lista.get(i)).getNumVagas());
                 data.add(row);
             }
             

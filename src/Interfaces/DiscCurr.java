@@ -95,20 +95,20 @@ public class DiscCurr {
         constraints.anchor=GridBagConstraints.SOUTH;
         gridBag.setConstraints(painelBotao, constraints);
         
-        botaoCarregar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-               ArrayList<timetablebd.Curso> listCursos = new ArrayList<>();  
-               for(int i=0;i<100;i++){                                
-                    listCursos.add(new timetablebd.Curso(1, "ab", "dcc0", "diurno", 1));
-               }
-//               CursoTableModel ntm = new CursoTableModel(listCursos);
-//               tabela.setModel(ntm);
-               tabela.getColumnModel().getColumn(0).setHeaderValue("Diciplina");
-               tabela.getColumnModel().getColumn(1).setHeaderValue("Ano");
-               tabela.getColumnModel().getColumn(2).setHeaderValue("Carater");
-               tabela.getTableHeader().resizeAndRepaint();
-            }
-        });
+//        botaoCarregar.addActionListener(new ActionListener() {
+////            public void actionPerformed(ActionEvent e) {
+////               ArrayList<timetablebd.Curso> listCursos = new ArrayList<>();  
+////               for(int i=0;i<100;i++){                                
+////                    listCursos.add(new timetablebd.Curso(1, "ab", "dcc0", "diurno", ));
+////               }
+//////               CursoTableModel ntm = new CursoTableModel(listCursos);
+//////               tabela.setModel(ntm);
+////               tabela.getColumnModel().getColumn(0).setHeaderValue("Diciplina");
+////               tabela.getColumnModel().getColumn(1).setHeaderValue("Ano");
+////               tabela.getColumnModel().getColumn(2).setHeaderValue("Carater");
+////               tabela.getTableHeader().resizeAndRepaint();
+//            }
+//        });
         
         botaoGerarSolucao.addActionListener(new ActionListener() {
             @Override
