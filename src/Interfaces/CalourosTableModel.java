@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Interfaces;
 
 import java.awt.Dimension;
@@ -18,24 +17,24 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import timetablebd.hibernate.util.HibernateUtil;
 
-
 /**
  *
  * @author Héber
  */
-public class CalourosTableModel extends JPanel{
+public class CalourosTableModel extends JPanel {
+
     private final boolean DEBUG = false;
     private JTable table;
-    
+
     public CalourosTableModel() {
-        super(new GridLayout(1,0));
+        super(new GridLayout(1, 0));
 
         table = new JTable(new MyTableModel());
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
         table.setFillsViewportHeight(true);
 
-        JScrollPane scrollPane = new JScrollPane(table);        
-        table.setDefaultEditor(Integer.class, new IntegerEditor(0, 100));
+        JScrollPane scrollPane = new JScrollPane(table);
+        table.setDefaultEditor(Integer.class, new CellEditor(0, 100));
         add(scrollPane);
     }
 
@@ -48,25 +47,24 @@ public class CalourosTableModel extends JPanel{
     }
 
     class MyTableModel extends AbstractTableModel {
-        private String[] columnNames = {"ID", "Semestre", "Numero de Vagas"};
-        
+
+        private String[] columnNames = {"ID", "Numero de Vagas"};
+
         private ArrayList<ArrayList<Object>> data;
 
         public MyTableModel() {
             data = new ArrayList(); //row
             //col
-            
+
             List<?> lista = HibernateUtil.findAll(timetablebd.Calouros.class);
-            
-            for(int i=0;i<lista.size();i++){
+
+            for (int i = 0; i < lista.size(); i++) {
                 ArrayList<Object> row = new ArrayList();
-                row.add(((timetablebd.Calouros)lista.get(i)).getIdCalouro());
-                row.add(((timetablebd.Calouros)lista.get(i)).getSemestre());
-                row.add(((timetablebd.Calouros)lista.get(i)).getNumVagas());
+                row.add(Integer.toString(((timetablebd.Calouros) lista.get(i)).getIdCalouro()));
+                row.add(Integer.toString(((timetablebd.Calouros) lista.get(i)).getNumVagas()));
                 data.add(row);
             }
-            
-            
+
         }
 
         public String[] getColumnNames() {
@@ -80,14 +78,15 @@ public class CalourosTableModel extends JPanel{
         public ArrayList<ArrayList<Object>> getData() {
             return data;
         }
-        
-        public void addRow(ArrayList<Object> row){
+
+        public void addRow(ArrayList<Object> row) {
             data.add(row);
         }
 
         public void setData(ArrayList<ArrayList<Object>> data) {
             this.data = data;
         }
+
         @Override
         public int getColumnCount() {
             return columnNames.length;
@@ -108,7 +107,7 @@ public class CalourosTableModel extends JPanel{
             return data.get(row).get(col);
         }
 
-       @Override
+        @Override
         public Class getColumnClass(int c) {
             return getValueAt(0, c).getClass();
         }
@@ -126,9 +125,9 @@ public class CalourosTableModel extends JPanel{
         public void setValueAt(Object value, int row, int col) {
             if (DEBUG) {
                 System.out.println("Setting value at " + row + "," + col
-                                   + " to " + value
-                                   + " (an instance of "
-                                   + value.getClass() + ")");
+                        + " to " + value
+                        + " (an instance of "
+                        + value.getClass() + ")");
             }
 
             data.get(row).set(col, value);
@@ -144,9 +143,9 @@ public class CalourosTableModel extends JPanel{
             int numRows = getRowCount();
             int numCols = getColumnCount();
 
-            for (int i=0; i < numRows; i++) {
+            for (int i = 0; i < numRows; i++) {
                 System.out.print("    row " + i + ":");
-                for (int j=0; j < numCols; j++) {
+                for (int j = 0; j < numCols; j++) {
                     System.out.print("  " + data.get(i).get(j));
                 }
                 System.out.println();

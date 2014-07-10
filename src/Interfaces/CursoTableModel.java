@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Interfaces;
 
 import java.awt.Dimension;
@@ -23,18 +22,19 @@ import timetablebd.hibernate.util.HibernateUtil;
  * @author Héber
  */
 public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
+
     private final boolean DEBUG = false;
     private JTable table;
-    
+
     public CursoTableModel() {
-        super(new GridLayout(1,0));
+        super(new GridLayout(1, 0));
 
         table = new JTable(new MyTableModel());
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
         table.setFillsViewportHeight(true);
 
-        JScrollPane scrollPane = new JScrollPane(table);        
-        table.setDefaultEditor(Integer.class, new IntegerEditor(0, 100));
+        JScrollPane scrollPane = new JScrollPane(table);
+        table.setDefaultEditor(Integer.class, new CellEditor(0, 100));
         add(scrollPane);
     }
 
@@ -47,25 +47,27 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
     }
 
     class MyTableModel extends AbstractTableModel {
-        private String[] columnNames = {"Nome","Código", "Turno"};
-        
+
+        private String[] columnNames = {"Nome", "Código", "Turno", "Calouros Primeiro Semestre", "Calouros Segundo Semestre"};
+
         private ArrayList<ArrayList<Object>> data;
 
         public MyTableModel() {
             data = new ArrayList(); //row
             //col
-            
+
             List<?> lista = HibernateUtil.findAll(timetablebd.Curso.class);
-            
-            for(int i=0;i<lista.size();i++){
-                ArrayList<Object> row = new ArrayList();                
-                row.add(((timetablebd.Curso)lista.get(i)).getNome());
-                row.add(((timetablebd.Curso)lista.get(i)).getCodigo());
-                row.add(((timetablebd.Curso)lista.get(i)).getTurno());
+
+            for (int i = 0; i < lista.size(); i++) {
+                ArrayList<Object> row = new ArrayList();
+                row.add(((timetablebd.Curso) lista.get(i)).getNome());
+                row.add(((timetablebd.Curso) lista.get(i)).getCodigo());
+                row.add(((timetablebd.Curso) lista.get(i)).getTurno());
+                row.add(Integer.toString(((timetablebd.Calouros) HibernateUtil.find(timetablebd.Calouros.class, ((timetablebd.Curso) lista.get(i)).getCalouros().get(0).getIdCalouro())).getNumVagas()));
+                row.add(Integer.toString(((timetablebd.Calouros) HibernateUtil.find(timetablebd.Calouros.class, ((timetablebd.Curso) lista.get(i)).getCalouros().get(1).getIdCalouro())).getNumVagas()));
                 data.add(row);
             }
-            
-            
+
         }
 
         public String[] getColumnNames() {
@@ -79,14 +81,15 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
         public ArrayList<ArrayList<Object>> getData() {
             return data;
         }
-        
-        public void addRow(ArrayList<Object> row){
+
+        public void addRow(ArrayList<Object> row) {
             data.add(row);
         }
 
         public void setData(ArrayList<ArrayList<Object>> data) {
             this.data = data;
         }
+
         @Override
         public int getColumnCount() {
             return columnNames.length;
@@ -107,7 +110,7 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
             return data.get(row).get(col);
         }
 
-       @Override
+        @Override
         public Class getColumnClass(int c) {
             return getValueAt(0, c).getClass();
         }
@@ -125,9 +128,9 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
         public void setValueAt(Object value, int row, int col) {
             if (DEBUG) {
                 System.out.println("Setting value at " + row + "," + col
-                                   + " to " + value
-                                   + " (an instance of "
-                                   + value.getClass() + ")");
+                        + " to " + value
+                        + " (an instance of "
+                        + value.getClass() + ")");
             }
 
             data.get(row).set(col, value);
@@ -143,9 +146,9 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
             int numRows = getRowCount();
             int numCols = getColumnCount();
 
-            for (int i=0; i < numRows; i++) {
+            for (int i = 0; i < numRows; i++) {
                 System.out.print("    row " + i + ":");
-                for (int j=0; j < numCols; j++) {
+                for (int j = 0; j < numCols; j++) {
                     System.out.print("  " + data.get(i).get(j));
                 }
                 System.out.println();

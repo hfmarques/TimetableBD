@@ -7,12 +7,17 @@
 package timetablebd;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Héber
  */
+
+@Entity
+@Table(name = "creditoministrado")
 public class CreditoMinistrado {
     @Id
     @Column(name = "credito", unique = false, nullable = false)

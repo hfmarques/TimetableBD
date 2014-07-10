@@ -1,10 +1,5 @@
 package Interfaces;
 
-
-/*
- * IntegerEditor is used by TableFTFEditDemo.java.
- */
-
 import javax.swing.AbstractAction;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JFormattedTextField;
@@ -23,25 +18,24 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
 /**
- * Implements a cell editor that uses a formatted text field
- * to edit Integer values.
+ * Editor de celulas da tabela
  */
-public class IntegerEditor extends DefaultCellEditor {
+public class CellEditor extends DefaultCellEditor {
     JFormattedTextField ftf;
-    NumberFormat integerFormat;
+    NumberFormat format;
     private Integer minimum, maximum;
     private boolean DEBUG = false;
 
-    public IntegerEditor(int min, int max) {
+    public CellEditor(int min, int max) {
         super(new JFormattedTextField());
         ftf = (JFormattedTextField)getComponent();
         minimum = new Integer(min);
         maximum = new Integer(max);
 
         //Set up the editor for the integer cells.
-        integerFormat = NumberFormat.getIntegerInstance();
-        NumberFormatter intFormatter = new NumberFormatter(integerFormat);
-        intFormatter.setFormat(integerFormat);
+        format = NumberFormat.getIntegerInstance();
+        NumberFormatter intFormatter = new NumberFormatter(format);
+        intFormatter.setFormat(format);
         intFormatter.setMinimum(minimum);
         intFormatter.setMaximum(maximum);
 
@@ -90,7 +84,7 @@ public class IntegerEditor extends DefaultCellEditor {
                 System.out.println("getCellEditorValue: o isn't a Number");
             }
             try {
-                return integerFormat.parseObject(o.toString());
+                return format.parseObject(o.toString());
             } catch (ParseException exc) {
                 System.err.println("getCellEditorValue: can't parse o: " + o);
                 return null;

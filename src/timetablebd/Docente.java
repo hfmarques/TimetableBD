@@ -7,12 +7,17 @@
 package timetablebd;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author Héber
  */
+
+@Entity
+@Table(name = "docente")
 public class Docente {
     
     @Id
@@ -26,6 +31,9 @@ public class Docente {
     private String nomeCompleto;
     @Column(name = "creditacaoEsperada", unique = false, nullable = false)
     private int creditacaoEsperada;
+
+    public Docente() {
+    }
 
     public Docente(int idDocente, String codigo, String nome, String nomeCompleto, int creditacaoEsperada) {
         this.idDocente = idDocente;

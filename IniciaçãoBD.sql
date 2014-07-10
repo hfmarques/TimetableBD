@@ -18,12 +18,15 @@ drop table CALOUROS cascade;
 
 drop table HORARIO cascade;
 
+drop table CALOUROS_CURSO cascade;
+
 create table Curso (
 	ID NUMERIC(19,0) not null,
 	NOME VARCHAR(21) not null,
 	TURNO VARCHAR(10) not null,
 	CODIGO VARCHAR(21) not null,
-	TIMETABLEBD_CALOUROS_FK NUMERIC(19,0) not null,
+	/*CALOUROS_PRIMEIRO_SEMESTRE_FK NUMERIC(19,0) not null,*/
+	/*CALOUROS_SEGUNDO_SEMESTRE_FK NUMERIC(19,0) not null,*/
 	primary key (ID),
 	unique (CODIGO)
 );
@@ -77,10 +80,12 @@ create table Sala(
 );
 
 create table DiscCurr(
+	ID NUMERIC(19,0) not null,
 	PERIODO INT not null,
 	CARACTER VARCHAR(50) not null,
 	TIMETABLEBD_DISCIPLINA_FK NUMERIC(19,0) not null,
 	TIMETABLEBD_CURRICULO_FK NUMERIC(19,0) not null,
+	primary key (ID),
 	UNIQUE (TIMETABLEBD_DISCIPLINA_FK)
 );
 
@@ -95,21 +100,25 @@ create table Curriculo(
 
 create table Calouros(
 	ID NUMERIC(19,0) not null,
-	SEMESTRE INT not null,
 	NUM_VAGAS INT not null,
-	primary key(ID)
+	primary key(ID),
+	UNIQUE(NUM_VAGAS)
 );
 
 create table Horario(
+	ID NUMERIC(19,0) not null,
 	HORARIO VARCHAR(21) not null,
-	TIMETABLEBD_TURMA_FK NUMERIC(19,0) not null
+	TIMETABLEBD_TURMA_FK NUMERIC(19,0) not null,
+	primary key (ID)
 );
 
-alter table CURSO 
-       add constraint FKC_CURSO_CALOUROS
-       foreign key (TIMETABLEBD_CALOUROS_FK) 
-       references CALOUROS;
-	   
+create table Calouros_Curso(
+	ID SERIAL PRIMARY KEY,
+	CURSO_FK NUMERIC(19,0) not null,
+	CALOUROS_FK NUMERIC(19,0) not null
+);
+
+
 alter table TURMA
        add constraint FKC_TURMA_DISICPLINA
        foreign key (TIMETABLEBD_DISICPLINA_FK) 
@@ -149,3 +158,13 @@ alter table HORARIO
        add constraint FKC_HORARIO_TURMA
        foreign key (TIMETABLEBD_TURMA_FK)
        references TURMA;
+
+alter table CALOUROS_CURSO
+	add constraint FKC_CURSO
+	foreign key (CURSO_FK)
+	references CURSO;
+
+alter table CALOUROS_CURSO
+	add constraint FKC_CALOUROS
+	foreign key (CALOUROS_FK)
+	references CALOUROS;

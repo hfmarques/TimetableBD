@@ -8,11 +8,15 @@ package timetablebd;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,18 +33,15 @@ public class Calouros {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private int idCalouro;
-    @Column(name = "semestre", unique = false, nullable = false)
-    private int semestre;
-    @Column(name = "num_vagas", unique = false, nullable = false)
+    @Column(name = "num_vagas", unique = true, nullable = false)
     private int numVagas;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "calouros")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "calouros")
     private List<Curso> cursos = new ArrayList<Curso>();
 
     public Calouros() {
     }
 
-    public Calouros(int semestre, int numVagas) {
-        this.semestre = semestre;
+    public Calouros(int numVagas) {
         this.numVagas = numVagas;
     }
 
@@ -50,14 +51,6 @@ public class Calouros {
 
     public void setIdCalouro(int idCalouro) {
         this.idCalouro = idCalouro;
-    }
-
-    public int getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(int semestre) {
-        this.semestre = semestre;
     }
 
     public int getNumVagas() {

@@ -7,15 +7,24 @@
 package timetablebd;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
  * @author Héber
  */
+
+@Entity
+@Table(name = "turma")
 public class Turma {
     @Id
-    @Column(name = "idTurma", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private int idTurma;
     @Column(name = "codigo", unique = true, nullable = false)
     private String codigo;

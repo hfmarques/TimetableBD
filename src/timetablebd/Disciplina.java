@@ -9,10 +9,12 @@ package timetablebd;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.GenericGenerator;
 import timetablebd.hibernate.util.HibernateUtil;
 
 /**
@@ -25,6 +27,8 @@ import timetablebd.hibernate.util.HibernateUtil;
 public class Disciplina implements Serializable {
     @Id
     @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private int idDisciplina;
     @Column(name = "codigo", unique = true, nullable = false)
     private String codigo;

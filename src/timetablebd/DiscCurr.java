@@ -7,11 +7,16 @@
 package timetablebd;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  *
  * @author Héber
  */
+
+@Entity
+@Table(name = "diccurr")
 public class DiscCurr {
     @Column(name = "periodo", unique = false, nullable = false)
     private int periodo;
