@@ -87,7 +87,7 @@ public class Curso {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.SOUTH;
         gridBag.setConstraints(painelBotao, constraints);
-
+              
         // gera os acontecimentos ao se clicar no botão inserir
         botaoInserir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

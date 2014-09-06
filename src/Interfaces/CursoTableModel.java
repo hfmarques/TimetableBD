@@ -34,7 +34,7 @@ public class CursoTableModel extends JPanel /*extends AbstractTableModel*/ {
         table.setFillsViewportHeight(true);
 
         JScrollPane scrollPane = new JScrollPane(table);
-        table.setDefaultEditor(Integer.class, new CellEditor(0, 100));
+        table.setDefaultEditor(Integer.class, new CellEditor());
         add(scrollPane);
     }
 
