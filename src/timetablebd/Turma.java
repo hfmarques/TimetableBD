@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -32,8 +33,6 @@ public class Turma {
     private String turno;
     @Column(name = "maxVagas", unique = false, nullable = false)
     private int maxVagas;
-    @Column(name = "idDisciplina", unique = false, nullable = false)
     private int idDisciplina;
-    @Column(name = "idSala", unique = false, nullable = false)
     private int idSala;
 }

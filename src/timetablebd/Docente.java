@@ -6,10 +6,16 @@
 
 package timetablebd;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.annotations.GenericGenerator;
+import timetablebd.hibernate.util.HibernateUtil;
 
 /**
  *
@@ -18,25 +24,26 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "docente")
-public class Docente {
+public class Docente implements Serializable{
     
     @Id
-    @Column(name = "idDocente", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
     private int idDocente;
     @Column(name = "codigo", unique = true, nullable = false)
     private String codigo;
     @Column(name = "nome", unique = false, nullable = false)
     private String nome;
-    @Column(name = "nomeCompleto", unique = false, nullable = false)
+    @Column(name = "nome_completo", unique = false, nullable = false)
     private String nomeCompleto;
-    @Column(name = "creditacaoEsperada", unique = false, nullable = false)
+    @Column(name = "creditacao_esperada", unique = false, nullable = false)
     private int creditacaoEsperada;
 
     public Docente() {
     }
 
-    public Docente(int idDocente, String codigo, String nome, String nomeCompleto, int creditacaoEsperada) {
-        this.idDocente = idDocente;
+    public Docente(String codigo, String nome, String nomeCompleto, int creditacaoEsperada) {
         this.codigo = codigo;
         this.nome = nome;
         this.nomeCompleto = nomeCompleto;
@@ -81,6 +88,32 @@ public class Docente {
 
     public void setCreditacaoEsperada(int creditacaoEsperada) {
         this.creditacaoEsperada = creditacaoEsperada;
+    }
+    
+    public static Docente getTableLine(int id) {
+        try{
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("select u from Docente as u where u.id = :id");
+            query.setParameter("id", id);
+
+            Docente resultado = (Docente) query.uniqueResult();
+
+            session.close();
+
+            HibernateUtil.getSessionFactory().close();
+
+            if (resultado != null) {
+                return resultado;
+            }
+
+        }
+            
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
     
     

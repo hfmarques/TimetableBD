@@ -6,6 +6,7 @@
 
 package timetablebd;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -27,7 +28,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "Calouros")
-public class Calouros {
+public class Calouros implements Serializable{
     @Id
     @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(generator = "increment")

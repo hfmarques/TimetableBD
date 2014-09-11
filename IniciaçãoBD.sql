@@ -43,7 +43,6 @@ create table Disciplina (
 
 create table Docente (
 	ID NUMERIC(19,0) not null,
-	HIBERNATE_VERSION int default 0 not null,
 	CODIGO VARCHAR(21) not null,
 	NOME VARCHAR(50) not null,
 	NOME_COMPLETO VARCHAR(100) not null,
@@ -54,25 +53,24 @@ create table Docente (
 
 create table Turma(
 	ID NUMERIC(19,0) not null,
-	HIBERNATE_VERSION int default 0 not null,
 	CODIGO VARCHAR(21) not null,
 	TURNO VARCHAR (10) not null,
 	MAX_VAGAS INT not null,
-	TIMETABLEBD_DISICPLINA_FK NUMERIC(19,0) not null,
-	TIMETABLEBD_SALA_FK NUMERIC(19,0) not null,
-	primary key(ID),
-	UNIQUE (CODIGO)
+	DISICPLINA_FK NUMERIC(19,0) not null,
+	SALA_FK NUMERIC(19,0) not null,
+	primary key(ID)
 );
 
 create table CreditoMinistrado(
+	ID NUMERIC(19,0) not null,
 	CREDITO FLOAT not null,
-	TIMETABLEBD_DOCENTE_FK NUMERIC(19,0) not null,
-	TIMETABLEBD_TURMA_FK NUMERIC(19,0) not null
+	DOCENTE_FK NUMERIC(19,0) not null,
+	TURMA_FK NUMERIC(19,0) not null,
+	primary key(ID)
 );
 
 create table Sala(
 	ID NUMERIC(19,0) not null,
-	HIBERNATE_VERSION int default 0 not null,
 	NUMERO VARCHAR(10) not null,
 	LOCAL VARCHAR(21) not null,
 	primary key(ID),
@@ -91,7 +89,6 @@ create table DiscCurr(
 
 create table Curriculo(
 	ID NUMERIC(19,0) not null,
-	HIBERNATE_VERSION int default 0 not null,
 	ANO_INICIO INT not null,
 	ATIVO BOOLEAN not null,
 	TIMETABLEBD_CURSO_FK NUMERIC(19,0) not null,
@@ -121,22 +118,22 @@ create table Calouros_Curso(
 
 alter table TURMA
        add constraint FKC_TURMA_DISICPLINA
-       foreign key (TIMETABLEBD_DISICPLINA_FK) 
+       foreign key (DISICPLINA_FK) 
        references DISCIPLINA;
 
 alter table TURMA 
        add constraint FKC_TURMA_SALA
-       foreign key (TIMETABLEBD_SALA_FK) 
+       foreign key (SALA_FK) 
        references SALA;
 	   
 alter table CREDITOMINISTRADO 
        add constraint FKC_CREDITOMINASTRADO_DOCENTE
-       foreign key (TIMETABLEBD_DOCENTE_FK) 
+       foreign key (DOCENTE_FK) 
        references DOCENTE;
 	   
 alter table CREDITOMINISTRADO 
        add constraint FKC_CREDITOMINASTRADO_TURMA
-       foreign key (TIMETABLEBD_TURMA_FK) 
+       foreign key (TURMA_FK) 
        references TURMA;
 	   
 alter table DISCCURR 

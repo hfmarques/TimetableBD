@@ -6,6 +6,7 @@
 
 package timetablebd;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "sala")
-public class Sala {
+public class Sala implements Serializable{
     @Id
     @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(generator = "increment")

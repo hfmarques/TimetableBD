@@ -43,8 +43,7 @@ public class Disciplina implements Serializable {
     public Disciplina() {
     }
 
-    public Disciplina(int idDisciplina, String codigo, int creditos, String nome, String perfil) {
-        this.idDisciplina = idDisciplina;
+    public Disciplina(String codigo, int creditos, String nome, String perfil) {
         this.codigo = codigo;
         this.creditos = creditos;
         this.nome = nome;

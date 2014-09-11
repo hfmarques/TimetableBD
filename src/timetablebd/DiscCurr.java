@@ -6,9 +6,13 @@
 
 package timetablebd;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  *
@@ -17,7 +21,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "diccurr")
-public class DiscCurr {
+public class DiscCurr implements Serializable{
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private int id;
     @Column(name = "periodo", unique = false, nullable = false)
     private int periodo;
     @Column(name = "carater", unique = false, nullable = false)

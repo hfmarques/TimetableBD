@@ -37,10 +37,9 @@ public class ResultadosTableModel extends JPanel {
         table = new JTable(tableModel);
 
         tableModel.loadTableValues();
-
+        
         table.setPreferredScrollableViewportSize(new Dimension(500, 70));
         table.setFillsViewportHeight(true);
-        botaoExpandir = new JButton("Inserir Curso");
 
         JScrollPane scrollPane = new JScrollPane(table);
         table.setDefaultEditor(Integer.class, new CellEditor());
@@ -57,7 +56,7 @@ public class ResultadosTableModel extends JPanel {
 
     class MyTableModel extends AbstractTableModel {
 
-        private String[] columnNames = {"", "Código do Professor", "Nome do Professor", "Créditos Totais"};
+        private String[] columnNames = {"", "Código do Professor", "Nome do Professor", "Disciplinas", "Creditos da Disciplina", "Créditos Totais"};
 
         private ArrayList<ArrayList<Object>> data;
 
@@ -67,15 +66,18 @@ public class ResultadosTableModel extends JPanel {
 
         public void loadTableValues() {
 
-            List<?> lista = HibernateUtil.findAll(timetablebd.Curso.class);
+            List<?> lista = HibernateUtil.findAll(timetablebd.Docente.class);
 
             for (int i = 0; i < lista.size(); i++) {
                 ArrayList<Object> row = new ArrayList();
-                row.add(true);
-                String[] phones2 = {"555 35 24 33", "555 11 88 88", "332 55 25 34"};
-                row.add(phones2);
-                row.add(((timetablebd.Curso) lista.get(0)).getCodigo());
-                row.add(((timetablebd.Curso) lista.get(0)).getTurno());
+                row.add(false);
+                row.add(((timetablebd.Docente)lista.get(i)).getCodigo());
+                row.add(((timetablebd.Docente)lista.get(i)).getNome());
+                String[] disc = {" "};
+                row.add(disc);
+                String[] credDisc = {" "};
+                row.add(credDisc);
+                row.add(((timetablebd.Docente)lista.get(i)).getCreditacaoEsperada());                
                 data.add(row);
             }
             /* Next we create our table models */
