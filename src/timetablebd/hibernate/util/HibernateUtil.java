@@ -18,6 +18,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import timetablebd.Calouros;
+import timetablebd.Disciplina;
+import timetablebd.Turma;
 
 /**
  *
@@ -132,6 +134,26 @@ public class HibernateUtil {
                 }
             }
 
+            return null;
+        }
+    }
+    
+    public static List<timetablebd.Turma> findDiscByProf(int IdProf) {
+        List<timetablebd.Turma> lista = null;
+        Query query = null;
+        try {
+            session = getInstance();
+            transaction = session.beginTransaction();
+            query = session.createQuery("SELECT t FROM Turma AS t JOIN FETCH t.docente JOIN FETCH t.disciplina WHERE t.docente.idDocente = :id");
+            query.setParameter("id", IdProf);
+            lista = (List<timetablebd.Turma>) query.list();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            System.err.println(e.fillInStackTrace());
+        } catch (Exception ex) {
+            Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            session.close();            
             return null;
         }
     }

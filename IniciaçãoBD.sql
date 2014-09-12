@@ -56,7 +56,7 @@ create table Turma(
 	CODIGO VARCHAR(21) not null,
 	TURNO VARCHAR (10) not null,
 	MAX_VAGAS INT not null,
-	DISICPLINA_FK NUMERIC(19,0) not null,
+	DISCIPLINA_FK NUMERIC(19,0) not null,
 	SALA_FK NUMERIC(19,0) not null,
 	primary key(ID)
 );

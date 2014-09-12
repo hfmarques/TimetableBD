@@ -12,6 +12,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -78,21 +80,55 @@ public class Resultados {
         constraints.anchor = GridBagConstraints.SOUTH;
         gridBag.setConstraints(painelBotao, constraints);
         
-        
+               
         botaoUpdate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
-//                for(int i=0;i< tabela.getTable().getModel().getRowCount();i++){ //procura em todas as linhas da tabela
-//                    if((boolean)tabela.getTable().getModel().getValueAt(i, 0) == true){ //caso o checkbox esteja marcado insere os dados extras dos professores
-//                        String[] phones = {"1232412421","12312412412","12312421412"};
-//                        tabela.getTable().getModel().setValueAt(phones, i, 1);
-//                    }
-//                    
-//                    else{ //caso contrario os retira
-//                        String[] phones = {""};
-//                        tabela.getTable().getModel().setValueAt(phones, i, 1);
-//                    }
-//                }               
+                for(int i=0;i< tabela.getTable().getModel().getRowCount();i++){ //procura em todas as linhas da tabela
+                    if((boolean)tabela.getTable().getModel().getValueAt(i, 0) == true){ //caso o checkbox esteja marcado insere os dados extras dos professores
+                        List<?> lista = HibernateUtil.findAll(timetablebd.Turma.class);
+                        ArrayList<String> disc = new ArrayList<String>();
+                        ArrayList<String> cod = new ArrayList<String>();
+                        ArrayList<Integer> cred = new ArrayList<Integer>();
+                        
+                        for(int j=0;j<lista.size();j++){
+                            for(int k=0; k<((timetablebd.Turma)lista.get(j)).getDocente().size();k++){     
+                            System.out.println("aaaa");                  
+                                if(tabela.getTable().getModel().getValueAt(i, 1).equals(((timetablebd.Turma)lista.get(j)).getDocente().get(k).getCodigo())){
+                                   disc.add(((timetablebd.Turma)lista.get(j)).getDisciplina().getNome());
+                                   cod.add(((timetablebd.Turma)lista.get(j)).getDisciplina().getNome() + " - " + ((timetablebd.Turma)lista.get(j)).getCodigo());
+                                   cred.add(((timetablebd.Turma)lista.get(j)).getDisciplina().getCreditos());
+                                }
+                            }
+                        }
+                        
+                        String[] sDisc = new String[disc.size()];
+                        for(int j=0;j<disc.size();j++){
+                            sDisc[j] = disc.get(j);
+                        }
+                        
+                        String[] sCod = new String[cod.size()];
+                        for(int j=0;j<cod.size();j++){
+                            sCod[j] = cod.get(j);
+                        }
+                        
+                        String[] sCred = new String[cred.size()];
+                        for(int j=0;j<cred.size();j++){
+                            sCred[j] = cred.get(j).toString();
+                        }
+                        
+                        tabela.getTable().getModel().setValueAt(sDisc, i, 3);
+                        tabela.getTable().getModel().setValueAt(sCod, i, 4);
+                        tabela.getTable().getModel().setValueAt(sCred, i, 5);
+                    }
+                    
+                    else{ //caso contrario os retira
+                        String[] empty = {""};
+                        tabela.getTable().getModel().setValueAt(empty, i, 3);
+                        tabela.getTable().getModel().setValueAt(empty, i, 4);
+                        tabela.getTable().getModel().setValueAt(empty, i, 5);
+                    }
+                }               
             }
         });
         

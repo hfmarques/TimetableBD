@@ -56,7 +56,7 @@ public class ResultadosTableModel extends JPanel {
 
     class MyTableModel extends AbstractTableModel {
 
-        private String[] columnNames = {"", "Código do Professor", "Nome do Professor", "Disciplinas", "Creditos da Disciplina", "Créditos Totais"};
+        private String[] columnNames = {"", "Código do Professor", "Nome do Professor", "Disciplinas", "Codigo da Disciplina","Creditos da Disciplina", "Créditos Totais"};
 
         private ArrayList<ArrayList<Object>> data;
 
@@ -75,6 +75,8 @@ public class ResultadosTableModel extends JPanel {
                 row.add(((timetablebd.Docente)lista.get(i)).getNome());
                 String[] disc = {" "};
                 row.add(disc);
+                String[] cod = {" "};
+                row.add(cod);
                 String[] credDisc = {" "};
                 row.add(credDisc);
                 row.add(((timetablebd.Docente)lista.get(i)).getCreditacaoEsperada());                

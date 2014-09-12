@@ -7,10 +7,16 @@
 package timetablebd;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -32,12 +38,15 @@ public class Disciplina implements Serializable {
     private int idDisciplina;
     @Column(name = "codigo", unique = true, nullable = false)
     private String codigo;
-    @Column(name = "creditos", unique = false, nullable = true)
+    @Column(name = "credito", unique = false, nullable = true)
     private int creditos;
     @Column(name = "nome", unique = false, nullable = true)
     private String nome;
     @Column(name = "perfil", unique = false, nullable = true)
     private String perfil;
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "disciplina")
+	private List<Turma> turma = new ArrayList<Turma>();
 
 
     public Disciplina() {

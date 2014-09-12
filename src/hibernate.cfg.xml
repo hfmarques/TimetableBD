@@ -8,7 +8,7 @@
     <mapping class="timetablebd.Curso"/>
     <mapping class="timetablebd.Calouros"/>
     <mapping class="timetablebd.Curriculo"/>
-    <mapping class="timetablebd.CreditoMinistrado"/>
+    <!--<mapping class="timetablebd.CreditoMinistrado"/>-->
     <!--<mapping class="timetablebd.DiscCurr"/>-->
     <mapping class="timetablebd.Docente"/>
     <!--<mapping class="timetablebd.Horario"/>-->
