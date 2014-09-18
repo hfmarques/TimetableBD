@@ -138,14 +138,13 @@ public class HibernateUtil {
         }
     }
     
-    public static List<timetablebd.Turma> findDiscByProf(int IdProf) {
+    public static List<timetablebd.Turma> findTurmas() {
         List<timetablebd.Turma> lista = null;
         Query query = null;
         try {
             session = getInstance();
             transaction = session.beginTransaction();
-            query = session.createQuery("SELECT t FROM Turma AS t JOIN FETCH t.docente JOIN FETCH t.disciplina WHERE t.docente.idDocente = :id");
-            query.setParameter("id", IdProf);
+            query = session.createQuery("SELECT t FROM Turma AS t JOIN FETCH t.docente JOIN FETCH t.disciplina");
             lista = (List<timetablebd.Turma>) query.list();
         } catch (HibernateException e) {
             transaction.rollback();
@@ -154,7 +153,7 @@ public class HibernateUtil {
             Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             session.close();            
-            return null;
+            return lista;
         }
     }
 

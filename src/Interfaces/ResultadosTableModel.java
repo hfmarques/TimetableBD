@@ -56,7 +56,7 @@ public class ResultadosTableModel extends JPanel {
 
     class MyTableModel extends AbstractTableModel {
 
-        private String[] columnNames = {"", "Código do Professor", "Nome do Professor", "Disciplinas", "Codigo da Disciplina","Creditos da Disciplina", "Créditos Totais"};
+        private String[] columnNames = {"", "Código do Professor", "Nome do Professor", "Disciplinas", "Codigo da Disciplina","Creditos da Disciplina", "Créditos: Atuais / Esperados"};
 
         private ArrayList<ArrayList<Object>> data;
 
@@ -67,6 +67,7 @@ public class ResultadosTableModel extends JPanel {
         public void loadTableValues() {
 
             List<?> lista = HibernateUtil.findAll(timetablebd.Docente.class);
+            List<?> turma = HibernateUtil.findTurmas();
 
             for (int i = 0; i < lista.size(); i++) {
                 ArrayList<Object> row = new ArrayList();
@@ -79,7 +80,22 @@ public class ResultadosTableModel extends JPanel {
                 row.add(cod);
                 String[] credDisc = {" "};
                 row.add(credDisc);
-                row.add(((timetablebd.Docente)lista.get(i)).getCreditacaoEsperada());                
+                int creditos = 0;
+                for(int tur = 0; tur < turma.size();tur++){ // calcula a quantidade de créditos de cada professor
+                  for(int doc=0;doc < ((timetablebd.Turma)turma.get(tur)).getDocente().size();doc++){
+                    
+                    if(((timetablebd.Docente)lista.get(i)).getCodigo().equals(((timetablebd.Turma)turma.get(tur)).getDocente().get(doc).getCodigo())){
+                      
+                      creditos += ((timetablebd.Turma)turma.get(tur)).getDisciplina().getCreditos();
+                      
+                    }
+                  }
+                }
+                // define a exibição dos creditos como atuais / esperados
+                String cred = Integer.toString(creditos) + "  /  " + Integer.toString(((timetablebd.Docente)lista.get(i)).getCreditacaoEsperada());
+                
+                row.add(cred);
+                
                 data.add(row);
             }
             /* Next we create our table models */

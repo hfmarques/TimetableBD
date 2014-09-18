@@ -55,8 +55,8 @@ public class Turma implements Serializable{
         
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "creditoministrado", joinColumns = {
-			@JoinColumn(name = "docente_fk", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "turma_fk", nullable = false, updatable = false) })
+			@JoinColumn(name = "turma_fk", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "docente_fk", nullable = false, updatable = false) })
     
     private List<Docente> docente = new ArrayList<Docente>();
     
@@ -126,12 +126,7 @@ public class Turma implements Serializable{
     }
 
     public void setDocente(List<Docente> docente) {
-        this.docente = docente;
+        this.docente = docente;   
     }
-    
-    
-    
-    
-    
     
 }
