@@ -1,4 +1,4 @@
-package Interfaces;
+package interfaces;
 
 import java.awt.Component;
 import javax.swing.AbstractCellEditor;
@@ -12,19 +12,19 @@ import javax.swing.table.TableCellEditor;
  */
 public class CellEditor extends AbstractCellEditor implements TableCellEditor {
 
-    JComponent component = new JTextField();
+	JComponent component = new JTextField();
 
-    @Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
-            int rowIndex, int vColIndex) {
+	@Override
+	public Component getTableCellEditorComponent(JTable table, Object value,
+			boolean isSelected, int rowIndex, int vColIndex) {
 
-        ((JTextField) component).setText((String) value);
+		((JTextField) component).setText((String) value);
 
-        return component;
-    }
+		return component;
+	}
 
-    @Override
-    public Object getCellEditorValue() {
-        return ((JTextField) component).getText();
-    }
+	@Override
+	public Object getCellEditorValue() {
+		return ((JTextField) component).getText();
+	}
 }
