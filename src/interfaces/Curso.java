@@ -6,10 +6,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import hibernate.HibernateUtil;
 
 /**
@@ -86,7 +88,7 @@ public class Curso {
 		// gera os acontecimentos ao se clicar no botão inserir
 		botaoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Object> linha = new ArrayList(); // arraylist para
+				ArrayList<Object> linha = new ArrayList<Object>(); // arraylist para
 															// armazenar a nova
 															// linha da tabela
 				// recebe por parametro o "model" da tabela para poder fazer as

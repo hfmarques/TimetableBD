@@ -1,6 +1,7 @@
 package interfaces;
 
 import java.awt.Component;
+
 import javax.swing.AbstractCellEditor;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -10,6 +11,7 @@ import javax.swing.table.TableCellEditor;
 /**
  * Editor de celulas da tabela
  */
+@SuppressWarnings("serial")
 public class CellEditor extends AbstractCellEditor implements TableCellEditor {
 
 	JComponent component = new JTextField();

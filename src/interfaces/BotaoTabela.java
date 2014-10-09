@@ -2,29 +2,36 @@ package interfaces;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+
 import hibernate.HibernateUtil;
 
 /**
  *
  * @author Héber
  */
+@SuppressWarnings("serial")
 public class BotaoTabela extends AbstractCellEditor implements
 		TableCellRenderer, TableCellEditor, ActionListener {
 
 	JTable table;
-	JButton renderButton;
-	JButton editButton;
+	JButton renderButton; //botão de exibição
+	JButton editButton; //botão que realiza a ação
 	String text;
 
 	public BotaoTabela(JTable table, int column) {
@@ -57,7 +64,26 @@ public class BotaoTabela extends AbstractCellEditor implements
 		}
 
 		renderButton.setText((value == null) ? "" : value.toString());
-		return renderButton;
+		
+		//cria um novo painel para o controle do tamanho do botão
+		JPanel painelBotao = new JPanel();
+		GridBagLayout btnGridBag = new GridBagLayout();
+		painelBotao.setLayout(btnGridBag);
+		//adiciona este botão ao painel
+		painelBotao.add(renderButton);
+		
+		// seta a posição e tamanho do botão dentro da tabela
+		GridBagConstraints constraints = new GridBagConstraints();
+		LayoutConstraints.setConstraints(constraints, 1, 1, 1, 1, 1, 1);
+		constraints.insets = new Insets(0, 0, 0, 60);
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.EAST;
+		renderButton.setPreferredSize(new Dimension(50, 20));
+		renderButton.setMaximumSize(new Dimension(50,20));
+		renderButton.setMinimumSize(new Dimension(50,20));
+		btnGridBag.setConstraints(renderButton, constraints);	
+		
+		return painelBotao;
 	}
 
 	public Component getTableCellEditorComponent(JTable table, Object value,
@@ -81,7 +107,7 @@ public class BotaoTabela extends AbstractCellEditor implements
 		// ResultadosTableModel.MyTableModel model =
 		// ((ResultadosTableModel.MyTableModel) tabela.getTable().getModel());
 		if (table.getModel().getValueAt(table.getSelectedRow(), 0)
-				.equals("Expandir")) { // caso o checkbox esteja marcado insere
+				.equals("+")) { // caso o checkbox esteja marcado insere
 										// os dados extras dos professores
 
 			ArrayList<String> disc = new ArrayList<String>();
@@ -115,19 +141,8 @@ public class BotaoTabela extends AbstractCellEditor implements
 
 			}
 
-			if (!disc.isEmpty() || !cod.isEmpty() || !cred.isEmpty()) { // se
-																		// houver
-																		// dados
-																		// no
-																		// array
-																		// de
-																		// disciplina,
-																		// codigo
-																		// e
-																		// creditação
-																		// para
-																		// aquela
-																		// turma
+			if (!disc.isEmpty() || !cod.isEmpty() || !cred.isEmpty()) { // se houver dados no array de disciplina, codigo
+																		// e creditação para aquela turma
 				// adiciona a tabela os dados encontrados
 				String[] sDisc = new String[disc.size()];
 				for (int j = 0; j < disc.size(); j++) {
@@ -152,14 +167,16 @@ public class BotaoTabela extends AbstractCellEditor implements
 				cod.clear();
 				cred.clear();
 			}
-			table.getModel().setValueAt("Comprimir", table.getSelectedRow(), 0);
+			table.getModel().setValueAt("-", table.getSelectedRow(), 0);
 		} else { // caso contrario os retira se estiverem na tabela
 			String[] empty = { "" };
 			table.getModel().setValueAt(empty, table.getSelectedRow(), 3);
 			table.getModel().setValueAt(empty, table.getSelectedRow(), 4);
 			table.getModel().setValueAt(empty, table.getSelectedRow(), 5);
-			table.getModel().setValueAt("Expandir", table.getSelectedRow(), 0);
+			table.getModel().setValueAt("+", table.getSelectedRow(), 0);
 		}
+		
+		
 	}
 
 	public JButton getRenderButton() {

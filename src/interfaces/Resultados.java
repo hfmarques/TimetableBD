@@ -5,9 +5,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import hibernate.HibernateUtil;
 
 /**
@@ -89,18 +91,10 @@ public class Resultados {
 	public void inicializaTurmas() {
 		List<?> turma = HibernateUtil.findTurmas();
 
-		// ResultadosTableModel.MyTableModel model =
-		// (ResultadosTableModel.MyTableModel) tabela.getTable().getModel();
+//		ResultadosTableModel.MyTableModel model = (ResultadosTableModel.MyTableModel) tabela.getTable().getModel();
 
-		for (int i = 0; i < tabela.getTable().getModel().getRowCount(); i++) { // procura
-																				// em
-																				// todas
-																				// as
-																				// linhas
-																				// da
-																				// tabela
-			if (tabela.getTable().getModel().getValueAt(i, 0)
-					.equals("Comprimir")) { // caso o checkbox esteja marcado
+		for (int i = 0; i < tabela.getTable().getModel().getRowCount(); i++) { // procura em todas as linhas da tabela
+			if (tabela.getTable().getModel().getValueAt(i, 0).equals("-")) { // caso o checkbox esteja marcado
 											// insere os dados extras dos
 											// professores
 
@@ -116,39 +110,19 @@ public class Resultados {
 						// busca se o professore referente a linha atual da
 						// tambela possui o mesmo codigo que o professor que
 						// está no loop, se sim adiciona sua turma
-						if (!((timetable.Turma) turma.get(j)).getDocente()
-								.isEmpty()
-								&& tabela
-										.getTable()
-										.getModel()
-										.getValueAt(i, 1)
-										.equals(((timetable.Turma) turma.get(j))
-												.getDocente().get(k)
-												.getCodigo())) {
-							disc.add(((timetable.Turma) turma.get(j))
-									.getDisciplina().getNome());
-							cod.add(((timetable.Turma) turma.get(j))
-									.getDisciplina().getNome()
+						if (!((timetable.Turma) turma.get(j)).getDocente().isEmpty() && 
+								tabela.getTable().getModel().getValueAt(i, 1).equals(((timetable.Turma) turma.get(j)).getDocente().get(k).getCodigo())) {
+							disc.add(((timetable.Turma) turma.get(j)).getDisciplina().getNome());
+							cod.add(((timetable.Turma) turma.get(j)).getDisciplina().getNome()
 									+ " - "
-									+ ((timetable.Turma) turma.get(j))
-											.getCodigo());
-							cred.add(((timetable.Turma) turma.get(j))
-									.getDisciplina().getCreditos());
+									+ ((timetable.Turma) turma.get(j)).getCodigo());
+							cred.add(((timetable.Turma) turma.get(j)).getDisciplina().getCreditos());
 						}
 					}
 
 				}
 
-				if (!disc.isEmpty() || !cod.isEmpty() || !cred.isEmpty()) { // se
-																			// houver
-																			// dados
-																			// no
-																			// array
-																			// de
-																			// disciplina,
-																			// codigo
-																			// e
-																			// creditação
+				if (!disc.isEmpty() || !cod.isEmpty() || !cred.isEmpty()) { // se houver dados no array de disciplina, codigo e creditação
 																			// para
 																			// aquela
 																			// turma
@@ -179,22 +153,24 @@ public class Resultados {
 			}
 		}
 
-		// for (int j = 0; j < turma.size(); j++) { //para todas as turmas
-		// if(((timetablebd.Turma)turma.get(j)).getDocente().isEmpty()){
-		// ArrayList<Object> row = new ArrayList();
-		//
-		// row.add(true);
-		// row.add("");
-		// row.add("");
-		// row.add(((timetablebd.Turma)
-		// turma.get(j)).getDisciplina().getNome()); // disciplina
-		// row.add(((timetablebd.Turma) turma.get(j)).getDisciplina().getNome()
-		// + " - " + ((timetablebd.Turma) turma.get(j)).getCodigo()); //codigo
-		// row.add(((timetablebd.Turma)
-		// turma.get(j)).getDisciplina().getCreditos()); // credito da turma
-		// row.add("");
-		// model.getData().add(row);
-		// }
-		// }
+//		for (int j = 0; j < turma.size(); j++) { // para todas as turmas
+//			if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {
+//				ArrayList<Object> row = new ArrayList<Object>();
+//
+//				row.add(true);
+//				row.add("");
+//				row.add("");
+//				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+//						.getNome()); // disciplina
+//				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+//						.getNome()
+//						+ " - "
+//						+ ((timetable.Turma) turma.get(j)).getCodigo()); // codigo
+//				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+//						.getCreditos()); // credito da turma
+//				row.add("");
+//				model.getData().add(row);
+//			}
+//		}
 	}
 }

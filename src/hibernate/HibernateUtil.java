@@ -25,6 +25,7 @@ public class HibernateUtil {
 
 	// private static SessionFactory sessionFactory = buildSessionFactory();
 	private static SessionFactory sessionFactory;
+	@SuppressWarnings("unused")
 	private static ServiceRegistry serviceRegistry;
 	private static Transaction transaction;
 	private static Session session;
@@ -32,14 +33,19 @@ public class HibernateUtil {
 	private static void buildSessionFactory() {
 		try {
 			// Create the SessionFactory from hibernate.cfg.xml
-			Configuration configuration = new Configuration().configure(new File("C:\\Users\\Héber\\Documents\\Eclipse\\TimetableBD\\src\\hibernate.cfg.xml"));
+			Configuration configuration = new Configuration()
+					.configure(new File(
+							"C:\\Users\\Héber\\Documents\\GitHub\\TimetableBD\\src\\hibernate.cfg.xml"));
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
-					.applySetting("hibernate.connection.driver_class","org.postgresql.Driver")
-					.applySetting("hibernate.connection.url","jdbc:postgresql://localhost:5432/timetableBD")
+					.applySetting("hibernate.connection.driver_class",
+							"org.postgresql.Driver")
+					.applySetting("hibernate.connection.url",
+							"jdbc:postgresql://localhost:5432/timetableBD")
 					.applySetting("hibernate.connection.username", "postgres")
 					.applySetting("hibernate.connection.password", "root")
-					.applySetting("dialect","org.hibernate.dialect.PostgreSQLDialect");
+					.applySetting("dialect",
+							"org.hibernate.dialect.PostgreSQLDialect");
 			sessionFactory = configuration.buildSessionFactory(builder.build());
 		} catch (Throwable ex) {
 			// Make sure you log the exception, as it might be swallowed

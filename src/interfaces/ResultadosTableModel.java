@@ -6,19 +6,21 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JButton;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+
 import hibernate.HibernateUtil;
 
 /**
  *
  * @author Héber
  */
+@SuppressWarnings("serial")
 public class ResultadosTableModel extends JPanel {
 
 	private final boolean DEBUG = false;
@@ -41,6 +43,7 @@ public class ResultadosTableModel extends JPanel {
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
 
+		@SuppressWarnings("unused")
 		BotaoTabela botaoExpandir = new BotaoTabela(table, 0);
 	}
 
@@ -52,10 +55,6 @@ public class ResultadosTableModel extends JPanel {
 		this.table = table;
 	}
 
-	public BotaoTabela getBotaoExpandir() {
-		return botaoExpandir;
-	}
-
 	class MyTableModel extends AbstractTableModel {
 
 		private String[] columnNames = { "", "Código do Professor",
@@ -65,7 +64,7 @@ public class ResultadosTableModel extends JPanel {
 		private ArrayList<ArrayList<Object>> data;
 
 		public MyTableModel() {
-			data = new ArrayList(); // row
+			data = new ArrayList<ArrayList<Object>>(); // row
 		}
 
 		public void loadTableValues() {
@@ -74,8 +73,8 @@ public class ResultadosTableModel extends JPanel {
 			List<?> turma = HibernateUtil.findTurmas();
 
 			for (int i = 0; i < lista.size(); i++) {
-				ArrayList<Object> row = new ArrayList();
-				row.add("Comprimir");
+				ArrayList<Object> row = new ArrayList<Object>();
+				row.add("-");
 				row.add(((timetable.Docente) lista.get(i)).getCodigo());
 				row.add(((timetable.Docente) lista.get(i)).getNome());
 				String[] disc = { " " };
@@ -124,6 +123,7 @@ public class ResultadosTableModel extends JPanel {
 					return columnNames[col].toString();
 				}
 
+				@SuppressWarnings({ "rawtypes", "unchecked" })
 				public Class getColumnClass(int col) {
 					if (getRowCount() < 1) {
 						return null;
@@ -225,14 +225,17 @@ public class ResultadosTableModel extends JPanel {
 								}
 							}
 
+							@SuppressWarnings("unused")
 							public String[] getColumnNames() {
 								return columnNames;
 							}
 
+							@SuppressWarnings("unused")
 							public ArrayList<ArrayList<Object>> getData() {
 								return data;
 							}
 
+							@SuppressWarnings("unused")
 							public void addRow(ArrayList<Object> row) {
 								data.add(row);
 							}
@@ -242,6 +245,7 @@ public class ResultadosTableModel extends JPanel {
 								return columnNames[col];
 							}
 
+							@SuppressWarnings({ "unchecked", "rawtypes" })
 							@Override
 							public Class getColumnClass(int c) {
 								return getValueAt(0, c).getClass();
@@ -367,6 +371,7 @@ public class ResultadosTableModel extends JPanel {
 			return data.get(row).get(col);
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();

@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -27,6 +26,10 @@ import hibernate.HibernateUtil;
 @Entity
 @Table(name = "Curso")
 public class Curso implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(generator = "increment")

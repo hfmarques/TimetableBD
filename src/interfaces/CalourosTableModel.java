@@ -4,18 +4,19 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
 import hibernate.HibernateUtil;
 
 /**
  *
  * @author Héber
  */
+@SuppressWarnings("serial")
 public class CalourosTableModel extends JPanel {
 
 	private final boolean DEBUG = false;
@@ -48,13 +49,13 @@ public class CalourosTableModel extends JPanel {
 		private ArrayList<ArrayList<Object>> data;
 
 		public MyTableModel() {
-			data = new ArrayList(); // row
+			data = new ArrayList<ArrayList<Object>>(); // row
 			// col
 
 			List<?> lista = HibernateUtil.findAll(timetable.Calouros.class);
 
 			for (int i = 0; i < lista.size(); i++) {
-				ArrayList<Object> row = new ArrayList();
+				ArrayList<Object> row = new ArrayList<Object>();
 				row.add(Integer.toString(((timetable.Calouros) lista.get(i))
 						.getIdCalouro()));
 				row.add(Integer.toString(((timetable.Calouros) lista.get(i))
@@ -104,6 +105,7 @@ public class CalourosTableModel extends JPanel {
 			return data.get(row).get(col);
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		public Class getColumnClass(int c) {
 			return getValueAt(0, c).getClass();

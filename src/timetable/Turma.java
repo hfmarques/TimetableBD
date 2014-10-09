@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,6 +24,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "turma")
 public class Turma implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(generator = "increment")
