@@ -161,6 +161,27 @@ public class HibernateUtil {
 			return lista;
 		}
 	}
+	
+	public static List<timetable.Turma> findTurmasSemProf() {
+		List<timetable.Turma> lista = null;
+		Query query = null;
+		try {
+			session = getInstance();
+			transaction = session.beginTransaction();
+			query = session
+					.createQuery("SELECT t FROM Turma AS t JOIN FETCH t.disciplina");
+			lista = (List<timetable.Turma>) query.list();
+		} catch (HibernateException e) {
+			transaction.rollback();
+			System.err.println(e.fillInStackTrace());
+		} catch (Exception ex) {
+			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} finally {
+			session.close();
+			return lista;
+		}
+	}
 
 	/**
 	 * Retorna todos os objetos da tabela

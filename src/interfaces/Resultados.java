@@ -1,5 +1,7 @@
 package interfaces;
 
+import interfaces.ResultadosTableModel.MyTableModel;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,6 +11,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.table.TableModel;
 
 import hibernate.HibernateUtil;
 
@@ -91,7 +94,6 @@ public class Resultados {
 	public void inicializaTurmas() {
 		List<?> turma = HibernateUtil.findTurmas();
 
-//		ResultadosTableModel.MyTableModel model = (ResultadosTableModel.MyTableModel) tabela.getTable().getModel();
 
 		for (int i = 0; i < tabela.getTable().getModel().getRowCount(); i++) { // procura em todas as linhas da tabela
 			if (tabela.getTable().getModel().getValueAt(i, 0).equals("-")) { // caso o checkbox esteja marcado
@@ -152,25 +154,28 @@ public class Resultados {
 				}
 			}
 		}
+		
+		turma.clear();
+		turma = HibernateUtil.findTurmasSemProf();
+		TableModel model = tabela.getTable().getModel();
+		for (int j = 0; j < turma.size(); j++) { // para todas as turmas
+			if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {
+				ArrayList<Object> row = new ArrayList<Object>();
 
-//		for (int j = 0; j < turma.size(); j++) { // para todas as turmas
-//			if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {
-//				ArrayList<Object> row = new ArrayList<Object>();
-//
-//				row.add(true);
-//				row.add("");
-//				row.add("");
-//				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
-//						.getNome()); // disciplina
-//				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
-//						.getNome()
-//						+ " - "
-//						+ ((timetable.Turma) turma.get(j)).getCodigo()); // codigo
-//				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
-//						.getCreditos()); // credito da turma
-//				row.add("");
-//				model.getData().add(row);
-//			}
-//		}
+				row.add("+");
+				row.add("");
+				row.add("");
+				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+						.getNome()); // disciplina
+				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+						.getNome()
+						+ " - "
+						+ ((timetable.Turma) turma.get(j)).getCodigo()); // codigo
+				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+						.getCreditos()); // credito da turma
+				row.add("");
+//				((MyTableModel) tabela.getTable().getModel()).getData().add(row);
+			}
+		}
 	}
 }

@@ -286,7 +286,7 @@ public class ResultadosTableModel extends JPanel {
 										.println("--------------------------");
 							}
 						});
-
+						
 						if (isSelected) {
 							embedded.setBackground(table
 									.getSelectionBackground());
@@ -313,6 +313,8 @@ public class ResultadosTableModel extends JPanel {
 								.getRowHeight(row)) {
 							table.setRowHeight(row, getPreferredSize().height);
 						}
+						
+						embedded.setCellEditor(new CellEditor());
 
 						return embedded;
 					}
