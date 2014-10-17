@@ -1,14 +1,17 @@
 package interfaces;
 
-import interfaces.ResultadosTableModel.MyTableModel;
+import interfaces.ResultadosProfessorTableModel.MyTableModel;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
@@ -19,20 +22,20 @@ import hibernate.HibernateUtil;
  *
  * @author Héber
  */
-public class Resultados {
+public class ResultadoProfessor {
 
 	private JPanel painel; // painel principal
-	private ResultadosTableModel tabela; // modelo da tabela principal
+	private ResultadosProfessorTableModel tabela; // modelo da tabela principal
 	private JScrollPane scroll; // componente para se adicionar a tabela
 	private JButton botaoUpdate;
 
-	public Resultados() {
+	public ResultadoProfessor() {
 		// inicializa as variáveis
 		JPanel painelBotao = new JPanel();
 		botaoUpdate = new JButton("Atualizar Planilha");
 		painel = new JPanel();
 		scroll = new JScrollPane();
-		tabela = new ResultadosTableModel();
+		tabela = new ResultadosProfessorTableModel();
 
 		// inicializa as turmas dos professores da tabela
 		inicializaTurmas();
@@ -157,7 +160,7 @@ public class Resultados {
 		
 		turma.clear();
 		turma = HibernateUtil.findTurmasSemProf();
-		TableModel model = tabela.getTable().getModel();
+		MyTableModel model = tabela.getTableModel();
 		for (int j = 0; j < turma.size(); j++) { // para todas as turmas
 			if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {
 				ArrayList<Object> row = new ArrayList<Object>();
@@ -171,10 +174,9 @@ public class Resultados {
 						.getNome()
 						+ " - "
 						+ ((timetable.Turma) turma.get(j)).getCodigo()); // codigo
-				row.add(((timetable.Turma) turma.get(j)).getDisciplina()
-						.getCreditos()); // credito da turma
+				row.add(Integer.toString(((timetable.Turma) turma.get(j)).getDisciplina().getCreditos())); // credito da turma
 				row.add("");
-//				((MyTableModel) tabela.getTable().getModel()).getData().add(row);
+				model.getData().add(row);
 			}
 		}
 	}

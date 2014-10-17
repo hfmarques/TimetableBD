@@ -3,6 +3,8 @@ package interfaces;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +23,18 @@ import hibernate.HibernateUtil;
  * @author Héber
  */
 @SuppressWarnings("serial")
-public class ResultadosTableModel extends JPanel {
+public class ResultadosProfessorTableModel extends JPanel {
 
 	private final boolean DEBUG = false;
 	private JTable table;
 	BotaoTabela botaoExpandir;
+	MyTableModel tableModel;
 
-	public ResultadosTableModel() {
+
+	public ResultadosProfessorTableModel() {
 		super(new GridLayout(1, 0));
 
-		MyTableModel tableModel = new MyTableModel();
+		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
 
 		// inicializa os professores da tabela
@@ -43,8 +47,111 @@ public class ResultadosTableModel extends JPanel {
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
 
-		@SuppressWarnings("unused")
 		BotaoTabela botaoExpandir = new BotaoTabela(table, 0);
+		botaoExpandir.getEditButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				botaoExpandir.editingStopped();
+				// System.out.println(e.getActionCommand() + " : " +
+				// table.getSelectedRow());
+
+				List<?> turma = HibernateUtil.findTurmas();
+
+				// ResultadosTableModel.MyTableModel model =
+				// ((ResultadosTableModel.MyTableModel) tabela.getTable().getModel());
+				if (table.getModel().getValueAt(table.getSelectedRow(), 0).equals("+")) {
+					// caso o checkbox esteja marcado insere os dados extras dos professores
+
+					ArrayList<String> disc = new ArrayList<String>();
+					ArrayList<String> cod = new ArrayList<String>();
+					ArrayList<Integer> cred = new ArrayList<Integer>();
+
+					for (int j = 0; j < turma.size(); j++) { // para todas as turmas
+						for (int k = 0; k < ((timetable.Turma) turma.get(j))
+								.getDocente().size(); k++) { // para todos os
+																// professores
+							// se existe doscente
+							// busca se o professore referente a linha atual da tambela
+							// possui o mesmo codigo que o professor que está no loop,
+							// se sim adiciona sua turma
+							if (!((timetable.Turma) turma.get(j)).getDocente()
+									.isEmpty()
+									&& table.getModel()
+											.getValueAt(table.getSelectedRow(), 1)
+											.equals(((timetable.Turma) turma.get(j))
+													.getDocente().get(k).getCodigo())) {
+								disc.add(((timetable.Turma) turma.get(j))
+										.getDisciplina().getNome());
+								cod.add(((timetable.Turma) turma.get(j))
+										.getDisciplina().getNome()
+										+ " - "
+										+ ((timetable.Turma) turma.get(j)).getCodigo());
+								cred.add(((timetable.Turma) turma.get(j))
+										.getDisciplina().getCreditos());
+							}
+						}
+
+					}
+
+					if (!disc.isEmpty() || !cod.isEmpty() || !cred.isEmpty()) { // se houver dados no array de disciplina, codigo
+																				// e creditação para aquela turma
+						// adiciona a tabela os dados encontrados
+						String[] sDisc = new String[disc.size()];
+						for (int j = 0; j < disc.size(); j++) {
+							sDisc[j] = disc.get(j);
+						}
+
+						String[] sCod = new String[cod.size()];
+						for (int j = 0; j < cod.size(); j++) {
+							sCod[j] = cod.get(j);
+						}
+
+						String[] sCred = new String[cred.size()];
+						for (int j = 0; j < cred.size(); j++) {
+							sCred[j] = cred.get(j).toString();
+						}
+
+						table.getModel().setValueAt(sDisc, table.getSelectedRow(), 3);
+						table.getModel().setValueAt(sCod, table.getSelectedRow(), 4);
+						table.getModel().setValueAt(sCred, table.getSelectedRow(), 5);
+
+						disc.clear();
+						cod.clear();
+						cred.clear();
+					}
+					table.getModel().setValueAt("-", table.getSelectedRow(), 0);
+				} else { // caso contrario os retira se estiverem na tabela
+					String[] empty = { "" };
+					table.getModel().setValueAt(empty, table.getSelectedRow(), 3);
+					table.getModel().setValueAt(empty, table.getSelectedRow(), 4);
+					table.getModel().setValueAt(empty, table.getSelectedRow(), 5);
+					table.getModel().setValueAt("+", table.getSelectedRow(), 0);
+				}
+				turma.clear();
+//				turma = HibernateUtil.findTurmasSemProf();
+//				
+//				for (int j = 0; j < turma.size(); j++) { // para todas as turmas
+//					if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {
+//						ArrayList<Object> row = new ArrayList<Object>();
+//
+//						row.add("+");
+//						row.add("");
+//						row.add("");
+//						row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+//								.getNome()); // disciplina
+//						row.add(((timetable.Turma) turma.get(j)).getDisciplina()
+//								.getNome()
+//								+ " - "
+//								+ ((timetable.Turma) turma.get(j)).getCodigo()); // codigo
+//						row.add(Integer.toString(((timetable.Turma) turma.get(j)).getDisciplina().getCreditos())); // credito da turma
+//						row.add("");
+//						table.getModel().setValueAt(row, row, columnIndex);
+//					}
+//				}				
+			}
+			
+		});
 	}
 
 	public JTable getTable() {
@@ -333,6 +440,7 @@ public class ResultadosTableModel extends JPanel {
 			 */
 		}
 
+
 		public String[] getColumnNames() {
 			return columnNames;
 		}
@@ -419,4 +527,9 @@ public class ResultadosTableModel extends JPanel {
 			System.out.println("--------------------------");
 		}
 	}
+	
+	public MyTableModel getTableModel() {
+		return tableModel;
+	}
+	
 }

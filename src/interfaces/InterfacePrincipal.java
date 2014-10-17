@@ -16,12 +16,14 @@ public class InterfacePrincipal {
 	public void preparaJanela() {
 		Curso janelaCurso = new Curso();
 		Calouros janelaCalouros = new Calouros();
-		Resultados janelaResultados = new Resultados();
+		ResultadoProfessor janelaResultados = new ResultadoProfessor();
 		Professor janelaProfessor = new Professor();
 		Disciplina janelaDisciplina = new Disciplina();
+		PlanoDepartamental planoDepartamental = new PlanoDepartamental();
 
 		janelaPrincipal = new JFrame("Gerador de Grade");
 		abas = new JTabbedPane();
+		abas.addTab("Plano Departamental", planoDepartamental.getPainel());
 		abas.addTab("Resultado", janelaResultados.getPainel());
 		abas.addTab("Docente", janelaProfessor.getPainel());
 		abas.addTab("Disciplinas", janelaDisciplina.getPainel());
