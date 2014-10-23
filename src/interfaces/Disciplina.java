@@ -55,7 +55,7 @@ public class Disciplina {
 
 		// seta a posição do botão inserir
 		LayoutConstraints.setConstraints(constraints, 0, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(0, 1020, 0, 0);
+		constraints.insets = new Insets(0, 1010, 0, 0);
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		btnGridBag.setConstraints(botaoInserir, constraints);

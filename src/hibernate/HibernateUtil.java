@@ -16,6 +16,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import timetable.Calouros;
+import timetable.TimetableBD;
 
 /**
  *
@@ -161,7 +162,7 @@ public class HibernateUtil {
 			return lista;
 		}
 	}
-	
+
 	public static List<timetable.Turma> findTurmasSemProf() {
 		List<timetable.Turma> lista = null;
 		Query query = null;
