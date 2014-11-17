@@ -20,17 +20,17 @@ import javax.swing.table.TableColumn;
 import timetable.Docente;
 import timetable.Turma;
 
-public class PlanoDepartamental {
+public class PedidosCoordenadores {
 	private JPanel painel; // painel principal
-	private PedidosCoordenadoresTableModel tabela; // modelo da tabela principal
+	private PlanoDepartamentalTableModel tabela; // modelo da tabela principal
 	private JScrollPane scroll; // componente para se adicionar a tabela
 	private JButton botaoSalvar; // salva os dados alterados da tabela
 
-	public PlanoDepartamental() {
+	public PedidosCoordenadores() {
 		// inicializa as variáveis
 		painel = new JPanel();
 		scroll = new JScrollPane();
-		tabela = new PedidosCoordenadoresTableModel();
+		tabela = new PlanoDepartamentalTableModel();
 		JPanel painelBotao = new JPanel();
 		botaoSalvar = new JButton("Salvar");
 		
@@ -113,5 +113,4 @@ public class PlanoDepartamental {
 	public void setPainel(JPanel painel) {
 		this.painel = painel;
 	}
-
 }
