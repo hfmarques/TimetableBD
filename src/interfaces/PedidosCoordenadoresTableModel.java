@@ -2,16 +2,20 @@ package interfaces;
 
 import interfaces.PlanoDepartamentalTableModel.MyTableModel;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 import timetable.Turma;
 
@@ -19,6 +23,8 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	private final boolean DEBUG = false;
 	private JTable table;
 	MyTableModel tableModel;
+	TableCellRenderer linha;
+	
 	public PedidosCoordenadoresTableModel() {
 		super(new GridLayout(1, 0));
 
@@ -55,6 +61,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			
 			ArrayList<timetable.Turma> _turma = (ArrayList<timetable.Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);
 			ArrayList<timetable.Curso> _curso = (ArrayList<timetable.Curso>) hibernate.HibernateUtil.findAll(timetable.Curso.class);
+			
 			for(Iterator<?> itCurso = _curso.iterator(); itCurso.hasNext();){
 				timetable.Curso curso = ((timetable.Curso)itCurso.next());
 				for(Iterator<?> itTurma = _turma.iterator(); itTurma.hasNext();){					
@@ -72,6 +79,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 					line.add("");
 					line.add("");
 					data.add(line);
+					
 				}
 			}			
 		}

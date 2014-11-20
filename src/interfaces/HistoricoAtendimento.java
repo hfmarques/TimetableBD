@@ -34,8 +34,6 @@ public class HistoricoAtendimento {
 		JPanel painelBotao = new JPanel();
 		botaoSalvar = new JButton("Salvar");
 		
-		insereProfComboBox(tabela.getTable(), tabela.getTable().getColumnModel().getColumn(6));
-		
 		// monta a janela principal
 		GridBagLayout gridBag = new GridBagLayout();
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -88,22 +86,6 @@ public class HistoricoAtendimento {
 			}
 		});
 
-	}
-
-	public void insereProfComboBox(JTable table, TableColumn ComboColumn) {
-		// Set up the editor for the sport cells.
-		ArrayList<timetable.Docente> prof = (ArrayList<Docente>) hibernate.HibernateUtil.findAll(timetable.Docente.class);
-		JComboBox<String> comboBox = new JComboBox();
-		Iterator<?> it = prof.iterator();
-		while(it.hasNext()){
-			comboBox.addItem(((timetable.Docente)it.next()).getNomeCompleto());
-		}
-		ComboColumn.setCellEditor(new DefaultCellEditor(comboBox));
-
-		// Set up tool tips for the sport cells.
-		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		renderer.setToolTipText("Click for combo box");
-		ComboColumn.setCellRenderer(renderer);
 	}
 
 	public JPanel getPainel() {

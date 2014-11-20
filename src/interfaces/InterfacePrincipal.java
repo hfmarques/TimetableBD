@@ -31,7 +31,7 @@ public class InterfacePrincipal {
 		abas.addTab("Plano Departamental", planoDepartamental.getPainel());
 		abas.addTab("Resultado", janelaResultados.getPainel());
 		abas.addTab("Pedidos Coordenadores", pedidosCoordenadores.getPainel());
-		abas.addTab("Vagas Oferecidas e Solicitadas", vagasOferecidas.getPainel());
+		abas.addTab("Vagas Oferecidas", vagasOferecidas.getPainel());
 		abas.addTab("Historico de Vagas Atendidas", historicoAtendimento.getPainel());
 		abas.addTab("Docente", janelaProfessor.getPainel());
 		abas.addTab("Disciplinas", janelaDisciplina.getPainel());

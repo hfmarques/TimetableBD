@@ -1,5 +1,6 @@
 package interfaces;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -22,7 +23,7 @@ import timetable.Turma;
 
 public class PlanoDepartamental {
 	private JPanel painel; // painel principal
-	private PedidosCoordenadoresTableModel tabela; // modelo da tabela principal
+	private PlanoDepartamentalTableModel tabela; // modelo da tabela principal
 	private JScrollPane scroll; // componente para se adicionar a tabela
 	private JButton botaoSalvar; // salva os dados alterados da tabela
 
@@ -30,11 +31,51 @@ public class PlanoDepartamental {
 		// inicializa as variáveis
 		painel = new JPanel();
 		scroll = new JScrollPane();
-		tabela = new PedidosCoordenadoresTableModel();
+		tabela = new PlanoDepartamentalTableModel();
 		JPanel painelBotao = new JPanel();
 		botaoSalvar = new JButton("Salvar");
 		
 		insereProfComboBox(tabela.getTable(), tabela.getTable().getColumnModel().getColumn(6));
+		
+		///TEMPORARIO
+		
+		ArrayList<ArrayList<Object>> cores = new ArrayList<ArrayList<Object>>();
+		
+		ArrayList<Object> linha = new ArrayList<Object>();
+		
+		linha.add(0);
+		linha.add(Color.GREEN);
+		
+		cores.add(linha);
+		
+		ArrayList<Object> linha2 = new ArrayList<Object>();
+		
+		linha2.add(1);
+		linha2.add(Color.CYAN);
+		
+		cores.add(linha2);
+		
+		for(int i=2;i<5;i++){
+			ArrayList<Object> linha3 = new ArrayList<Object>();			
+			linha3.add(i);
+			linha3.add(Color.RED);
+			cores.add(linha3);
+		}
+		
+		for(int i=6;i<10;i++){
+			ArrayList<Object> linha3 = new ArrayList<Object>();			
+			linha3.add(i);
+			linha3.add(Color.GRAY);
+			cores.add(linha3);
+		}
+		
+		
+		int[] rows = {0,3};
+		for(int i = 0; i<tabela.getTable().getColumnCount(); i++){
+			this.tabela.getTable().getColumnModel().getColumn(i).setCellRenderer(new CorLinhaCellRenderer(cores));
+		}
+		
+		///TEMPORARIO
 		
 		// monta a janela principal
 		GridBagLayout gridBag = new GridBagLayout();
@@ -91,7 +132,6 @@ public class PlanoDepartamental {
 	}
 
 	public void insereProfComboBox(JTable table, TableColumn ComboColumn) {
-		// Set up the editor for the sport cells.
 		ArrayList<timetable.Docente> prof = (ArrayList<Docente>) hibernate.HibernateUtil.findAll(timetable.Docente.class);
 		JComboBox<String> comboBox = new JComboBox();
 		Iterator<?> it = prof.iterator();
@@ -99,8 +139,7 @@ public class PlanoDepartamental {
 			comboBox.addItem(((timetable.Docente)it.next()).getNomeCompleto());
 		}
 		ComboColumn.setCellEditor(new DefaultCellEditor(comboBox));
-
-		// Set up tool tips for the sport cells.
+		
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 		renderer.setToolTipText("Click for combo box");
 		ComboColumn.setCellRenderer(renderer);
