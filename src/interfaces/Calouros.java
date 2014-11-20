@@ -1,5 +1,7 @@
 package interfaces;
 
+import interfaces.CalourosTableModel.MyTableModel;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,72 +19,23 @@ import hibernate.HibernateUtil;
  *
  * @author Héber
  */
-public class Calouros {
+public class Calouros extends InterfacesTabela {
 
-	private JPanel painel;
-	private CalourosTableModel tabela;
-	private JScrollPane scroll;
 	private JButton botaoInserir;
-	private JButton botaoSalvar;
 	private int cursosAdicionados;
 
-	public Calouros() {
-		JPanel painelBotao = new JPanel();
+	public Calouros() {		
+		super(new CalourosTableModel(), "Salvar");
 
-		botaoInserir = new JButton("Inserir Calouros");
-		botaoSalvar = new JButton("Salvar");
-		painel = new JPanel();
-		scroll = new JScrollPane();
-		tabela = new CalourosTableModel();
-
-		GridBagLayout gridBag = new GridBagLayout();
-		GridBagConstraints constraints = new GridBagConstraints();
-		painel.setLayout(gridBag);
-		GridBagLayout btnGridBag = new GridBagLayout();
-		painelBotao.setLayout(btnGridBag);
-
-		scroll.getViewport().setBorder(null);
-		scroll.getViewport().add(tabela);
-		scroll.setSize(450, 450);
-
+		botaoInserir = new JButton("Inserir Calouro");
 		painelBotao.add(botaoInserir);
-		painelBotao.add(botaoSalvar);
-		painel.add(scroll);
-		painel.add(painelBotao);
-
-		// seta a posição do botão salvar
-		LayoutConstraints.setConstraints(constraints, 1, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(0, 0, 0, 40);
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.EAST;
-		btnGridBag.setConstraints(botaoSalvar, constraints);
-
+		
 		// seta a posição do botão inserir
 		LayoutConstraints.setConstraints(constraints, 0, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(0, 1020, 0, 0);
+		constraints.insets = new Insets(0, 1120, 0, 0);
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		btnGridBag.setConstraints(botaoInserir, constraints);
-
-		// seta a posição do painel onde se localiza as tabelas
-		LayoutConstraints.setConstraints(constraints, 0, 0, 100, 100, 100, 100);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.anchor = GridBagConstraints.NORTHWEST;
-		gridBag.setConstraints(painel, constraints);
-
-		// seta o tamanho da tabela
-		LayoutConstraints.setConstraints(constraints, 0, 0, 1, 1, 100, 100);
-		constraints.insets = new Insets(30, 20, 20, 20);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.anchor = GridBagConstraints.NORTHWEST;
-		gridBag.setConstraints(scroll, constraints);
-
-		// seta a posição do painel onde se localiza os botões
-		LayoutConstraints.setConstraints(constraints, 0, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(2, 2, 20, 2);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.anchor = GridBagConstraints.SOUTH;
-		gridBag.setConstraints(painelBotao, constraints);
 
 		// gera os acontecimentos ao se clicar no botão inserir
 		botaoInserir.addActionListener(new ActionListener() {
@@ -93,7 +46,7 @@ public class Calouros {
 				// linha da tabela
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo
-				CalourosTableModel.MyTableModel model = (CalourosTableModel.MyTableModel) tabela
+				CalourosTableModel.MyTableModel model = (MyTableModel) ((CalourosTableModel) tabela)
 						.getTable().getModel();
 
 				// adiciona ao arry list campos em branco para mais a frente
@@ -104,15 +57,7 @@ public class Calouros {
 
 				// adiciona a linha ao modelo
 				model.addRow(linha);
-				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza
-																			// a
-																			// nova
-																			// linha
-																			// para
-																			// ser
-																			// exibida
-																			// na
-																			// tabela
+				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza a nova linha para ser exibida na tabela
 					if (model.getData().size() - 1 < 0) {
 						model.fireTableCellUpdated(0, i);
 					} else {
@@ -130,7 +75,7 @@ public class Calouros {
 			public void actionPerformed(ActionEvent e) {
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo
-				CalourosTableModel.MyTableModel model = (CalourosTableModel.MyTableModel) tabela
+				CalourosTableModel.MyTableModel model = (CalourosTableModel.MyTableModel) ((CalourosTableModel) tabela)
 						.getTable().getModel();
 
 				for (int i = 0; i < cursosAdicionados; i++) { // para todos os
@@ -141,10 +86,12 @@ public class Calouros {
 																// de dados
 					timetable.Calouros calouro; // cria um novo curso
 					// captura os dados inseridos na tabela e os insere no curso
-					calouro = new timetable.Calouros(Integer.parseInt(tabela
-							.getTable()
-							.getValueAt((model.getData().size() - 1) - (i), 1)
-							.toString()));
+					calouro = new timetable.Calouros(Integer
+							.parseInt(((CalourosTableModel) tabela)
+									.getTable()
+									.getValueAt(
+											(model.getData().size() - 1) - (i),
+											1).toString()));
 
 					// insere este novo curso no banco de dados
 					HibernateUtil.saveOrUpdate(calouro);
@@ -153,13 +100,5 @@ public class Calouros {
 										// necessárias a serem adicionados
 			}
 		});
-	}
-
-	public JPanel getPainel() {
-		return painel;
-	}
-
-	public void setPainel(JPanel painel) {
-		this.painel = painel;
 	}
 }

@@ -18,82 +18,33 @@ import hibernate.HibernateUtil;
  *
  * @author Héber
  */
-public class Curso {
+public class Curso extends InterfacesTabela {
 
-	private JPanel painel;
-	private CursoTableModel tabela;
-	private JScrollPane scroll;
 	private JButton botaoInserir;
-	private JButton botaoSalvar;
 	private int cursosAdicionados;
 
 	public Curso() {
-		JPanel painelBotao = new JPanel();
+		super(new CursoTableModel(), "Salvar");
 
 		botaoInserir = new JButton("Inserir Curso");
-		botaoSalvar = new JButton("Salvar");
-		painel = new JPanel();
-		scroll = new JScrollPane();
-		tabela = new CursoTableModel();
-
-		GridBagLayout gridBag = new GridBagLayout();
-		GridBagConstraints constraints = new GridBagConstraints();
-		painel.setLayout(gridBag);
-		GridBagLayout btnGridBag = new GridBagLayout();
-		painelBotao.setLayout(btnGridBag);
-
-		scroll.getViewport().setBorder(null);
-		scroll.getViewport().add(tabela);
-		scroll.setSize(450, 450);
-
 		painelBotao.add(botaoInserir);
-		painelBotao.add(botaoSalvar);
-		painel.add(scroll);
-		painel.add(painelBotao);
-
-		// seta a posição do botão salvar
-		LayoutConstraints.setConstraints(constraints, 1, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(0, 0, 0, 40);
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.EAST;
-		btnGridBag.setConstraints(botaoSalvar, constraints);
-
 		// seta a posição do botão inserir
 		LayoutConstraints.setConstraints(constraints, 0, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(0, 1020, 0, 0);
+		constraints.insets = new Insets(0, 1130, 0, 0);
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		btnGridBag.setConstraints(botaoInserir, constraints);
 
-		// seta a posição do painel onde se localiza as tabelas
-		LayoutConstraints.setConstraints(constraints, 0, 0, 100, 100, 100, 100);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.anchor = GridBagConstraints.NORTHWEST;
-		gridBag.setConstraints(painel, constraints);
-
-		// seta o tamanho da tabela
-		LayoutConstraints.setConstraints(constraints, 0, 0, 1, 1, 100, 100);
-		constraints.insets = new Insets(30, 20, 20, 20);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.anchor = GridBagConstraints.NORTHWEST;
-		gridBag.setConstraints(scroll, constraints);
-
-		// seta a posição do painel onde se localiza os botões
-		LayoutConstraints.setConstraints(constraints, 0, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(2, 2, 20, 2);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.anchor = GridBagConstraints.SOUTH;
-		gridBag.setConstraints(painelBotao, constraints);
-
 		// gera os acontecimentos ao se clicar no botão inserir
 		botaoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Object> linha = new ArrayList<Object>(); // arraylist para
-															// armazenar a nova
-															// linha da tabela
+				ArrayList<Object> linha = new ArrayList<Object>(); // arraylist
+																	// para
+				// armazenar a nova
+				// linha da tabela
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo
-				CursoTableModel.MyTableModel model = (CursoTableModel.MyTableModel) tabela
+				CursoTableModel.MyTableModel model = (CursoTableModel.MyTableModel) ((CursoTableModel) tabela)
 						.getTable().getModel();
 
 				// adiciona ao arry list campos em branco para mais a frente
@@ -130,7 +81,7 @@ public class Curso {
 			public void actionPerformed(ActionEvent e) {
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo
-				CursoTableModel.MyTableModel model = (CursoTableModel.MyTableModel) tabela
+				CursoTableModel.MyTableModel model = (CursoTableModel.MyTableModel) ((CursoTableModel) tabela)
 						.getTable().getModel();
 
 				for (int i = 0; i < cursosAdicionados; i++) { // para todos os
@@ -141,10 +92,12 @@ public class Curso {
 																// de dados
 					timetable.Curso curso; // cria um novo curso
 					// captura os dados inseridos na tabela e os insere no curso
-					int numVagas1 = Integer.parseInt(tabela.getTable()
+					int numVagas1 = Integer.parseInt(((CursoTableModel) tabela)
+							.getTable()
 							.getValueAt((model.getData().size() - 1) - (i), 3)
 							.toString());
-					int numVagas2 = Integer.parseInt(tabela.getTable()
+					int numVagas2 = Integer.parseInt(((CursoTableModel) tabela)
+							.getTable()
 							.getValueAt((model.getData().size() - 1) - (i), 4)
 							.toString());
 					timetable.Calouros calouroSem1 = HibernateUtil
@@ -152,16 +105,21 @@ public class Curso {
 					timetable.Calouros calouroSem2 = HibernateUtil
 							.findCalouroID(numVagas2);
 					if (calouroSem1 != null && calouroSem2 != null) {
-						curso = new timetable.Curso(tabela
+						curso = new timetable.Curso(((CursoTableModel) tabela)
 								.getTable()
 								.getValueAt((model.getData().size() - 1) - (i),
-										0).toString(), tabela
-								.getTable()
-								.getValueAt((model.getData().size() - 1) - (i),
-										1).toString(), tabela
-								.getTable()
-								.getValueAt((model.getData().size() - 1) - (i),
-										2).toString(), calouroSem1, calouroSem2);
+										0).toString(),
+								((CursoTableModel) tabela)
+										.getTable()
+										.getValueAt(
+												(model.getData().size() - 1)
+														- (i), 1).toString(),
+								((CursoTableModel) tabela)
+										.getTable()
+										.getValueAt(
+												(model.getData().size() - 1)
+														- (i), 2).toString(),
+								calouroSem1, calouroSem2);
 						HibernateUtil.saveOrUpdate(curso);
 					} else { // arrumar o que acontece quando o erro é
 								// localizado
