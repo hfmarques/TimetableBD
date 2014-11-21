@@ -22,8 +22,7 @@ public class CorLinhaCellRenderer extends DefaultTableCellRenderer{
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){  
   
-        Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);  
-        
+       Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);  
        if(!posicoesCores.isEmpty()){  
         	for(Iterator<?> itPosCores = posicoesCores.iterator(); itPosCores.hasNext();){
         		ArrayList<Object> linha = (ArrayList<Object>) itPosCores.next();

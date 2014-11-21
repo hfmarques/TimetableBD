@@ -24,9 +24,12 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	private JTable table;
 	MyTableModel tableModel;
 	TableCellRenderer linha;
+	private static ArrayList<ArrayList<Object>> cor;
 	
 	public PedidosCoordenadoresTableModel() {
 		super(new GridLayout(1, 0));
+		
+		cor = new ArrayList<ArrayList<Object>>();
 
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
@@ -47,6 +50,10 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	public void setTable(JTable table) {
 		this.table = table;
 	}
+	
+	public static ArrayList<ArrayList<Object>> getCor() {
+		return cor;
+	}
 
 	class MyTableModel extends AbstractTableModel {
 
@@ -62,7 +69,8 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			ArrayList<timetable.Turma> _turma = (ArrayList<timetable.Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);
 			ArrayList<timetable.Curso> _curso = (ArrayList<timetable.Curso>) hibernate.HibernateUtil.findAll(timetable.Curso.class);
 			
-			for(Iterator<?> itCurso = _curso.iterator(); itCurso.hasNext();){
+			int linhaCont = 0;
+			for(Iterator<?> itCurso = _curso.iterator(); itCurso.hasNext();linhaCont++){
 				timetable.Curso curso = ((timetable.Curso)itCurso.next());
 				for(Iterator<?> itTurma = _turma.iterator(); itTurma.hasNext();){					
 					timetable.Turma turma = ((timetable.Turma)itTurma.next());
@@ -79,6 +87,13 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 					line.add("");
 					line.add("");
 					data.add(line);
+					
+//					ArrayList<Object> linha = new ArrayList<Object>();
+//					
+//					linha.add(linhaCont);
+//					linha.add(timetable.Disciplina.getOrSetCoresPerfis(turma.getDisciplina().getPerfil()));
+//					
+//					cor.add(linha);
 					
 				}
 			}			

@@ -27,10 +27,14 @@ import timetable.Turma;
 public class PlanoDepartamentalTableModel extends JPanel {
 	private final boolean DEBUG = false;
 	private JTable table;
-	MyTableModel tableModel;
+	private MyTableModel tableModel;
+	private static ArrayList<ArrayList<Object>> cor;
+	
 	public PlanoDepartamentalTableModel() {
 		super(new GridLayout(1, 0));
-
+		
+		cor = new ArrayList<ArrayList<Object>>();
+		
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
 
@@ -39,9 +43,7 @@ public class PlanoDepartamentalTableModel extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
-		add(scrollPane);
-
-
+		add(scrollPane);		
 	}
 	
 	public JTable getTable() {
@@ -50,6 +52,10 @@ public class PlanoDepartamentalTableModel extends JPanel {
 
 	public void setTable(JTable table) {
 		this.table = table;
+	}
+
+	public static ArrayList<ArrayList<Object>> getCor() {
+		return cor;
 	}
 
 	class MyTableModel extends AbstractTableModel {
@@ -76,7 +82,8 @@ public class PlanoDepartamentalTableModel extends JPanel {
 					return o1.getDisciplina().getPerfil().compareTo(o2.getDisciplina().getPerfil());
 				}
 			});
-			for(Iterator<?> it = turma.iterator(); it.hasNext();){
+			int linhaCont = 0;
+			for(Iterator<?> it = turma.iterator(); it.hasNext(); linhaCont++){
 				ArrayList<Object>line = new ArrayList<Object>();
 				timetable.Turma tur = ((timetable.Turma)it.next());
 				line.add("Primeiro");
@@ -88,10 +95,16 @@ public class PlanoDepartamentalTableModel extends JPanel {
 				line.add("Clique para escolher o Docente");
 				line.add("Vaga");
 				data.add(line);
+				
+				ArrayList<Object> linha = new ArrayList<Object>();
+				
+				linha.add(linhaCont);
+				linha.add(timetable.Disciplina.getOrSetCoresPerfis(tur.getDisciplina().getPerfil()));
+				
+				cor.add(linha);
 			}			
 		}
-
-
+		
 		public String[] getColumnNames() {
 			return columnNames;
 		}

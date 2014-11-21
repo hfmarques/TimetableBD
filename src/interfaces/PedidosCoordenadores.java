@@ -25,6 +25,12 @@ public class PedidosCoordenadores extends InterfacesTabela{
 	public PedidosCoordenadores() {
 		super(new PedidosCoordenadoresTableModel(), "Salvar");
 		
+//		ArrayList<ArrayList<Object>> cor = PedidosCoordenadoresTableModel.getCor();
+//
+//		for(int i = 0; i<((PedidosCoordenadoresTableModel) tabela).getTable().getColumnCount(); i++){
+//			((PedidosCoordenadoresTableModel) this.tabela).getTable().getColumnModel().getColumn(i).setCellRenderer(new CorLinhaCellRenderer(cor));
+//		}
+		
 		//gera os eventos ao se clicar no botão salvar
 		botaoSalvar.addActionListener(new ActionListener() {
 			
