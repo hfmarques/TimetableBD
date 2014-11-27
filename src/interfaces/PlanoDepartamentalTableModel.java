@@ -1,26 +1,14 @@
 package interfaces;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Iterator;
-
-import hibernate.HibernateUtil;
-import interfaces.ResultadosProfessorTableModel.MyTableModel;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-
-import timetable.Docente;
 import timetable.Turma;
 
 @SuppressWarnings("serial")
@@ -64,7 +52,6 @@ public class PlanoDepartamentalTableModel extends JPanel {
 
 		private ArrayList<ArrayList<Object>> data;
 
-		@SuppressWarnings("rawtypes")
 		public MyTableModel() {
 			data = new ArrayList<ArrayList<Object>>(); // row
 			
@@ -86,7 +73,7 @@ public class PlanoDepartamentalTableModel extends JPanel {
 			for(Iterator<?> it = turma.iterator(); it.hasNext(); linhaCont++){
 				ArrayList<Object>line = new ArrayList<Object>();
 				timetable.Turma tur = ((timetable.Turma)it.next());
-				line.add("Primeiro");
+				line.add("Semestre");
 				line.add(tur.getDisciplina().getCodigo());
 				line.add(tur.getDisciplina().getNome());
 				line.add(tur.getCodigo());

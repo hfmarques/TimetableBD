@@ -1,5 +1,7 @@
 package interfaces;
 
+import hibernate.HibernateUtil;
+
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,6 +22,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import antlr.collections.List;
 import timetable.Docente;
 import timetable.Turma;
 
@@ -35,6 +38,22 @@ public class PlanoDepartamental extends InterfacesTabela{
 		for(int i = 0; i<((PlanoDepartamentalTableModel) tabela).getTable().getColumnCount(); i++){
 			((PlanoDepartamentalTableModel) this.tabela).getTable().getColumnModel().getColumn(i).setCellRenderer(new CorLinhaCellRenderer(cor));
 		}
+		
+		botaoSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTable table = ((PlanoDepartamentalTableModel) tabela).getTable();
+				for(int i=0;i<table.getRowCount();i++){
+					if(!table.getValueAt(i, 6).toString().equals("Clique para escolher o Docente")){
+							ArrayList<Turma> lista = (ArrayList<Turma>) HibernateUtil.findTurmasByCode(table.getValueAt(i, 1).toString(), table.getValueAt(i, 3).toString());
+							lista.get(0).getDocente().clear();
+							lista.get(0).getDocente().add(HibernateUtil.findDocenteByName(table.getValueAt(i, 6).toString()).get(0));
+							System.out.println(lista.get(0).getDocente().get(0).getNome());
+							System.out.println();
+							HibernateUtil.saveOrUpdate(lista.get(0));
+					}
+				}
+			}
+		});
 	}
 
 	public void insereProfComboBox(JTable table, TableColumn ComboColumn) {

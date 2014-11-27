@@ -40,7 +40,6 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
-
 	}
 	
 	public JTable getTable() {
@@ -57,45 +56,73 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 
 	class MyTableModel extends AbstractTableModel {
 
-		private String[] columnNames = {"Codigo do Curso", "Nome do Curso", "Semestre", "Codigo da Disciplina", "Disciplina", "Turma", "Horário", "Turnos", "Observações", "Vagas Periotizados", "Vagas Desperiotizados"};
-
+		private String[] columnNames;
+		
 		private ArrayList<ArrayList<Object>> data;
 
 		@SuppressWarnings("rawtypes")
 		public MyTableModel() {
 			data = new ArrayList<ArrayList<Object>>(); // row
 			
+			int colunasFixas = 6;			
+			int columnNumber = colunasFixas;
+//			columnNames = {"Codigo do Curso", "Nome do Curso", "Semestre", "Codigo da Disciplina", "Disciplina", "Turma", "Horário", "Turnos", "Observações", "Vagas Periotizados", "Vagas Desperiotizados"};
 			
 			ArrayList<timetable.Turma> _turma = (ArrayList<timetable.Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);
 			ArrayList<timetable.Curso> _curso = (ArrayList<timetable.Curso>) hibernate.HibernateUtil.findAll(timetable.Curso.class);
 			
-			int linhaCont = 0;
-			for(Iterator<?> itCurso = _curso.iterator(); itCurso.hasNext();linhaCont++){
+			columnNumber = columnNumber + _curso.size();
+			
+			columnNames = new String[columnNumber];
+			
+			columnNames[0] = "Semestre";
+			columnNames[1] = "Codigo da Disciplina";
+			columnNames[2] = "Disciplina";
+			columnNames[3] = "Turma";
+			columnNames[4] = "Horário";
+			columnNames[5] = "Observações";
+			
+			int colunCont = colunasFixas;
+			for(Iterator<?> itCurso = _curso.iterator(); itCurso.hasNext();){
 				timetable.Curso curso = ((timetable.Curso)itCurso.next());
-				for(Iterator<?> itTurma = _turma.iterator(); itTurma.hasNext();){					
-					timetable.Turma turma = ((timetable.Turma)itTurma.next());
-					ArrayList<Object>line = new ArrayList<Object>();
-					line.add(curso.getCodigo());
-					line.add(curso.getNome());
-					line.add("Semestre");
-					line.add(turma.getDisciplina().getCodigo());
-					line.add(turma.getDisciplina().getNome());
-					line.add(turma.getCodigo());
-					line.add("Horário");
-					line.add(curso.getTurno());
-					line.add("");
-					line.add("");
-					line.add("");
-					data.add(line);
-					
-//					ArrayList<Object> linha = new ArrayList<Object>();
-//					
-//					linha.add(linhaCont);
-//					linha.add(timetable.Disciplina.getOrSetCoresPerfis(turma.getDisciplina().getPerfil()));
-//					
-//					cor.add(linha);
-					
+				columnNames[colunCont] = curso.getCodigo() + " " + curso.getNome() + " - " + curso.getTurno();
+				colunCont++;
+			}
+			
+			_turma.sort(new Comparator<timetable.Turma>() {
+				@Override
+				public int compare(Turma o1, Turma o2) {
+					if(o1.getDisciplina().getPerfil().equals(o2.getDisciplina().getPerfil())){
+						if(o1.getDisciplina().getNome().equals(o2.getDisciplina().getNome())){
+							return o1.getCodigo().compareTo(o2.getCodigo());
+						}
+						return o1.getDisciplina().getNome().compareTo(o2.getDisciplina().getNome());						
+					}						
+					return o1.getDisciplina().getPerfil().compareTo(o2.getDisciplina().getPerfil());
 				}
+			});
+			
+			int linhaCont = 0;
+			for(Iterator<?> itTurma = _turma.iterator(); itTurma.hasNext();linhaCont++){					
+				timetable.Turma turma = ((timetable.Turma)itTurma.next());
+				ArrayList<Object>line = new ArrayList<Object>();
+				line.add("Semestre");
+				line.add(turma.getDisciplina().getCodigo());
+				line.add(turma.getDisciplina().getNome());
+				line.add(turma.getCodigo());
+				line.add("Horário");
+				line.add("");
+
+				for(int i=colunasFixas;i<columnNumber;i++)
+					line.add("");
+				data.add(line);
+					
+				ArrayList<Object> linha = new ArrayList<Object>();
+				
+				linha.add(linhaCont);
+				linha.add(timetable.Disciplina.getOrSetCoresPerfis(turma.getDisciplina().getPerfil()));
+				
+				cor.add(linha);
 			}			
 		}
 

@@ -32,7 +32,7 @@ public class Turma implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-	private int idTurma;
+	private int id;
 	@Column(name = "codigo", unique = true, nullable = false)
 	private String codigo;
 	@Column(name = "turno", unique = false, nullable = false)
@@ -66,11 +66,11 @@ public class Turma implements Serializable {
 	}
 
 	public int getIdTurma() {
-		return idTurma;
+		return id;
 	}
 
 	public void setIdTurma(int idTurma) {
-		this.idTurma = idTurma;
+		this.id = idTurma;
 	}
 
 	public String getCodigo() {

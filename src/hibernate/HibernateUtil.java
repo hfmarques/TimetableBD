@@ -121,7 +121,7 @@ public class HibernateUtil {
 		try {
 			session = getInstance();
 			transaction = session.beginTransaction();
-			query = session.createQuery("From Calouros");
+			query = session.createQuery("From Calouros");			
 			lista = (List<Calouros>) query.list();
 		} catch (HibernateException e) {
 			transaction.rollback();
@@ -172,6 +172,51 @@ public class HibernateUtil {
 			query = session
 					.createQuery("SELECT t FROM Turma AS t JOIN FETCH t.disciplina");
 			lista = (List<timetable.Turma>) query.list();
+		} catch (HibernateException e) {
+			transaction.rollback();
+			System.err.println(e.fillInStackTrace());
+		} catch (Exception ex) {
+			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} finally {
+			session.close();
+			return lista;
+		}
+	}
+	
+	public static List<timetable.Turma> findTurmasByCode(String disciplinaCode, String turmaCode) {
+		List<timetable.Turma> lista = null;
+		Query query = null;
+		try {
+			session = getInstance();
+			transaction = session.beginTransaction();
+			query = session
+					.createQuery("FROM Turma WHERE codigo = :turmaCode and disciplina.codigo = :discCode");
+			query.setParameter("discCode", disciplinaCode);
+			query.setParameter("turmaCode", turmaCode);
+			lista = (List<timetable.Turma>) query.list();
+		} catch (HibernateException e) {
+			transaction.rollback();
+			System.err.println(e.fillInStackTrace());
+		} catch (Exception ex) {
+			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} finally {
+			session.close();
+			return lista;
+		}
+	}
+	
+	public static List<timetable.Docente> findDocenteByName(String nome) {
+		List<timetable.Docente> lista = null;
+		Query query = null;
+		try {
+			session = getInstance();
+			transaction = session.beginTransaction();
+			query = session
+					.createQuery("FROM Docente WHERE nome_completo = :nome");
+			query.setParameter("nome", nome);
+			lista = (List<timetable.Docente>) query.list();
 		} catch (HibernateException e) {
 			transaction.rollback();
 			System.err.println(e.fillInStackTrace());
