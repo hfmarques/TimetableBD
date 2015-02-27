@@ -1,5 +1,7 @@
 package hibernate;
 
+import interfaces.Disciplina;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -204,6 +206,50 @@ public class HibernateUtil {
 		} finally {
 			session.close();
 			return lista;
+		}
+	}
+	
+	public static timetable.Sala findSalaByNumero(String numeroSala) {
+		List<timetable.Sala> sala = null;
+		Query query = null;
+		try {
+			session = getInstance();
+			transaction = session.beginTransaction();
+			query = session
+					.createQuery("FROM Sala WHERE numero = :numeroSala");
+			query.setParameter("numeroSala", numeroSala);
+			sala = (List<timetable.Sala>) query.list();
+		} catch (HibernateException e) {
+			transaction.rollback();
+			System.err.println(e.fillInStackTrace());
+		} catch (Exception ex) {
+			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} finally {
+			session.close();
+			return sala.get(0);
+		}
+	}
+	
+	public static timetable.Disciplina findDisciplinaByCode(String disciplinaCode) {
+		List<timetable.Disciplina> disc = null;
+		Query query = null;
+		try {
+			session = getInstance();
+			transaction = session.beginTransaction();
+			query = session
+					.createQuery("FROM Disciplina WHERE codigo = :discCode");
+			query.setParameter("discCode", disciplinaCode);
+			disc = (List<timetable.Disciplina>) query.list();
+		} catch (HibernateException e) {
+			transaction.rollback();
+			System.err.println(e.fillInStackTrace());
+		} catch (Exception ex) {
+			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} finally {
+			session.close();
+			return disc.get(0);
 		}
 	}
 	

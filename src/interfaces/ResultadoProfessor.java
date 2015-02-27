@@ -5,6 +5,7 @@ import interfaces.ResultadosProfessorTableModel.MyTableModel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
 
+import timetable.Docente;
 import hibernate.HibernateUtil;
 
 /**
@@ -29,7 +31,15 @@ public class ResultadoProfessor extends InterfacesTabela{
 		
 		// inicializa as turmas dos professores da tabela
 		inicializaTurmas();
-
+		
+		botaoPadrao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				((MyTableModel)((ResultadosProfessorTableModel) tabela).getTable().getModel()).loadTableValues();
+//				((ResultadosProfessorTableModel) tabela).updateTable();
+				inicializaTurmas();
+			}
+		});
 	}
 
 	// metodo para se inicializar os dados de todas as turmas na tabela em
@@ -39,22 +49,16 @@ public class ResultadoProfessor extends InterfacesTabela{
 
 
 		for (int i = 0; i < ((ResultadosProfessorTableModel) tabela).getTable().getModel().getRowCount(); i++) { // procura em todas as linhas da tabela
-			if (((ResultadosProfessorTableModel) tabela).getTable().getModel().getValueAt(i, 0).equals("-")) { // caso o checkbox esteja marcado
-											// insere os dados extras dos
-											// professores
+			if (((ResultadosProfessorTableModel) tabela).getTable().getModel().getValueAt(i, 0).equals("-")) { // caso o checkbox esteja marcado insere os dados extras dos professores
 
 				ArrayList<String> disc = new ArrayList<String>();
 				ArrayList<String> cod = new ArrayList<String>();
 				ArrayList<Integer> cred = new ArrayList<Integer>();
 
 				for (int j = 0; j < turma.size(); j++) { // para todas as turmas
-					for (int k = 0; k < ((timetable.Turma) turma.get(j))
-							.getDocente().size(); k++) { // para todos os
-															// professores
-						// se existe doscente
-						// busca se o professore referente a linha atual da
-						// tambela possui o mesmo codigo que o professor que
-						// está no loop, se sim adiciona sua turma
+					for (int k = 0; k < ((timetable.Turma) turma.get(j)).getDocente().size(); k++) { 
+						// para todos os professores se existe doscente busca se o professore referente a 
+						// linha atual da tabela possui o mesmo codigo que o professor que está no loop, se sim adiciona sua turma
 						if (!((timetable.Turma) turma.get(j)).getDocente().isEmpty() && 
 								((ResultadosProfessorTableModel) tabela).getTable().getModel().getValueAt(i, 1).equals(((timetable.Turma) turma.get(j)).getDocente().get(k).getCodigo())) {
 							disc.add(((timetable.Turma) turma.get(j)).getDisciplina().getNome());
@@ -68,9 +72,7 @@ public class ResultadoProfessor extends InterfacesTabela{
 				}
 
 				if (!disc.isEmpty() || !cod.isEmpty() || !cred.isEmpty()) { // se houver dados no array de disciplina, codigo e creditação
-																			// para
-																			// aquela
-																			// turma
+																			// para aquela turma
 					// adiciona a tabela os dados encontrados
 					String[] sDisc = new String[disc.size()];
 					for (int j = 0; j < disc.size(); j++) {

@@ -25,7 +25,7 @@ public class VagasOferecidas extends InterfacesTabela{
 	public VagasOferecidas() {
 		super(new VagasOferecidasTableModel(), "Salvar");
 		//gera os eventos ao se clicar no botão salvar
-		botaoSalvar.addActionListener(new ActionListener() {
+		botaoPadrao.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

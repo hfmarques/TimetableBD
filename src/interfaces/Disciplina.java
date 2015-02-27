@@ -38,7 +38,7 @@ public class Disciplina extends InterfacesTabela{
 															// armazenar a nova
 															// linha da tabela
 				// recebe por parametro o "model" da tabela para poder fazer as
-				// auterações no mesmo
+				// alterações no mesmo
 				DisciplinaTableModel.MyTableModel model = (DisciplinaTableModel.MyTableModel) ((DisciplinaTableModel) tabela)
 						.getTable().getModel();
 
@@ -50,20 +50,12 @@ public class Disciplina extends InterfacesTabela{
 
 				// adiciona a linha ao modelo
 				model.addRow(linha);
-				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza
-																			// a
-																			// nova
-																			// linha
-																			// para
-																			// ser
-																			// exibida
-																			// na
-																			// tabela
+				
+				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza a nova linha para ser exibida na tabela
 					if (model.getData().size() - 1 < 0) {
 						model.fireTableCellUpdated(0, i);
 					} else {
-						model.fireTableCellUpdated(model.getData().size() - 1,
-								i);
+						model.fireTableCellUpdated(model.getData().size() - 1, i);
 					}
 				}
 				disciplinasAdicionadas++; // armazena mais uma linha para ser salva
@@ -72,7 +64,7 @@ public class Disciplina extends InterfacesTabela{
 		});
 
 		// gera os acontecimentos ao se clicar no botão salvar
-		botaoSalvar.addActionListener(new ActionListener() {
+		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo

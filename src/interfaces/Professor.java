@@ -19,7 +19,7 @@ public class Professor extends InterfacesTabela{
 	private int professoresAdicionados;
 
 	public Professor() {
-		super(new DisciplinaTableModel(), "Salvar");
+		super(new ProfessorTableModel(), "Salvar");
 		
 		botaoInserir = new JButton("Inserir Docente");
 		painelBotao.add(botaoInserir);
@@ -39,7 +39,7 @@ public class Professor extends InterfacesTabela{
 															// linha da tabela
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo
-				ProfessorTableModel.MyTableModel model = (ProfessorTableModel.MyTableModel) ((DisciplinaTableModel) tabela)
+				ProfessorTableModel.MyTableModel model = (ProfessorTableModel.MyTableModel) ((ProfessorTableModel) tabela)
 						.getTable().getModel();
 
 				// adiciona ao arry list campos em branco para mais a frente
@@ -50,20 +50,13 @@ public class Professor extends InterfacesTabela{
 
 				// adiciona a linha ao modelo
 				model.addRow(linha);
-				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza
-																			// a
-																			// nova
-																			// linha
-																			// para
-																			// ser
-																			// exibida
-																			// na
-																			// tabela
+				
+				System.out.println("entrou aqui");
+				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza a nova linha para ser exibida na tabela
 					if (model.getData().size() - 1 < 0) {
 						model.fireTableCellUpdated(0, i);
 					} else {
-						model.fireTableCellUpdated(model.getData().size() - 1,
-								i);
+						model.fireTableCellUpdated(model.getData().size() - 1,i);
 					}
 				}
 				professoresAdicionados++; // armazena mais uma linha para ser salva
@@ -72,29 +65,26 @@ public class Professor extends InterfacesTabela{
 		});
 
 		// gera os acontecimentos ao se clicar no botão salvar
-		botaoSalvar.addActionListener(new ActionListener() {
+		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo
-				ProfessorTableModel.MyTableModel model = (ProfessorTableModel.MyTableModel) ((DisciplinaTableModel) tabela)
-						.getTable().getModel();
+				ProfessorTableModel.MyTableModel model = (ProfessorTableModel.MyTableModel) ((ProfessorTableModel) tabela).getTable().getModel();
 
 				for (int i = 0; i < professoresAdicionados; i++) { 
 					// para todos os novos dados inseridos é inserido um a um no banco de dados
-					timetable.Docente prof; // cria um novo curso
-					String nome = ((DisciplinaTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),1).toString();
+					timetable.Docente prof; // cria um novo docente
+					String nome = ((ProfessorTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),1).toString();
 					try {
 						nome = nome.substring(0,nome.indexOf(" "));
 					} catch (java.lang.StringIndexOutOfBoundsException e1) {
-						JOptionPane.showMessageDialog(null,
-								"O nome não está completo", "Error",
-								JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,	"O nome não está completo", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 					// captura os dados inseridos na tabela e os insere no curso
-					prof = new timetable.Docente(((DisciplinaTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),0).toString(), 
-								nome, 
-								((DisciplinaTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),1).toString(), 
-								Integer.parseInt(((DisciplinaTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),2).toString()));
+					prof = new timetable.Docente(((ProfessorTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),0).toString(), 
+												nome, 
+												((ProfessorTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),1).toString(), 
+												Integer.parseInt(((ProfessorTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),2).toString()));
 					
 					// insere este novo curso no banco de dados
 					HibernateUtil.saveOrUpdate(prof);

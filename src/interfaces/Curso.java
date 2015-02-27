@@ -77,7 +77,7 @@ public class Curso extends InterfacesTabela {
 		});
 
 		// gera os acontecimentos ao se clicar no botão salvar
-		botaoSalvar.addActionListener(new ActionListener() {
+		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// recebe por parametro o "model" da tabela para poder fazer as
 				// auterações no mesmo

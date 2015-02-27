@@ -32,7 +32,7 @@ public class PedidosCoordenadores extends InterfacesTabela{
 		}
 		
 		//gera os eventos ao se clicar no botão salvar
-		botaoSalvar.addActionListener(new ActionListener() {
+		botaoPadrao.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

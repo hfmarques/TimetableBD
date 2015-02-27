@@ -39,17 +39,17 @@ public class PlanoDepartamental extends InterfacesTabela{
 			((PlanoDepartamentalTableModel) this.tabela).getTable().getColumnModel().getColumn(i).setCellRenderer(new CorLinhaCellRenderer(cor));
 		}
 		
-		botaoSalvar.addActionListener(new ActionListener() {
+		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JTable table = ((PlanoDepartamentalTableModel) tabela).getTable();
 				for(int i=0;i<table.getRowCount();i++){
 					if(!table.getValueAt(i, 6).toString().equals("Clique para escolher o Docente")){
-							ArrayList<Turma> lista = (ArrayList<Turma>) HibernateUtil.findTurmasByCode(table.getValueAt(i, 1).toString(), table.getValueAt(i, 3).toString());
-							lista.get(0).getDocente().clear();
-							lista.get(0).getDocente().add(HibernateUtil.findDocenteByName(table.getValueAt(i, 6).toString()).get(0));
-							System.out.println(lista.get(0).getDocente().get(0).getNome());
-							System.out.println();
-							HibernateUtil.saveOrUpdate(lista.get(0));
+						ArrayList<Turma> lista = (ArrayList<Turma>) HibernateUtil.findTurmasByCode(table.getValueAt(i, 1).toString(), table.getValueAt(i, 3).toString());
+						lista.get(0).getDocente().clear();
+						lista.get(0).getDocente().add(HibernateUtil.findDocenteByName(table.getValueAt(i, 6).toString()).get(0));
+						System.out.println(lista.get(0).getDocente().get(0).getNome());
+						System.out.println();
+						HibernateUtil.saveOrUpdate(lista.get(0));
 					}
 				}
 			}

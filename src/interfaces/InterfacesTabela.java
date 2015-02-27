@@ -15,7 +15,7 @@ public abstract class InterfacesTabela {
 	protected JPanel painel; // painel principal
 	protected JPanel tabela; // modelo da tabela principal
 	protected JScrollPane scroll; // componente para se adicionar a tabela
-	protected JButton botaoSalvar; // salva os dados alterados da tabela
+	protected JButton botaoPadrao; // salva os dados alterados da tabela
 	protected JPanel painelBotao;
 	protected GridBagLayout gridBag;
 	protected GridBagConstraints constraints;
@@ -27,7 +27,7 @@ public abstract class InterfacesTabela {
 		scroll = new JScrollPane();
 		this.tabela = tabela;
 		painelBotao = new JPanel();
-		botaoSalvar = new JButton(textoBotao);
+		botaoPadrao = new JButton(textoBotao);
 		
 		// monta a janela principal
 		gridBag = new GridBagLayout();
@@ -41,7 +41,7 @@ public abstract class InterfacesTabela {
 		scroll.getViewport().add((Component) tabela);
 		scroll.setSize(450, 450);
 
-		painelBotao.add(botaoSalvar);
+		painelBotao.add(botaoPadrao);
 		painel.add(scroll);
 		painel.add(painelBotao);		
 
@@ -70,7 +70,7 @@ public abstract class InterfacesTabela {
 		constraints.insets = new Insets(0, 0, 0, 40);
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.EAST;
-		btnGridBag.setConstraints(botaoSalvar, constraints);
+		btnGridBag.setConstraints(botaoPadrao, constraints);
 
 	}
 
@@ -81,5 +81,13 @@ public abstract class InterfacesTabela {
 	public void setPainel(JPanel painel) {
 		this.painel = painel;
 	}
+
+	public JPanel getTabela() {
+		return tabela;
+	}
+
+	public void setTabela(JPanel tabela) {
+		this.tabela = tabela;
+	}	
 
 }

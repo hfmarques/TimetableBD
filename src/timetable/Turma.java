@@ -60,9 +60,11 @@ public class Turma implements Serializable {
 		this.codigo = codigo;
 		this.turno = turno;
 		this.maxVagas = maxVagas;
-		// this.disciplina = disciplina;
-		// this.sala = sala;
-		this.docente.add(docente);
+		this.disciplina = disciplina;
+		this.sala = sala;
+		if(docente != null){
+			this.docente.add(docente);
+		}
 	}
 
 	public int getIdTurma() {

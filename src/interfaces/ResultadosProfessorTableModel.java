@@ -13,8 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.TabExpander;
 
 import hibernate.HibernateUtil;
 
@@ -154,12 +157,36 @@ public class ResultadosProfessorTableModel extends JPanel {
 		});
 	}
 
+	public void updateTable(){
+		for(int i=0;i<tableModel.getColumnCount();i++){
+			for(int j=0;j<tableModel.getRowCount();j++){
+				tableModel.fireTableCellUpdated(j, i);
+				System.out.println(i+" "+j);
+			}
+		}
+	}
+	
+	public void clearTable(){
+		((AbstractTableModel)table.getModel()).fireTableRowsDeleted(0, tableModel.getRowCount()-1);
+	}
+	
+	public void insertRowAfterUpdated(){
+		((AbstractTableModel)table.getModel()).fireTableRowsInserted(0, tableModel.getRowCount()-1);
+	}
 	public JTable getTable() {
 		return table;
+	}
+	
+	public MyTableModel getNewTableModel(){
+		return new MyTableModel();
 	}
 
 	public void setTable(JTable table) {
 		this.table = table;
+	}
+	
+	public MyTableModel getTableModel() {
+		return tableModel;
 	}
 
 	class MyTableModel extends AbstractTableModel {
@@ -178,6 +205,8 @@ public class ResultadosProfessorTableModel extends JPanel {
 
 			List<?> lista = HibernateUtil.findAll(timetable.Docente.class);
 			List<?> turma = HibernateUtil.findTurmas();
+			
+			data.clear();
 
 			for (int i = 0; i < lista.size(); i++) {
 				ArrayList<Object> row = new ArrayList<Object>();
@@ -191,11 +220,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 				String[] credDisc = { " " };
 				row.add(credDisc);
 				int creditos = 0;
-				for (int tur = 0; tur < turma.size(); tur++) { // calcula a
-																// quantidade de
-																// créditos de
-																// cada
-																// professor
+				for (int tur = 0; tur < turma.size(); tur++) { // calcula a quantidade de créditos de cada professor
 					for (int doc = 0; doc < ((timetable.Turma) turma.get(tur))
 							.getDocente().size(); doc++) {
 
@@ -219,6 +244,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 
 				data.add(row);
 			}
+			
 			/* Next we create our table models */
 
 			/*
@@ -526,10 +552,6 @@ public class ResultadosProfessorTableModel extends JPanel {
 			}
 			System.out.println("--------------------------");
 		}
-	}
-	
-	public MyTableModel getTableModel() {
-		return tableModel;
 	}
 	
 }

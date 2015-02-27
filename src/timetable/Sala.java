@@ -37,4 +37,38 @@ public class Sala implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sala")
 	private List<Turma> turma = new ArrayList<Turma>();
 
+	public int getIdSala() {
+		return idSala;
+	}
+
+	public void setIdSala(int idSala) {
+		this.idSala = idSala;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
+	}
+
+	public List<Turma> getTurma() {
+		return turma;
+	}
+
+	public void setTurma(List<Turma> turma) {
+		this.turma = turma;
+	}
+	
+	
+
 }

@@ -26,7 +26,7 @@ public class HistoricoAtendimento extends InterfacesTabela{
 		super(new HistoricoAtendimentoTableModel(), "Salvar");
 		
 		//gera os eventos ao se clicar no botão salvar
-		botaoSalvar.addActionListener(new ActionListener() {
+		botaoPadrao.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
