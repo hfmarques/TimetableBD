@@ -53,24 +53,40 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	public static ArrayList<ArrayList<Object>> getCor() {
 		return cor;
 	}
+	
+	public void loadTableValues(){
+		tableModel.loadTableValues();
+	}
+	
+	public void loadDataTable(){
+		tableModel.fireTableDataChanged();
+	}
 
-	class MyTableModel extends AbstractTableModel {
-
-		private String[] columnNames;
-		
-		private ArrayList<ArrayList<Object>> data;
+	class MyTableModel extends TableModel {
 
 		@SuppressWarnings("rawtypes")
 		public MyTableModel() {
-			data = new ArrayList<ArrayList<Object>>(); // row
+			super(DEBUG, 6);
 			
-			int colunasFixas = 6;			
-			int columnNumber = colunasFixas;
-//			columnNames = {"Codigo do Curso", "Nome do Curso", "Semestre", "Codigo da Disciplina", "Disciplina", "Turma", "Horário", "Turnos", "Observações", "Vagas Periotizados", "Vagas Desperiotizados"};
+			columnNames[0] = "Semestre";
+			columnNames[1] = "Codigo da Disciplina";
+			columnNames[2] = "Disciplina";
+			columnNames[3] = "Turma";
+			columnNames[4] = "Horário";
+			columnNames[5] = "Observações";
+			
+			data = new ArrayList<ArrayList<Object>>(); // row
+			loadTableValues();
+		}
+		
+		public void loadTableValues(){
 			
 			ArrayList<timetable.Turma> _turma = (ArrayList<timetable.Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);
 			ArrayList<timetable.Curso> _curso = (ArrayList<timetable.Curso>) hibernate.HibernateUtil.findAll(timetable.Curso.class);
 			
+			int colunasFixas = 6;			
+			int columnNumber = colunasFixas;
+						
 			columnNumber = columnNumber + _curso.size();
 			
 			columnNames = new String[columnNumber];
@@ -103,6 +119,9 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			});
 			
 			int linhaCont = 0;
+			
+			data.clear();
+			
 			for(Iterator<?> itTurma = _turma.iterator(); itTurma.hasNext();linhaCont++){					
 				timetable.Turma turma = ((timetable.Turma)itTurma.next());
 				ArrayList<Object>line = new ArrayList<Object>();
@@ -124,93 +143,6 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 				
 				cor.add(linha);
 			}			
-		}
-
-
-		public String[] getColumnNames() {
-			return columnNames;
-		}
-
-		public void setColumnNames(String[] columnNames) {
-			this.columnNames = columnNames;
-		}
-
-		public ArrayList<ArrayList<Object>> getData() {
-			return data;
-		}
-
-		public void addRow(ArrayList<Object> row) {
-			data.add(row);
-		}
-
-		public void setData(ArrayList<ArrayList<Object>> data) {
-			this.data = data;
-		}
-
-		@Override
-		public int getColumnCount() {
-			return columnNames.length;
-		}
-
-		@Override
-		public int getRowCount() {
-			return data.size();
-		}
-
-		@Override
-		public String getColumnName(int col) {
-			return columnNames[col];
-		}
-
-		@Override
-		public Object getValueAt(int row, int col) {
-			return data.get(row).get(col);
-		}
-
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		@Override
-		public Class getColumnClass(int c) {
-			return getValueAt(0, c).getClass();
-		}
-
-		@Override
-		public boolean isCellEditable(int row, int col) {
-			if (col < 0) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		@Override
-		public void setValueAt(Object value, int row, int col) {
-			if (DEBUG) {
-				System.out.println("Setting value at " + row + "," + col
-						+ " to " + value + " (an instance of "
-						+ value.getClass() + ")");
-			}
-
-			data.get(row).set(col, value);
-			fireTableCellUpdated(row, col);
-
-			if (DEBUG) {
-				System.out.println("New value of data:");
-				printDebugData();
-			}
-		}
-
-		private void printDebugData() {
-			int numRows = getRowCount();
-			int numCols = getColumnCount();
-
-			for (int i = 0; i < numRows; i++) {
-				System.out.print("    row " + i + ":");
-				for (int j = 0; j < numCols; j++) {
-					System.out.print("  " + data.get(i).get(j));
-				}
-				System.out.println();
-			}
-			System.out.println("--------------------------");
 		}
 	}
 	

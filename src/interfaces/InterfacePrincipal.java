@@ -42,14 +42,62 @@ public class InterfacePrincipal {
 		janelaPrincipal.add(abas);
 		janelaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-//		abas.addChangeListener(new javax.swing.event.ChangeListener() {  
-//            public void stateChanged(javax.swing.event.ChangeEvent e) {
-//                if (abas.getSelectedComponent() == abas.getComponent(1)) {
-//                    ((ResultadosProfessorTableModel)janelaResultados.getTabela()).getTableModel().loadTableValues();
-//                    ((ResultadosProfessorTableModel)janelaResultados.getTabela()).updateTable();
-//                }  
-//            }  
-//        });
+		abas.addChangeListener(new javax.swing.event.ChangeListener() {  
+            public void stateChanged(javax.swing.event.ChangeEvent e) {
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(0)) {
+                    ((PlanoDepartamentalTableModel) planoDepartamental.getTabela()).loadTableValues();
+    				((PlanoDepartamentalTableModel) planoDepartamental.getTabela()).loadDataTable();
+    				planoDepartamental.atualizaComboBox();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(1)) {
+                    ((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadTableValues();
+    				janelaResultados.inicializaTurmas();
+    				((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadDataTable();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(2)) {
+                    ((PedidosCoordenadoresTableModel) pedidosCoordenadores.getTabela()).loadTableValues();
+    				((PedidosCoordenadoresTableModel) pedidosCoordenadores.getTabela()).loadDataTable();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(3)) {
+                    ((VagasOferecidasTableModel) vagasOferecidas.getTabela()).loadTableValues();
+    				((VagasOferecidasTableModel) vagasOferecidas.getTabela()).loadDataTable();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(4)) {
+                    ((HistoricoAtendimentoTableModel) historicoAtendimento.getTabela()).loadTableValues();
+    				((HistoricoAtendimentoTableModel) historicoAtendimento.getTabela()).loadDataTable();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(5)) {
+                    ((ProfessorTableModel) janelaProfessor.getTabela()).loadTableValues();
+    				((ProfessorTableModel) janelaProfessor.getTabela()).loadDataTable();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(6)) {
+                    ((DisciplinaTableModel) janelaDisciplina.getTabela()).loadTableValues();
+    				((DisciplinaTableModel) janelaDisciplina.getTabela()).loadDataTable();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(7)) {
+                    ((TurmasTableModel) janelaTurmas.getTabela()).loadTableValues();
+    				((TurmasTableModel) janelaTurmas.getTabela()).loadDataTable();
+                }
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(8)) {
+                    ((CursoTableModel) janelaCurso.getTabela()).loadTableValues();
+    				((CursoTableModel) janelaCurso.getTabela()).loadDataTable();
+                }                
+                
+                if (abas.getSelectedComponent() == abas.getComponent(9)) {
+                    ((CalourosTableModel) janelaCalouros.getTabela()).loadTableValues();
+    				((CalourosTableModel) janelaCalouros.getTabela()).loadDataTable();
+                }
+            }  
+        });
 	}
 
 	// outros metodos prepara...

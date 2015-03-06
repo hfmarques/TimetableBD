@@ -56,7 +56,7 @@ public class PlanoDepartamental extends InterfacesTabela{
 		});
 	}
 
-	public void insereProfComboBox(JTable table, TableColumn ComboColumn) {
+	private void insereProfComboBox(JTable table, TableColumn ComboColumn) {
 		ArrayList<timetable.Docente> prof = (ArrayList<Docente>) hibernate.HibernateUtil.findAll(timetable.Docente.class);
 		JComboBox<String> comboBox = new JComboBox();
 		Iterator<?> it = prof.iterator();
@@ -68,6 +68,16 @@ public class PlanoDepartamental extends InterfacesTabela{
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 		renderer.setToolTipText("Clique para selecionar o professor");
 		ComboColumn.setCellRenderer(renderer);
+	}
+	
+	public void atualizaComboBox(){
+		insereProfComboBox(((PlanoDepartamentalTableModel) tabela).getTable(), ((PlanoDepartamentalTableModel) tabela).getTable().getColumnModel().getColumn(6));
+		
+		ArrayList<ArrayList<Object>> cor = PlanoDepartamentalTableModel.getCor();
+		
+		for(int i = 0; i<((PlanoDepartamentalTableModel) tabela).getTable().getColumnCount(); i++){
+			((PlanoDepartamentalTableModel) this.tabela).getTable().getColumnModel().getColumn(i).setCellRenderer(new CorLinhaCellRenderer(cor));
+		}
 	}
 
 	public JPanel getPainel() {

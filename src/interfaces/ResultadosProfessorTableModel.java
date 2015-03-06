@@ -41,7 +41,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 		table = new JTable(tableModel);
 
 		// inicializa os professores da tabela
-		tableModel.loadTableValues();
+		tableModel.loadTable();
 
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
@@ -156,6 +156,10 @@ public class ResultadosProfessorTableModel extends JPanel {
 			
 		});
 	}
+	
+	public void loadTableValues(){
+		tableModel.loadTableValues();
+	}
 
 	public void updateTable(){
 		for(int i=0;i<tableModel.getColumnCount();i++){
@@ -164,6 +168,10 @@ public class ResultadosProfessorTableModel extends JPanel {
 				System.out.println(i+" "+j);
 			}
 		}
+	}
+	
+	public void loadDataTable(){
+		tableModel.fireTableDataChanged();
 	}
 	
 	public void clearTable(){
@@ -189,20 +197,23 @@ public class ResultadosProfessorTableModel extends JPanel {
 		return tableModel;
 	}
 
-	class MyTableModel extends AbstractTableModel {
-
-		private String[] columnNames = { "", "Código do Professor",
-				"Nome do Professor", "Disciplinas", "Codigo da Disciplina",
-				"Creditos da Disciplina", "Créditos: Atuais / Esperados" };
-
-		private ArrayList<ArrayList<Object>> data;
+	class MyTableModel extends TableModel {
 
 		public MyTableModel() {
+			super(DEBUG, 7);
+			
+			columnNames[0] = "";
+			columnNames[1] = "Código do Professor";
+			columnNames[2] = "Nome do Professor";
+			columnNames[3] = "Disicplinas";
+			columnNames[4] = "Código da Disciplinas";
+			columnNames[5] = "Creditos da Disciplina";
+			columnNames[6] = "Créditos: Atuais / Esperados";
+			
 			data = new ArrayList<ArrayList<Object>>(); // row
 		}
 
-		public void loadTableValues() {
-
+		public void loadTableValues(){
 			List<?> lista = HibernateUtil.findAll(timetable.Docente.class);
 			List<?> turma = HibernateUtil.findTurmas();
 			
@@ -244,6 +255,11 @@ public class ResultadosProfessorTableModel extends JPanel {
 
 				data.add(row);
 			}
+			
+		}
+		public void loadTable() {
+
+			loadTableValues();
 			
 			/* Next we create our table models */
 
@@ -464,93 +480,6 @@ public class ResultadosProfessorTableModel extends JPanel {
 			 * Note: if we need to edit the values inside the embedded jtable we
 			 * will need to create a TableCellEditor too.
 			 */
-		}
-
-
-		public String[] getColumnNames() {
-			return columnNames;
-		}
-
-		public void setColumnNames(String[] columnNames) {
-			this.columnNames = columnNames;
-		}
-
-		public ArrayList<ArrayList<Object>> getData() {
-			return data;
-		}
-
-		public void addRow(ArrayList<Object> row) {
-			data.add(row);
-		}
-
-		public void setData(ArrayList<ArrayList<Object>> data) {
-			this.data = data;
-		}
-
-		@Override
-		public int getColumnCount() {
-			return columnNames.length;
-		}
-
-		@Override
-		public int getRowCount() {
-			return data.size();
-		}
-
-		@Override
-		public String getColumnName(int col) {
-			return columnNames[col];
-		}
-
-		@Override
-		public Object getValueAt(int row, int col) {
-			return data.get(row).get(col);
-		}
-
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		@Override
-		public Class getColumnClass(int c) {
-			return getValueAt(0, c).getClass();
-		}
-
-		@Override
-		public boolean isCellEditable(int row, int col) {
-			if (col < 0) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		@Override
-		public void setValueAt(Object value, int row, int col) {
-			if (DEBUG) {
-				System.out.println("Setting value at " + row + "," + col
-						+ " to " + value + " (an instance of "
-						+ value.getClass() + ")");
-			}
-
-			data.get(row).set(col, value);
-			fireTableCellUpdated(row, col);
-
-			if (DEBUG) {
-				System.out.println("New value of data:");
-				printDebugData();
-			}
-		}
-
-		private void printDebugData() {
-			int numRows = getRowCount();
-			int numCols = getColumnCount();
-
-			for (int i = 0; i < numRows; i++) {
-				System.out.print("    row " + i + ":");
-				for (int j = 0; j < numCols; j++) {
-					System.out.print("  " + data.get(i).get(j));
-				}
-				System.out.println();
-			}
-			System.out.println("--------------------------");
 		}
 	}
 	

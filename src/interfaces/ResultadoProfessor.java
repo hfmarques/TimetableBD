@@ -35,9 +35,10 @@ public class ResultadoProfessor extends InterfacesTabela{
 		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				((MyTableModel)((ResultadosProfessorTableModel) tabela).getTable().getModel()).loadTableValues();
-//				((ResultadosProfessorTableModel) tabela).updateTable();
+				((ResultadosProfessorTableModel) tabela).loadTableValues();
 				inicializaTurmas();
+				((ResultadosProfessorTableModel) tabela).loadDataTable();							
+
 			}
 		});
 	}

@@ -44,6 +44,7 @@ public class Docente implements Serializable {
 
 	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "docente")
 	private List<Turma> turma = new ArrayList<Turma>();
+	
 
 	public Docente() {
 	}

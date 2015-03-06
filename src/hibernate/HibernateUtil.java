@@ -41,14 +41,11 @@ public class HibernateUtil {
 							"C:\\Users\\Héber\\Documents\\GitHub\\TimetableBD\\src\\hibernate.cfg.xml"));
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
-					.applySetting("hibernate.connection.driver_class",
-							"org.postgresql.Driver")
-					.applySetting("hibernate.connection.url",
-							"jdbc:postgresql://localhost:5432/timetableBD")
+					.applySetting("hibernate.connection.driver_class", "org.postgresql.Driver")
+					.applySetting("hibernate.connection.url", "jdbc:postgresql://localhost:5434/TimetableBD")
 					.applySetting("hibernate.connection.username", "postgres")
 					.applySetting("hibernate.connection.password", "root")
-					.applySetting("dialect",
-							"org.hibernate.dialect.PostgreSQLDialect");
+					.applySetting("dialect", "org.hibernate.dialect.PostgreSQLDialect");
 			sessionFactory = configuration.buildSessionFactory(builder.build());
 		} catch (Throwable ex) {
 			// Make sure you log the exception, as it might be swallowed

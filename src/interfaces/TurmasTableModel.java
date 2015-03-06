@@ -18,11 +18,13 @@ public class TurmasTableModel extends JPanel{
 
 	private final boolean DEBUG = false;
 	private JTable table;
+	private MyTableModel tableModel;
 
 	public TurmasTableModel() {
 		super(new GridLayout(1, 0));
 
-		table = new JTable(new MyTableModel());
+		tableModel = new MyTableModel();
+		table = new JTable(tableModel);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		table.setFillsViewportHeight(true);
 
@@ -38,19 +40,37 @@ public class TurmasTableModel extends JPanel{
 	public void setTable(JTable table) {
 		this.table = table;
 	}
+	
+	public void loadTableValues(){
+		tableModel.loadTableValues();
+	}
+	
+	public void loadDataTable(){
+		tableModel.fireTableDataChanged();
+	}
 
-	class MyTableModel extends AbstractTableModel {
-
-		private String[] columnNames = {"Código", "Turno", "Máximo de Vagas", "Nome da Disciplina", "Codigo da Disciplina", "Sala"};
-
-		private ArrayList<ArrayList<Object>> data;
+	class MyTableModel extends TableModel {
 
 		public MyTableModel() {
+			super(DEBUG, 6);
+			
+			columnNames[0] = "Código";
+			columnNames[1] = "Turno";
+			columnNames[2] = "Máximo de Vagas";
+			columnNames[3] = "Nome da Disciplina";
+			columnNames[4] = "Codigo da Disciplina";
+			columnNames[5] = "Sala";
+			
 			data = new ArrayList<ArrayList<Object>>(); // row
 			// col
-
+			loadTableValues();
+		}
+		
+		public void loadTableValues(){
 			List<?> lista = HibernateUtil.findAll(timetable.Turma.class);
 
+			data.clear();
+			
 			for (int i = 0; i < lista.size(); i++) {
 				ArrayList<Object> row = new ArrayList<Object>();
 				row.add(((timetable.Turma) lista.get(i)).getCodigo());
@@ -62,92 +82,6 @@ public class TurmasTableModel extends JPanel{
 				data.add(row);
 			}
 
-		}
-
-		public String[] getColumnNames() {
-			return columnNames;
-		}
-
-		public void setColumnNames(String[] columnNames) {
-			this.columnNames = columnNames;
-		}
-
-		public ArrayList<ArrayList<Object>> getData() {
-			return data;
-		}
-
-		public void addRow(ArrayList<Object> row) {
-			data.add(row);
-		}
-
-		public void setData(ArrayList<ArrayList<Object>> data) {
-			this.data = data;
-		}
-
-		@Override
-		public int getColumnCount() {
-			return columnNames.length;
-		}
-
-		@Override
-		public int getRowCount() {
-			return data.size();
-		}
-
-		@Override
-		public String getColumnName(int col) {
-			return columnNames[col];
-		}
-
-		@Override
-		public Object getValueAt(int row, int col) {
-			return data.get(row).get(col);
-		}
-
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		@Override
-		public Class getColumnClass(int c) {
-			return getValueAt(0, c).getClass();
-		}
-
-		@Override
-		public boolean isCellEditable(int row, int col) {
-			if (col < 0) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		@Override
-		public void setValueAt(Object value, int row, int col) {
-			if (DEBUG) {
-				System.out.println("Setting value at " + row + "," + col
-						+ " to " + value + " (an instance of "
-						+ value.getClass() + ")");
-			}
-
-			data.get(row).set(col, value);
-			fireTableCellUpdated(row, col);
-
-			if (DEBUG) {
-				System.out.println("New value of data:");
-				printDebugData();
-			}
-		}
-
-		private void printDebugData() {
-			int numRows = getRowCount();
-			int numCols = getColumnCount();
-
-			for (int i = 0; i < numRows; i++) {
-				System.out.print("    row " + i + ":");
-				for (int j = 0; j < numCols; j++) {
-					System.out.print("  " + data.get(i).get(j));
-				}
-				System.out.println();
-			}
-			System.out.println("--------------------------");
 		}
 	}
 
