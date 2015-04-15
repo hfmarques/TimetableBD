@@ -6,10 +6,13 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import Utilitarios.OperacoesInterface;
 
 @SuppressWarnings("serial")
 public class ProfessorTableModel extends JPanel /* extends AbstractTableModel */{
@@ -28,6 +31,8 @@ public class ProfessorTableModel extends JPanel /* extends AbstractTableModel */
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
+		
+		OperacoesInterface.dimensionaTabela(table);
 	}
 
 	public JTable getTable() {
@@ -46,7 +51,7 @@ public class ProfessorTableModel extends JPanel /* extends AbstractTableModel */
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends TableModel {
+	class MyTableModel extends InterfaceTableModel {
 
 		public MyTableModel() {
 			super(DEBUG, 3);

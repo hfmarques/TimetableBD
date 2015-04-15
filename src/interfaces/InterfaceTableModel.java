@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-abstract class TableModel extends AbstractTableModel{
+public abstract class InterfaceTableModel extends AbstractTableModel{
 	
 	private boolean DEBUG;
 	
@@ -12,7 +12,7 @@ abstract class TableModel extends AbstractTableModel{
 
 	protected ArrayList<ArrayList<Object>> data;	
 
-	public TableModel(boolean dEBUG, int column) {
+	public InterfaceTableModel(boolean dEBUG, int column) {
 		super();
 		DEBUG = dEBUG;
 		this.columnNames = new String[column];

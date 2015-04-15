@@ -5,10 +5,13 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import Utilitarios.OperacoesInterface;
 import timetable.Turma;
 
 @SuppressWarnings("serial")
@@ -31,7 +34,9 @@ public class PlanoDepartamentalTableModel extends JPanel {
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
-		add(scrollPane);		
+		add(scrollPane);
+		
+		OperacoesInterface.dimensionaTabela(table);
 	}
 	
 	public JTable getTable() {
@@ -54,7 +59,7 @@ public class PlanoDepartamentalTableModel extends JPanel {
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends TableModel {
+	class MyTableModel extends InterfaceTableModel {
 
 		public MyTableModel() {
 			super(DEBUG, 8);

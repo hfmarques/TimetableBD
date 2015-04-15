@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import Utilitarios.OperacoesInterface;
+
 public class HistoricoAtendimentoTableModel extends JPanel {
 	private final boolean DEBUG = false;
 	private JTable table;
@@ -29,7 +31,8 @@ public class HistoricoAtendimentoTableModel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
-
+		
+		OperacoesInterface.dimensionaTabela(table);
 	}
 	
 	public JTable getTable() {
@@ -48,7 +51,7 @@ public class HistoricoAtendimentoTableModel extends JPanel {
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends TableModel {
+	class MyTableModel extends InterfaceTableModel {
 
 		@SuppressWarnings("rawtypes")
 		public MyTableModel() {

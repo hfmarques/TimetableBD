@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import Utilitarios.OperacoesInterface;
 import hibernate.HibernateUtil;
 
 /**
@@ -34,6 +35,8 @@ public class CursoTableModel extends JPanel /* extends AbstractTableModel */{
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
+		
+		OperacoesInterface.dimensionaTabela(table);
 	}
 
 	public JTable getTable() {
@@ -52,7 +55,7 @@ public class CursoTableModel extends JPanel /* extends AbstractTableModel */{
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends TableModel {
+	class MyTableModel extends InterfaceTableModel {
 
 		public MyTableModel() {
 			super(DEBUG, 5); // 5 = numero de colunas

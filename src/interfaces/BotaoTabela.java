@@ -28,8 +28,7 @@ import hibernate.HibernateUtil;
  * @author Héber
  */
 @SuppressWarnings("serial")
-public class BotaoTabela extends AbstractCellEditor implements
-		TableCellRenderer, TableCellEditor, ActionListener {
+public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer, TableCellEditor, ActionListener {
 
 	JTable table;
 	JButton renderButton; //botão de exibição
@@ -103,7 +102,7 @@ public class BotaoTabela extends AbstractCellEditor implements
 		renderButton.setPreferredSize(new Dimension(50, 20));
 		renderButton.setMaximumSize(new Dimension(50,20));
 		renderButton.setMinimumSize(new Dimension(50,20));
-		btnGridBag.setConstraints(renderButton, constraints);	
+		btnGridBag.setConstraints(renderButton, constraints);
 		
 		return painelBotao;
 	}

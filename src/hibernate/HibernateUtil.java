@@ -250,6 +250,27 @@ public class HibernateUtil {
 		}
 	}
 	
+	public static timetable.Curso findCursoByCode(String cursoCode) {
+		List<timetable.Curso> curso = null;
+		Query query = null;
+		try {
+			session = getInstance();
+			transaction = session.beginTransaction();
+			query = session.createQuery("FROM Curso WHERE codigo = :cursoCode");
+			query.setParameter("cursoCode", cursoCode);
+			curso = (List<timetable.Curso>) query.list();
+		} catch (HibernateException e) {
+			transaction.rollback();
+			System.err.println(e.fillInStackTrace());
+		} catch (Exception ex) {
+			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} finally {
+			session.close();
+			return curso.get(0);
+		}
+	}
+	
 	public static List<timetable.Docente> findDocenteByName(String nome) {
 		List<timetable.Docente> lista = null;
 		Query query = null;

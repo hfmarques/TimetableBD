@@ -197,7 +197,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 		return tableModel;
 	}
 
-	class MyTableModel extends TableModel {
+	class MyTableModel extends InterfaceTableModel {
 
 		public MyTableModel() {
 			super(DEBUG, 7);

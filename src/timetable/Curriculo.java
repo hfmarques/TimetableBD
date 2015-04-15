@@ -1,10 +1,18 @@
 package timetable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -26,4 +34,8 @@ public class Curriculo {
 	private boolean ativo;
 	@Column(name = "idCurso", unique = false, nullable = false)
 	private int idCurso;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="curso_fk")
+	private Curso curso;
 }

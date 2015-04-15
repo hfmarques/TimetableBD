@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import Utilitarios.OperacoesInterface;
 import hibernate.HibernateUtil;
 
 /**
@@ -35,6 +36,8 @@ public class CalourosTableModel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
+		
+		Utilitarios.OperacoesInterface.dimensionaTabela(table);
 	}
 
 	public JTable getTable() {
@@ -53,7 +56,7 @@ public class CalourosTableModel extends JPanel {
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends interfaces.TableModel {
+	class MyTableModel extends interfaces.InterfaceTableModel {
 
 		public MyTableModel() {
 			super(DEBUG, 2);

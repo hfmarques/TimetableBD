@@ -3,6 +3,7 @@ package timetable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,10 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.annotations.GenericGenerator;
+
 import hibernate.HibernateUtil;
 
 /**
@@ -41,12 +45,16 @@ public class Curso implements Serializable {
 	private String codigo;
 	@Column(name = "turno", unique = false, nullable = false)
 	private String turno;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "calouros_curso", joinColumns = { @JoinColumn(name = "curso_fk", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "calouros_fk", nullable = false, updatable = false) })
 	private List<Calouros> calouros = new ArrayList<Calouros>();
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "curso")
+	private List<Curso> curso = new ArrayList<Curso>();
 
-	public Curso(String nome, String codigo, String turno,
-			Calouros calourosPrimSem, Calouros calourosSegSem) {
+
+	public Curso(String nome, String codigo, String turno, Calouros calourosPrimSem, Calouros calourosSegSem) {
 		this.nome = nome;
 		this.codigo = codigo;
 		this.turno = turno;

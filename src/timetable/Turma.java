@@ -40,11 +40,11 @@ public class Turma implements Serializable {
 	@Column(name = "max_vagas", unique = false, nullable = false)
 	private int maxVagas;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "disciplina_fk", nullable = false)
 	private Disciplina disciplina;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sala_fk", nullable = false)
 	private Sala sala;
 

@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import Utilitarios.OperacoesInterface;
+
 @SuppressWarnings("serial")
 public class DisciplinaTableModel extends JPanel /* extends AbstractTableModel */{
 	private final boolean DEBUG = false;
@@ -31,6 +33,8 @@ public class DisciplinaTableModel extends JPanel /* extends AbstractTableModel *
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
+		
+		OperacoesInterface.dimensionaTabela(table);
 	}
 
 	public JTable getTable() {
@@ -49,7 +53,7 @@ public class DisciplinaTableModel extends JPanel /* extends AbstractTableModel *
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends interfaces.TableModel {
+	class MyTableModel extends interfaces.InterfaceTableModel {
 
 		public MyTableModel() {
 			

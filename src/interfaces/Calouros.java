@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -22,7 +23,7 @@ import hibernate.HibernateUtil;
 public class Calouros extends InterfacesTabela {
 
 	private JButton botaoInserir;
-	private int cursosAdicionados;
+	private int calourosAdicionados;
 
 	public Calouros() {		
 		super(new CalourosTableModel(), "Salvar");
@@ -65,7 +66,7 @@ public class Calouros extends InterfacesTabela {
 								i);
 					}
 				}
-				cursosAdicionados++; // armazena mais uma linha para ser salva
+				calourosAdicionados++; // armazena mais uma linha para ser salva
 										// posteriormente
 			}
 		});
@@ -73,31 +74,32 @@ public class Calouros extends InterfacesTabela {
 		// gera os acontecimentos ao se clicar no botão salvar
 		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// recebe por parametro o "model" da tabela para poder fazer as
-				// auterações no mesmo
-				CalourosTableModel.MyTableModel model = (CalourosTableModel.MyTableModel) ((CalourosTableModel) tabela)
-						.getTable().getModel();
+				// recebe por parametro o "model" da tabela para poder fazer as auterações no mesmo
+				CalourosTableModel.MyTableModel model = (CalourosTableModel.MyTableModel) ((CalourosTableModel) tabela).getTable().getModel();
+				
+				try{
+					for (int i = 0; i < calourosAdicionados; i++) { // para todos os novos dados inseridos confere se estes estão corretos
+						int compare = Integer.parseInt(((CalourosTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),1).toString());					
+						if(compare < 0 || compare > 150){
+							throw new Exception();
+						}
+					}
+					
+					for (int i = 0; i < calourosAdicionados; i++) { // para todos os novos dados inseridos é inserido um a um no banco de dados
+						timetable.Calouros calouro; // cria um novo calouro captura os dados inseridos na tabela e os insere no calouro
+						
+						calouro = new timetable.Calouros(Integer.parseInt(((CalourosTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),1).toString()));
 
-				for (int i = 0; i < cursosAdicionados; i++) { // para todos os
-																// novos dados
-																// inseridos é
-																// inserido um a
-																// um no banco
-																// de dados
-					timetable.Calouros calouro; // cria um novo curso
-					// captura os dados inseridos na tabela e os insere no curso
-					calouro = new timetable.Calouros(Integer
-							.parseInt(((CalourosTableModel) tabela)
-									.getTable()
-									.getValueAt(
-											(model.getData().size() - 1) - (i),
-											1).toString()));
-
-					// insere este novo curso no banco de dados
-					HibernateUtil.saveOrUpdate(calouro);
+						// insere este novo curso no banco de dados
+						HibernateUtil.saveOrUpdate(calouro);
+					}
+					
+					calourosAdicionados = 0; // zera a quantidade de cursos necessárias a serem adicionados
 				}
-				cursosAdicionados = 0; // zera a quantidade de cursos
-										// necessárias a serem adicionados
+
+				catch(Exception exc){
+					JOptionPane.showMessageDialog(null,	"Número de vagas de calouros deve ser entre 0 e 150", "Error", JOptionPane.ERROR_MESSAGE);	
+				}
 			}
 		});
 	}

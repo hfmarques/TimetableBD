@@ -17,6 +17,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import Utilitarios.OperacoesInterface;
 import timetable.Turma;
 
 public class PedidosCoordenadoresTableModel extends JPanel {
@@ -40,6 +41,8 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
+		
+		OperacoesInterface.dimensionaTabela(table);
 	}
 	
 	public JTable getTable() {
@@ -62,7 +65,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends TableModel {
+	class MyTableModel extends InterfaceTableModel {
 
 		@SuppressWarnings("rawtypes")
 		public MyTableModel() {
@@ -71,9 +74,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			columnNames[0] = "Semestre";
 			columnNames[1] = "Codigo da Disciplina";
 			columnNames[2] = "Disciplina";
-			columnNames[3] = "Turma";
-			columnNames[4] = "Horário";
-			columnNames[5] = "Observações";
+			columnNames[3] = "Observações";
 			
 			data = new ArrayList<ArrayList<Object>>(); // row
 			loadTableValues();
@@ -81,10 +82,10 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 		
 		public void loadTableValues(){
 			
-			ArrayList<timetable.Turma> _turma = (ArrayList<timetable.Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);
+			ArrayList<timetable.Disciplina> _disciplina = (ArrayList<timetable.Disciplina>) hibernate.HibernateUtil.findAll(timetable.Disciplina.class);
 			ArrayList<timetable.Curso> _curso = (ArrayList<timetable.Curso>) hibernate.HibernateUtil.findAll(timetable.Curso.class);
 			
-			int colunasFixas = 6;			
+			int colunasFixas = 4;			
 			int columnNumber = colunasFixas;
 						
 			columnNumber = columnNumber + _curso.size();
@@ -94,9 +95,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			columnNames[0] = "Semestre";
 			columnNames[1] = "Codigo da Disciplina";
 			columnNames[2] = "Disciplina";
-			columnNames[3] = "Turma";
-			columnNames[4] = "Horário";
-			columnNames[5] = "Observações";
+			columnNames[3] = "Observações";
 			
 			int colunCont = colunasFixas;
 			for(Iterator<?> itCurso = _curso.iterator(); itCurso.hasNext();){
@@ -105,16 +104,13 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 				colunCont++;
 			}
 			
-			_turma.sort(new Comparator<timetable.Turma>() {
+			_disciplina.sort(new Comparator<timetable.Disciplina>() {
 				@Override
-				public int compare(Turma o1, Turma o2) {
-					if(o1.getDisciplina().getPerfil().equals(o2.getDisciplina().getPerfil())){
-						if(o1.getDisciplina().getNome().equals(o2.getDisciplina().getNome())){
-							return o1.getCodigo().compareTo(o2.getCodigo());
-						}
-						return o1.getDisciplina().getNome().compareTo(o2.getDisciplina().getNome());						
+				public int compare(timetable.Disciplina o1,	timetable.Disciplina o2) {
+					if(o1.getPerfil().equals(o2.getPerfil())){
+						return o1.getNome().compareTo(o2.getNome());						
 					}						
-					return o1.getDisciplina().getPerfil().compareTo(o2.getDisciplina().getPerfil());
+					return o1.getPerfil().compareTo(o2.getPerfil());
 				}
 			});
 			
@@ -122,24 +118,22 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			
 			data.clear();
 			
-			for(Iterator<?> itTurma = _turma.iterator(); itTurma.hasNext();linhaCont++){					
-				timetable.Turma turma = ((timetable.Turma)itTurma.next());
+			for(Iterator<?> itTurma = _disciplina.iterator(); itTurma.hasNext();linhaCont++){					
+				timetable.Disciplina disciplina = ((timetable.Disciplina)itTurma.next());
 				ArrayList<Object>line = new ArrayList<Object>();
 				line.add("Semestre");
-				line.add(turma.getDisciplina().getCodigo());
-				line.add(turma.getDisciplina().getNome());
-				line.add(turma.getCodigo());
-				line.add("Horário");
-				line.add("");
+				line.add(disciplina.getCodigo());
+				line.add(disciplina.getNome());
+				line.add("-");
 
 				for(int i=colunasFixas;i<columnNumber;i++)
-					line.add("");
+					line.add("-");
 				data.add(line);
 					
 				ArrayList<Object> linha = new ArrayList<Object>();
 				
 				linha.add(linhaCont);
-				linha.add(timetable.Disciplina.getOrSetCoresPerfis(turma.getDisciplina().getPerfil()));
+				linha.add(timetable.Disciplina.getOrSetCoresPerfis(disciplina.getPerfil()));
 				
 				cor.add(linha);
 			}			

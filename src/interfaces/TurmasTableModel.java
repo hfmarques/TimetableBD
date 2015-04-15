@@ -14,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import Utilitarios.OperacoesInterface;
+
 public class TurmasTableModel extends JPanel{
 
 	private final boolean DEBUG = false;
@@ -31,6 +33,8 @@ public class TurmasTableModel extends JPanel{
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setDefaultEditor(Integer.class, new CellEditor());
 		add(scrollPane);
+		
+		OperacoesInterface.dimensionaTabela(table);
 	}
 
 	public JTable getTable() {
@@ -49,7 +53,7 @@ public class TurmasTableModel extends JPanel{
 		tableModel.fireTableDataChanged();
 	}
 
-	class MyTableModel extends TableModel {
+	class MyTableModel extends InterfaceTableModel {
 
 		public MyTableModel() {
 			super(DEBUG, 6);
