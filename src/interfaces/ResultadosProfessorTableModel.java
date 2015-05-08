@@ -19,7 +19,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.text.TabExpander;
 
+import org.hibernate.HibernateException;
+
 import hibernate.HibernateUtil;
+import hibernate.TurmaDAO;
 
 /**
  *
@@ -56,13 +59,15 @@ public class ResultadosProfessorTableModel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				botaoExpandir.editingStopped();
-				// System.out.println(e.getActionCommand() + " : " +
-				// table.getSelectedRow());
+				
+				List<?> turma = null;
+				try {
+					turma = TurmaDAO.encontraTurmas();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
-				List<?> turma = HibernateUtil.findTurmas();
-
-				// ResultadosTableModel.MyTableModel model =
-				// ((ResultadosTableModel.MyTableModel) tabela.getTable().getModel());
 				if (table.getModel().getValueAt(table.getSelectedRow(), 0).equals("+")) {
 					// caso o checkbox esteja marcado insere os dados extras dos professores
 
@@ -72,8 +77,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 
 					for (int j = 0; j < turma.size(); j++) { // para todas as turmas
 						for (int k = 0; k < ((timetable.Turma) turma.get(j))
-								.getDocente().size(); k++) { // para todos os
-																// professores
+								.getDocente().size(); k++) { // para todos os professores
 							// se existe doscente
 							// busca se o professore referente a linha atual da tambela
 							// possui o mesmo codigo que o professor que está no loop,
@@ -131,34 +135,19 @@ public class ResultadosProfessorTableModel extends JPanel {
 					table.getModel().setValueAt(empty, table.getSelectedRow(), 5);
 					table.getModel().setValueAt("+", table.getSelectedRow(), 0);
 				}
-				turma.clear();
-//				turma = HibernateUtil.findTurmasSemProf();
-//				
-//				for (int j = 0; j < turma.size(); j++) { // para todas as turmas
-//					if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {
-//						ArrayList<Object> row = new ArrayList<Object>();
-//
-//						row.add("+");
-//						row.add("");
-//						row.add("");
-//						row.add(((timetable.Turma) turma.get(j)).getDisciplina()
-//								.getNome()); // disciplina
-//						row.add(((timetable.Turma) turma.get(j)).getDisciplina()
-//								.getNome()
-//								+ " - "
-//								+ ((timetable.Turma) turma.get(j)).getCodigo()); // codigo
-//						row.add(Integer.toString(((timetable.Turma) turma.get(j)).getDisciplina().getCreditos())); // credito da turma
-//						row.add("");
-//						table.getModel().setValueAt(row, row, columnIndex);
-//					}
-//				}				
+				turma.clear();				
 			}
 			
 		});
 	}
 	
 	public void loadTableValues(){
-		tableModel.loadTableValues();
+		try {
+			tableModel.loadTableValues();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void updateTable(){
@@ -213,9 +202,9 @@ public class ResultadosProfessorTableModel extends JPanel {
 			data = new ArrayList<ArrayList<Object>>(); // row
 		}
 
-		public void loadTableValues(){
+		public void loadTableValues() throws HibernateException, Exception{
 			List<?> lista = HibernateUtil.findAll(timetable.Docente.class);
-			List<?> turma = HibernateUtil.findTurmas();
+			List<?> turma = TurmaDAO.encontraTurmas();
 			
 			data.clear();
 
@@ -259,14 +248,14 @@ public class ResultadosProfessorTableModel extends JPanel {
 		}
 		public void loadTable() {
 
-			loadTableValues();
+			try {
+				loadTableValues();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			/* Next we create our table models */
-
-			/*
-			 * First we create the main model We overide the AbstractTableModel
-			 * necessary methods
-			 */
+			/*é criado um novo table model*/
 			AbstractTableModel modelo = new AbstractTableModel() {
 				public String getColumnName(int col) {
 					return columnNames[col].toString();

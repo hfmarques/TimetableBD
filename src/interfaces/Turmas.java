@@ -9,7 +9,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import timetable.Disciplina;
+import timetable.Sala;
+import timetable.Turma;
 
 public class Turmas extends InterfacesTabela{
 	
@@ -36,20 +42,21 @@ public class Turmas extends InterfacesTabela{
 				// recebe por parametro o "model" da tabela para poder fazer as alterações no mesmo
 				TurmasTableModel.MyTableModel model = (TurmasTableModel.MyTableModel) ((TurmasTableModel) tabela).getTable().getModel();
 				// adiciona ao arry list campos em branco para mais a frente serem editados
-				for (int i = 0; i < model.getData().get(0).size(); i++) {
+				for (int i = 0; i < model.getColumnCount(); i++) {
 					linha.add("");
 				}
 
 				// adiciona a linha ao modelo
 				model.addRow(linha);
 				
-				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza a nova linha para ser exibida na tabela
+				for (int i = 0; i < model.getColumnCount(); i++) { // atualiza a nova linha para ser exibida na tabela
 					if (model.getData().size() - 1 < 0) {
 						model.fireTableCellUpdated(0, i);
 					} else {
-						model.fireTableCellUpdated(model.getData().size() - 1, i);
+						model.fireTableCellUpdated(model.getData().size() - 1,i);
 					}
 				}
+				
 				turmasAdicionadas++; // armazena mais uma linha para ser salva posteriormente
 			}
 		});
@@ -64,18 +71,31 @@ public class Turmas extends InterfacesTabela{
 					// para todos os novos dados inseridos é inserido um a um no banco de dados
 					timetable.Turma novaTurma; // cria um novo curso
 					// captura os dados inseridos na tabela e os insere no curso
+					int numLinhas = model.getData().size();
 					
-					if( null == HibernateUtil.findDisciplinaByCode(((TurmasTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 4).toString()))
-						System.out.println("é nulo :(");
-						
-					novaTurma = new timetable.Turma(((TurmasTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 0).toString(),
-							((TurmasTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 1).toString(),
-							Integer.parseInt(((TurmasTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 2).toString()),
-							HibernateUtil.findDisciplinaByCode(((TurmasTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 4).toString()),
-							HibernateUtil.findSalaByNumero(((TurmasTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 5).toString()),
-							null);
-					// insere este novo curso no banco de dados
-					HibernateUtil.saveOrUpdate(novaTurma);
+					if(numLinhas != 0)
+						numLinhas = numLinhas - 1;
+					
+					Disciplina disc = HibernateUtil.findDisciplinaByCode(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas, 4).toString());
+					Sala sala = HibernateUtil.findSalaByNumero(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 5).toString());
+					if(disc == null){
+						JOptionPane.showMessageDialog(new JFrame(), "Código da disciplina não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					else if(sala == null){
+						JOptionPane.showMessageDialog(new JFrame(), "Número da sala não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					else{						
+						novaTurma = new timetable.Turma(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 0).toString(),
+								((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 1).toString(),
+								Integer.parseInt(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 2).toString()),
+								disc,
+								sala,
+								null);
+						// insere este novo curso no banco de dados
+						HibernateUtil.saveOrUpdate(novaTurma);
+					}
 				}
 				turmasAdicionadas = 0; // zera a quantidade de docentes necessários a serem adicionados
 			}

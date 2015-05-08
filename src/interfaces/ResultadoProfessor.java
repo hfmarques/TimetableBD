@@ -17,8 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.table.TableModel;
 
+import org.hibernate.HibernateException;
+
 import timetable.Docente;
 import hibernate.HibernateUtil;
+import hibernate.TurmaDAO;
 
 /**
  *
@@ -30,13 +33,23 @@ public class ResultadoProfessor extends InterfacesTabela{
 		super(new ResultadosProfessorTableModel(), "Atualizar Planilha");
 		
 		// inicializa as turmas dos professores da tabela
-		inicializaTurmas();
+		try {
+			inicializaTurmas();
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				((ResultadosProfessorTableModel) tabela).loadTableValues();
-				inicializaTurmas();
+				try {
+					inicializaTurmas();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				((ResultadosProfessorTableModel) tabela).loadDataTable();							
 
 			}
@@ -45,8 +58,8 @@ public class ResultadoProfessor extends InterfacesTabela{
 
 	// metodo para se inicializar os dados de todas as turmas na tabela em
 	// conjunto com seu professor
-	public void inicializaTurmas() {
-		List<?> turma = HibernateUtil.findTurmas();
+	public void inicializaTurmas() throws HibernateException, Exception {
+		List<?> turma = TurmaDAO.encontraTurmas();
 
 
 		for (int i = 0; i < ((ResultadosProfessorTableModel) tabela).getTable().getModel().getRowCount(); i++) { // procura em todas as linhas da tabela
@@ -102,7 +115,7 @@ public class ResultadoProfessor extends InterfacesTabela{
 		}
 		
 		turma.clear();
-		turma = HibernateUtil.findTurmasSemProf();
+		turma = TurmaDAO.encontraTurmasSemProf();
 		MyTableModel model = ((ResultadosProfessorTableModel) tabela).getTableModel();
 		for (int j = 0; j < turma.size(); j++) { // para todas as turmas
 			if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {

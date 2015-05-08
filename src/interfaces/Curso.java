@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import hibernate.CalourosDAO;
 import hibernate.HibernateUtil;
 
 /**
@@ -49,18 +50,18 @@ public class Curso extends InterfacesTabela {
 
 				// adiciona ao arry list campos em branco para mais a frente
 				// serem editados
-				for (int i = 0; i < model.getData().get(0).size(); i++) {
+				for (int i = 0; i < model.getColumnCount(); i++) {
 					linha.add("");
 				}
 
 				// adiciona a linha ao modelo
 				model.addRow(linha);
-				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza a nova linha para ser exibida na tabela
+				
+				for (int i = 0; i < model.getColumnCount(); i++) { // atualiza a nova linha para ser exibida na tabela
 					if (model.getData().size() - 1 < 0) {
 						model.fireTableCellUpdated(0, i);
 					} else {
-						model.fireTableCellUpdated(model.getData().size() - 1,
-								i);
+						model.fireTableCellUpdated(model.getData().size() - 1,i);
 					}
 				}
 				cursosAdicionados++; // armazena mais uma linha para ser salva
@@ -81,8 +82,8 @@ public class Curso extends InterfacesTabela {
 						String Turno = ((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 2).toString();
 						int numVagas1 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 3).toString());
 						int numVagas2 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 4).toString());
-						timetable.Calouros calouroSem1 = HibernateUtil.findCalouroID(numVagas1);
-						timetable.Calouros calouroSem2 = HibernateUtil.findCalouroID(numVagas2);
+						timetable.Calouros calouroSem1 = CalourosDAO.encontraCalouroPorVagas(numVagas1);
+						timetable.Calouros calouroSem2 = CalourosDAO.encontraCalouroPorVagas(numVagas2);
 						
 //						if(compare < 0 || compare > 150){
 //							throw new Exception();
@@ -92,8 +93,8 @@ public class Curso extends InterfacesTabela {
 						timetable.Curso curso; // cria um novo curso captura os dados inseridos na tabela e os insere no curso
 						int numVagas1 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 3).toString());
 						int numVagas2 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 4).toString());
-						timetable.Calouros calouroSem1 = HibernateUtil.findCalouroID(numVagas1);
-						timetable.Calouros calouroSem2 = HibernateUtil.findCalouroID(numVagas2);
+						timetable.Calouros calouroSem1 = CalourosDAO.encontraCalouroPorVagas(numVagas1);
+						timetable.Calouros calouroSem2 = CalourosDAO.encontraCalouroPorVagas(numVagas2);
 						if (calouroSem1 != null && calouroSem2 != null) {
 							curso = new timetable.Curso(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),0).toString(),
 									((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 1).toString(),

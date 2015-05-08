@@ -1,6 +1,8 @@
 package interfaces;
 
+import hibernate.GenericoDAO;
 import hibernate.HibernateUtil;
+import hibernate.TurmaDAO;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -21,6 +23,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+
+import org.hibernate.HibernateException;
 
 import antlr.collections.List;
 import timetable.Docente;
@@ -44,12 +48,19 @@ public class PlanoDepartamental extends InterfacesTabela{
 				JTable table = ((PlanoDepartamentalTableModel) tabela).getTable();
 				for(int i=0;i<table.getRowCount();i++){
 					if(!table.getValueAt(i, 6).toString().equals("Clique para escolher o Docente")){
-						ArrayList<Turma> lista = (ArrayList<Turma>) HibernateUtil.findTurmasByCode(table.getValueAt(i, 1).toString(), table.getValueAt(i, 3).toString());
-						lista.get(0).getDocente().clear();
-						lista.get(0).getDocente().add(HibernateUtil.findDocenteByName(table.getValueAt(i, 6).toString()).get(0));
-						System.out.println(lista.get(0).getDocente().get(0).getNome());
-						System.out.println();
-						HibernateUtil.saveOrUpdate(lista.get(0));
+						Turma turma = null;
+						try {
+							turma = TurmaDAO.encontraTurmasPorCodigo(table.getValueAt(i, 1).toString(), table.getValueAt(i, 3).toString());
+							turma.getDocente().clear();
+							turma.getDocente().add(HibernateUtil.findDocenteByName(table.getValueAt(i, 6).toString()).get(0));
+							System.out.println(turma.getDocente().get(0).getNome());
+							System.out.println();
+							GenericoDAO dao = new GenericoDAO();
+							dao.salvaOuEdita(turma);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}						
 					}
 				}
 			}

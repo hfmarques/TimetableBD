@@ -60,14 +60,6 @@ public class Sala implements Serializable {
 	public void setLocal(String local) {
 		this.local = local;
 	}
-
-	public List<Turma> getTurma() {
-		return turma;
-	}
-
-	public void setTurma(List<Turma> turma) {
-		this.turma = turma;
-	}
 	
 	
 

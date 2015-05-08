@@ -34,33 +34,27 @@ public class Professor extends InterfacesTabela{
 		// gera os acontecimentos ao se clicar no botão inserir
 		botaoInserir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Object> linha = new ArrayList<Object>(); // arraylist para
-															// armazenar a nova
-															// linha da tabela
-				// recebe por parametro o "model" da tabela para poder fazer as
-				// auterações no mesmo
+				ArrayList<Object> linha = new ArrayList<Object>(); // arraylist para armazenar a nova linha da tabela
+				// recebe por parametro o "model" da tabela para poder fazer as auterações no mesmo
 				ProfessorTableModel.MyTableModel model = (ProfessorTableModel.MyTableModel) ((ProfessorTableModel) tabela)
 						.getTable().getModel();
 
-				// adiciona ao arry list campos em branco para mais a frente
-				// serem editados
-				for (int i = 0; i < model.getData().get(0).size(); i++) {
+				// adiciona ao arry list campos em branco para mais a frente serem editados
+				for (int i = 0; i < model.getColumnCount(); i++) {
 					linha.add("");
 				}
 
 				// adiciona a linha ao modelo
 				model.addRow(linha);
 				
-				System.out.println("entrou aqui");
-				for (int i = 0; i < model.getData().get(0).size(); i++) { // atualiza a nova linha para ser exibida na tabela
+				for (int i = 0; i < model.getColumnCount(); i++) { // atualiza a nova linha para ser exibida na tabela
 					if (model.getData().size() - 1 < 0) {
 						model.fireTableCellUpdated(0, i);
 					} else {
 						model.fireTableCellUpdated(model.getData().size() - 1,i);
 					}
 				}
-				professoresAdicionados++; // armazena mais uma linha para ser salva
-										// posteriormente
+				professoresAdicionados++; // armazena mais uma linha para ser salva posteriormente
 			}
 		});
 

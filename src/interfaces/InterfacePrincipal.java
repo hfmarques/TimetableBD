@@ -26,6 +26,7 @@ public class InterfacePrincipal {
 		PedidosCoordenadores pedidosCoordenadores = new PedidosCoordenadores();
 		HistoricoAtendimento historicoAtendimento = new HistoricoAtendimento();
 		VagasOferecidas vagasOferecidas = new VagasOferecidas();
+		CadastroPedidos janelaCadastro = new CadastroPedidos();
 
 		janelaPrincipal = new JFrame("Gerador de Grade");
 		abas = new JTabbedPane();
@@ -39,6 +40,7 @@ public class InterfacePrincipal {
 		abas.addTab("Turmas", janelaTurmas.getPainel());
 		abas.addTab("Cursos", janelaCurso.getPainel());
 		abas.addTab("Calouros", janelaCalouros.getPainel());
+		abas.addTab("Cadastro de Pedidos", janelaCadastro.getPainel());
 		janelaPrincipal.add(abas);
 		janelaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -53,7 +55,12 @@ public class InterfacePrincipal {
             	
             	if (abas.getSelectedComponent() == abas.getComponent(1)) {
                     ((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadTableValues();
-    				janelaResultados.inicializaTurmas();
+    				try {
+						janelaResultados.inicializaTurmas();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
     				((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadDataTable();
                 }
             	
@@ -95,6 +102,12 @@ public class InterfacePrincipal {
                 if (abas.getSelectedComponent() == abas.getComponent(9)) {
                     ((CalourosTableModel) janelaCalouros.getTabela()).loadTableValues();
     				((CalourosTableModel) janelaCalouros.getTabela()).loadDataTable();
+                }
+                
+                if (abas.getSelectedComponent() == abas.getComponent(10)) {
+                    ((CadastroPedidosTableModel) janelaCadastro.getTabela()).loadTableValues();
+                    janelaCadastro.inicializaDisciplinas();
+    				((CadastroPedidosTableModel) janelaCadastro.getTabela()).loadDataTable();
                 }
             }  
         });

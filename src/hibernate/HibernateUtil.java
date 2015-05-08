@@ -3,6 +3,7 @@ package hibernate;
 import interfaces.Disciplina;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,12 +38,11 @@ public class HibernateUtil {
 		try {
 			// Create the SessionFactory from hibernate.cfg.xml
 			Configuration configuration = new Configuration()
-					.configure(new File(
-							"C:\\Users\\Héber\\Documents\\GitHub\\TimetableBD\\src\\hibernate.cfg.xml"));
+					.configure(new File("C:\\Users\\Héber\\Documents\\GitHub\\TimetableBD\\src\\hibernate.cfg.xml"));
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
 					.applySetting("hibernate.connection.driver_class", "org.postgresql.Driver")
-					.applySetting("hibernate.connection.url", "jdbc:postgresql://localhost:5434/TimetableBD")
+					.applySetting("hibernate.connection.url", "jdbc:postgresql://localhost:5432/TimetableBD")
 					.applySetting("hibernate.connection.username", "postgres")
 					.applySetting("hibernate.connection.password", "root")
 					.applySetting("dialect", "org.hibernate.dialect.PostgreSQLDialect");
@@ -90,203 +90,6 @@ public class HibernateUtil {
 		} catch (HibernateException e) {
 			transaction.rollback();
 			System.err.println(e.fillInStackTrace());
-		} finally {
-			session.close();
-			return lista;
-		}
-	}
-
-	@SuppressWarnings({ "finally", "rawtypes" })
-	public static List<?> findAll(Class objClass) {
-		List<?> lista = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session.createQuery("From " + objClass.getName());
-			lista = (List<?>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} finally {
-			session.close();
-			return lista;
-		}
-	}
-
-	public static Calouros findCalouroID(int numVagas) {
-		List<Calouros> lista = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session.createQuery("From Calouros");			
-			lista = (List<Calouros>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} finally {
-			session.close();
-			for (Iterator<Calouros> it = lista.iterator(); it.hasNext();) {
-				Calouros aux = it.next(); // No downcasting required.
-				if (aux.getNumVagas() == numVagas) {
-					return aux;
-				}
-			}
-
-			return null;
-		}
-	}
-
-	public static List<timetable.Turma> findTurmas() {
-		List<timetable.Turma> lista = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session
-					.createQuery("SELECT t FROM Turma AS t JOIN FETCH t.docente JOIN FETCH t.disciplina");
-			lista = (List<timetable.Turma>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} finally {
-			session.close();
-			return lista;
-		}
-	}
-
-	public static List<timetable.Turma> findTurmasSemProf() {
-		List<timetable.Turma> lista = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session
-					.createQuery("SELECT t FROM Turma AS t JOIN FETCH t.disciplina");
-			lista = (List<timetable.Turma>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} finally {
-			session.close();
-			return lista;
-		}
-	}
-	
-	public static List<timetable.Turma> findTurmasByCode(String disciplinaCode, String turmaCode) {
-		List<timetable.Turma> lista = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session
-					.createQuery("FROM Turma WHERE codigo = :turmaCode and disciplina.codigo = :discCode");
-			query.setParameter("discCode", disciplinaCode);
-			query.setParameter("turmaCode", turmaCode);
-			lista = (List<timetable.Turma>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} finally {
-			session.close();
-			return lista;
-		}
-	}
-	
-	public static timetable.Sala findSalaByNumero(String numeroSala) {
-		List<timetable.Sala> sala = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session
-					.createQuery("FROM Sala WHERE numero = :numeroSala");
-			query.setParameter("numeroSala", numeroSala);
-			sala = (List<timetable.Sala>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} finally {
-			session.close();
-			return sala.get(0);
-		}
-	}
-	
-	public static timetable.Disciplina findDisciplinaByCode(String disciplinaCode) {
-		List<timetable.Disciplina> disc = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session
-					.createQuery("FROM Disciplina WHERE codigo = :discCode");
-			query.setParameter("discCode", disciplinaCode);
-			disc = (List<timetable.Disciplina>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} finally {
-			session.close();
-			return disc.get(0);
-		}
-	}
-	
-	public static timetable.Curso findCursoByCode(String cursoCode) {
-		List<timetable.Curso> curso = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session.createQuery("FROM Curso WHERE codigo = :cursoCode");
-			query.setParameter("cursoCode", cursoCode);
-			curso = (List<timetable.Curso>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} finally {
-			session.close();
-			return curso.get(0);
-		}
-	}
-	
-	public static List<timetable.Docente> findDocenteByName(String nome) {
-		List<timetable.Docente> lista = null;
-		Query query = null;
-		try {
-			session = getInstance();
-			transaction = session.beginTransaction();
-			query = session
-					.createQuery("FROM Docente WHERE nome_completo = :nome");
-			query.setParameter("nome", nome);
-			lista = (List<timetable.Docente>) query.list();
-		} catch (HibernateException e) {
-			transaction.rollback();
-			System.err.println(e.fillInStackTrace());
-		} catch (Exception ex) {
-			Logger.getLogger(HibernateUtil.class.getName()).log(Level.SEVERE,
-					null, ex);
 		} finally {
 			session.close();
 			return lista;

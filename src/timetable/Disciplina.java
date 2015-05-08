@@ -48,7 +48,7 @@ public class Disciplina implements Serializable {
 	@Column(name = "perfil", unique = false, nullable = true)
 	private String perfil;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "disciplina")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "disciplina")
 	private List<Turma> turma = new ArrayList<Turma>();
 	
 	static HashMap<String, Color> coresPerfis = new HashMap<String, Color>();
