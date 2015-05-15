@@ -55,13 +55,8 @@ public class InterfacePrincipal {
             	
             	if (abas.getSelectedComponent() == abas.getComponent(1)) {
                     ((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadTableValues();
-    				try {
-						janelaResultados.inicializaTurmas();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-    				((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadDataTable();
+    				janelaResultados.inicializaTurmas();
+					((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadDataTable();
                 }
             	
             	if (abas.getSelectedComponent() == abas.getComponent(2)) {
@@ -97,6 +92,7 @@ public class InterfacePrincipal {
             	if (abas.getSelectedComponent() == abas.getComponent(8)) {
                     ((CursoTableModel) janelaCurso.getTabela()).loadTableValues();
     				((CursoTableModel) janelaCurso.getTabela()).loadDataTable();
+    				
                 }                
                 
                 if (abas.getSelectedComponent() == abas.getComponent(9)) {

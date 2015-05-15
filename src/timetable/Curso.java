@@ -46,11 +46,11 @@ public class Curso implements Serializable {
 	@Column(name = "turno", unique = false, nullable = false)
 	private String turno;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "calouros_curso", joinColumns = { @JoinColumn(name = "curso_fk", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "calouros_fk", nullable = false, updatable = false) })
 	private List<Calouros> calouros = new ArrayList<Calouros>();
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "curso")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curso")
 	private List<Curso> curso = new ArrayList<Curso>();
 
 
@@ -104,32 +104,5 @@ public class Curso implements Serializable {
 
 	public void setCalouros(List<Calouros> calouros) {
 		this.calouros = calouros;
-	}
-
-	public static Curso getTableLine(int id) {
-		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-			Query query = session
-					.createQuery("select u from Curso as u where u.idCurso = :idCurso");
-			query.setParameter("idCurso", id);
-
-			Curso resultado = (Curso) query.uniqueResult();
-
-			session.close();
-
-			HibernateUtil.getSessionFactory().close();
-
-			if (resultado != null) {
-				return resultado;
-			}
-
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 }

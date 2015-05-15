@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
 import org.hibernate.HibernateException;
 
 import timetable.Docente;
+import timetable.Turma;
 import hibernate.HibernateUtil;
 import hibernate.TurmaDAO;
 
@@ -28,28 +29,20 @@ import hibernate.TurmaDAO;
  * @author Héber
  */
 public class ResultadoProfessor extends InterfacesTabela{
+	
+	TurmaDAO turmaDAO;
 
 	public ResultadoProfessor() {
 		super(new ResultadosProfessorTableModel(), "Atualizar Planilha");
-		
+		turmaDAO = new TurmaDAO();
 		// inicializa as turmas dos professores da tabela
-		try {
-			inicializaTurmas();
-		} catch (Exception e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		inicializaTurmas();
 		
 		botaoPadrao.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				((ResultadosProfessorTableModel) tabela).loadTableValues();
-				try {
-					inicializaTurmas();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				inicializaTurmas();
 				((ResultadosProfessorTableModel) tabela).loadDataTable();							
 
 			}
@@ -58,8 +51,17 @@ public class ResultadoProfessor extends InterfacesTabela{
 
 	// metodo para se inicializar os dados de todas as turmas na tabela em
 	// conjunto com seu professor
-	public void inicializaTurmas() throws HibernateException, Exception {
-		List<?> turma = TurmaDAO.encontraTurmas();
+	public void inicializaTurmas(){
+		List<Turma> turma = null;
+		try {
+			turma = turmaDAO.procuraTodos();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 
 		for (int i = 0; i < ((ResultadosProfessorTableModel) tabela).getTable().getModel().getRowCount(); i++) { // procura em todas as linhas da tabela
@@ -115,7 +117,15 @@ public class ResultadoProfessor extends InterfacesTabela{
 		}
 		
 		turma.clear();
-		turma = TurmaDAO.encontraTurmasSemProf();
+		try {
+			turma = turmaDAO.encontraTurmasSemProf();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		MyTableModel model = ((ResultadosProfessorTableModel) tabela).getTableModel();
 		for (int j = 0; j < turma.size(); j++) { // para todas as turmas
 			if (((timetable.Turma) turma.get(j)).getDocente().isEmpty()) {

@@ -29,8 +29,7 @@ public class HistoricoAtendimento extends InterfacesTabela{
 		botaoPadrao.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				ArrayList<timetable.Turma> turma = (ArrayList<Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);				
+			public void actionPerformed(ActionEvent e) {				
 			}
 		});
 

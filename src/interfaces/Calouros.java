@@ -91,7 +91,7 @@ public class Calouros extends InterfacesTabela {
 						calouro = new timetable.Calouros(Integer.parseInt(((CalourosTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),1).toString()));
 
 						// insere este novo curso no banco de dados
-						HibernateUtil.saveOrUpdate(calouro);
+						genericoDAO.salvaOuEdita(calouro);
 					}
 					
 					calourosAdicionados = 0; // zera a quantidade de cursos necessárias a serem adicionados

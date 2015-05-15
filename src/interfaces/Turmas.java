@@ -1,6 +1,9 @@
 package interfaces;
 
+import hibernate.DisciplinaDAO;
+import hibernate.GenericoDAO;
 import hibernate.HibernateUtil;
+import hibernate.SalaDAO;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -21,9 +24,13 @@ public class Turmas extends InterfacesTabela{
 	
 	private JButton botaoInserir;
 	private int turmasAdicionadas;
+	DisciplinaDAO discDAO;
+	SalaDAO salaDAO;
 
 	public Turmas() {
 		super(new TurmasTableModel(), "Salvar");
+		discDAO = new DisciplinaDAO();
+		salaDAO = new SalaDAO();
 		
 		botaoInserir = new JButton("Inserir Turma");
 		painelBotao.add(botaoInserir);
@@ -76,8 +83,20 @@ public class Turmas extends InterfacesTabela{
 					if(numLinhas != 0)
 						numLinhas = numLinhas - 1;
 					
-					Disciplina disc = HibernateUtil.findDisciplinaByCode(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas, 4).toString());
-					Sala sala = HibernateUtil.findSalaByNumero(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 5).toString());
+					Disciplina disc = null;
+					try {
+						disc = discDAO.encontraDisciplinaPorCodigo(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas, 4).toString());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Sala sala = null;
+					try {
+						sala = salaDAO.encontraSalaPorNumero(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas, 5).toString());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					if(disc == null){
 						JOptionPane.showMessageDialog(new JFrame(), "Código da disciplina não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
@@ -86,7 +105,7 @@ public class Turmas extends InterfacesTabela{
 						JOptionPane.showMessageDialog(new JFrame(), "Número da sala não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
 					}
 					
-					else{						
+					else{
 						novaTurma = new timetable.Turma(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 0).toString(),
 								((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 1).toString(),
 								Integer.parseInt(((TurmasTableModel) tabela).getTable().getValueAt(numLinhas - (i), 2).toString()),
@@ -94,7 +113,7 @@ public class Turmas extends InterfacesTabela{
 								sala,
 								null);
 						// insere este novo curso no banco de dados
-						HibernateUtil.saveOrUpdate(novaTurma);
+						genericoDAO.salvar(novaTurma);
 					}
 				}
 				turmasAdicionadas = 0; // zera a quantidade de docentes necessários a serem adicionados

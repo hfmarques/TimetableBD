@@ -96,32 +96,4 @@ public class Docente implements Serializable {
 	public void setCreditacaoEsperada(int creditacaoEsperada) {
 		this.creditacaoEsperada = creditacaoEsperada;
 	}
-
-	public static Docente getTableLine(int id) {
-		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-			Query query = session
-					.createQuery("select u from Docente as u where u.id = :id");
-			query.setParameter("id", id);
-
-			Docente resultado = (Docente) query.uniqueResult();
-
-			session.close();
-
-			HibernateUtil.getSessionFactory().close();
-
-			if (resultado != null) {
-				return resultado;
-			}
-
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
 }

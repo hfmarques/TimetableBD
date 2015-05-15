@@ -81,7 +81,7 @@ public class Disciplina extends InterfacesTabela{
 								((DisciplinaTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),3).toString());
 					
 					// insere este novo curso no banco de dados
-					HibernateUtil.saveOrUpdate(disc);
+					genericoDAO.salvaOuEdita(disc);
 				}
 				disciplinasAdicionadas = 0; // zera a quantidade de docentes necessários a serem adicionados
 			}

@@ -1,6 +1,8 @@
 package interfaces;
 
 
+import hibernate.GenericoDAO;
+
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,6 +22,7 @@ public abstract class InterfacesTabela {
 	protected GridBagLayout gridBag;
 	protected GridBagConstraints constraints;
 	protected GridBagLayout btnGridBag;
+	protected GenericoDAO genericoDAO;
 
 	public InterfacesTabela(JPanel tabela, String textoBotao) {
 		// inicializa as variáveis
@@ -28,7 +31,7 @@ public abstract class InterfacesTabela {
 		this.tabela = tabela;
 		painelBotao = new JPanel();
 		botaoPadrao = new JButton(textoBotao);
-		
+		genericoDAO = new GenericoDAO();
 		// monta a janela principal
 		gridBag = new GridBagLayout();
 		constraints = new GridBagConstraints();

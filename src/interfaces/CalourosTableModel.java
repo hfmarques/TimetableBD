@@ -12,6 +12,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import Utilitarios.OperacoesInterface;
+import hibernate.CalourosDAO;
 import hibernate.HibernateUtil;
 
 /**
@@ -24,9 +25,12 @@ public class CalourosTableModel extends JPanel {
 	private final boolean DEBUG = false;
 	private JTable table;
 	private MyTableModel tableModel;
+	CalourosDAO calourosDAO;
 
 	public CalourosTableModel() {
 		super(new GridLayout(1, 0));
+		
+		calourosDAO = new CalourosDAO();
 
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
@@ -73,7 +77,13 @@ public class CalourosTableModel extends JPanel {
 		public void loadTableValues(){
 			// col
 
-			List<?> lista = HibernateUtil.findAll(timetable.Calouros.class);
+			List<timetable.Calouros> lista = null;
+			try {
+				lista = calourosDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			data.clear();
 

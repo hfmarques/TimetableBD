@@ -1,5 +1,6 @@
 package interfaces;
 
+import hibernate.DocenteDAO;
 import hibernate.HibernateUtil;
 
 import java.awt.Dimension;
@@ -12,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import timetable.Docente;
 import Utilitarios.OperacoesInterface;
 
 @SuppressWarnings("serial")
@@ -19,10 +21,12 @@ public class ProfessorTableModel extends JPanel /* extends AbstractTableModel */
 	private final boolean DEBUG = false;
 	private JTable table;
 	private MyTableModel tableModel;
-
+	DocenteDAO docenteDAO;
+	
 	public ProfessorTableModel() {
 		super(new GridLayout(1, 0));
-
+		docenteDAO = new DocenteDAO();
+		
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -67,7 +71,13 @@ public class ProfessorTableModel extends JPanel /* extends AbstractTableModel */
 		
 		public void loadTableValues(){
 
-			List<?> lista = HibernateUtil.findAll(timetable.Docente.class);
+			List<Docente> lista = null;
+			try {
+				lista = docenteDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			data.clear();
 			

@@ -126,31 +126,4 @@ public class Disciplina implements Serializable {
 			return coresPerfis.get(key);
 		}
 	}
-	
-	public static Disciplina getTableLine(int id) {
-		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-			Query query = session
-					.createQuery("select u from Disciplina as u where u.idDisciplina = :idDisciplina");
-			query.setParameter("idDisciplina", id);
-
-			Disciplina resultado = (Disciplina) query.uniqueResult();
-
-			session.close();
-
-			HibernateUtil.getSessionFactory().close();
-
-			if (resultado != null) {
-				return resultado;
-			}
-
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 }

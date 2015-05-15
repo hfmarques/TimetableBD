@@ -1,5 +1,6 @@
 package interfaces;
 
+import hibernate.DisciplinaDAO;
 import hibernate.HibernateUtil;
 
 import java.awt.Dimension;
@@ -13,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import timetable.Disciplina;
 import Utilitarios.OperacoesInterface;
 
 @SuppressWarnings("serial")
@@ -20,9 +22,11 @@ public class DisciplinaTableModel extends JPanel /* extends AbstractTableModel *
 	private final boolean DEBUG = false;
 	private JTable table;
 	private MyTableModel tableModel;
+	DisciplinaDAO discDAO;
 
 	public DisciplinaTableModel() {
 		super(new GridLayout(1, 0));
+		discDAO = new DisciplinaDAO();
 		
 		tableModel = new MyTableModel();
 
@@ -71,7 +75,13 @@ public class DisciplinaTableModel extends JPanel /* extends AbstractTableModel *
 		
 		public void loadTableValues(){
 
-			List<?> lista = HibernateUtil.findAll(timetable.Disciplina.class);
+			List<Disciplina> lista = null;
+			try {
+				lista = discDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			data.clear();
 

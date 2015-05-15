@@ -1,5 +1,7 @@
 package interfaces;
 
+import hibernate.CursoDAO;
+import hibernate.TurmaDAO;
 import interfaces.PedidosCoordenadoresTableModel.MyTableModel;
 
 import java.awt.Dimension;
@@ -18,9 +20,13 @@ public class HistoricoAtendimentoTableModel extends JPanel {
 	private final boolean DEBUG = false;
 	private JTable table;
 	MyTableModel tableModel;
+	TurmaDAO turmaDAO;
+	CursoDAO cursoDAO;
 	
 	public HistoricoAtendimentoTableModel() {
 		super(new GridLayout(1, 0));
+		turmaDAO = new TurmaDAO();
+		cursoDAO = new CursoDAO();
 
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
@@ -73,8 +79,20 @@ public class HistoricoAtendimentoTableModel extends JPanel {
 		
 		public void loadTableValues(){		
 			
-			ArrayList<timetable.Turma> _turma = (ArrayList<timetable.Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);
-			ArrayList<timetable.Curso> _curso = (ArrayList<timetable.Curso>) hibernate.HibernateUtil.findAll(timetable.Curso.class);
+			ArrayList<timetable.Turma> _turma = null;
+			try {
+				_turma = (ArrayList<timetable.Turma>) turmaDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ArrayList<timetable.Curso> _curso = null;
+			try {
+				_curso = (ArrayList<timetable.Curso>) cursoDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			data.clear();
 			

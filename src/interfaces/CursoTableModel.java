@@ -10,7 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import timetable.Calouros;
 import Utilitarios.OperacoesInterface;
+import hibernate.CalourosDAO;
+import hibernate.CursoDAO;
 import hibernate.HibernateUtil;
 
 /**
@@ -22,9 +25,11 @@ public class CursoTableModel extends JPanel /* extends AbstractTableModel */{
 	private final boolean DEBUG = false;
 	private JTable table;
 	private MyTableModel tableModel;
+	private CursoDAO cursoDAO;
 
 	public CursoTableModel() {
 		super(new GridLayout(1, 0));
+		cursoDAO = new CursoDAO();
 		
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
@@ -73,22 +78,25 @@ public class CursoTableModel extends JPanel /* extends AbstractTableModel */{
 		
 		public void loadTableValues(){
 
-			List<?> lista = HibernateUtil.findAll(timetable.Curso.class);
-			
+			List<timetable.Curso> lista = null;
+			try {
+				lista = cursoDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			data.clear();
-
+			
 			for (int i = 0; i < lista.size(); i++) {
 				ArrayList<Object> row = new ArrayList<Object>();
+				
 				row.add(((timetable.Curso) lista.get(i)).getNome());
 				row.add(((timetable.Curso) lista.get(i)).getCodigo());
 				row.add(((timetable.Curso) lista.get(i)).getTurno());
-				row.add(Integer.toString(((timetable.Calouros) HibernateUtil.find(timetable.Calouros.class,
-								((timetable.Curso) lista.get(i)).getCalouros().get(0).getIdCalouro())).getNumVagas()));
-				row.add(Integer.toString(((timetable.Calouros) HibernateUtil.find(timetable.Calouros.class,
-								((timetable.Curso) lista.get(i)).getCalouros().get(1).getIdCalouro())).getNumVagas()));
-				data.add(row);
+				row.add(((timetable.Curso) lista.get(i)).getCalouros().get(0).getNumVagas());
+				row.add(((timetable.Curso) lista.get(i)).getCalouros().get(1).getNumVagas());
+				data.add(row);				
 			}
-
 		}
 	}
 }

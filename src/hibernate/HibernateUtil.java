@@ -54,11 +54,11 @@ public class HibernateUtil {
 		}
 	}
 
-	public static SessionFactory getSessionFactory() {
+	protected static SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 
-	public static Session getInstance() throws Exception {
+	protected static Session getInstance() throws Exception {
 		if (sessionFactory == null) {
 			buildSessionFactory();
 		}
@@ -75,7 +75,7 @@ public class HibernateUtil {
 	 * @return List<?>
 	 */
 	@SuppressWarnings({ "finally", "rawtypes" })
-	public static List<?> findAll(Class objClass, int begin, int end) {
+	protected static List<?> findAll(Class objClass, int begin, int end) {
 		List<?> lista = null;
 		Query query = null;
 		try {
@@ -104,7 +104,7 @@ public class HibernateUtil {
 	 * @return Object
 	 */
 	@SuppressWarnings({ "finally", "rawtypes" })
-	public static Object find(Class objClass, int id) {
+	protected static Object find(Class objClass, int id) {
 		Object objGet = null;
 		try {
 			session = getInstance();
@@ -130,7 +130,7 @@ public class HibernateUtil {
 	 *                {@code rollback} nas modificações.
 	 */
 	@SuppressWarnings("finally")
-	public static boolean saveOrUpdate(Object obj) {
+	protected static boolean saveOrUpdate(Object obj) {
 		try {
 			session = getInstance();
 			transaction = session.beginTransaction();
@@ -157,7 +157,7 @@ public class HibernateUtil {
 	 *                {@code rollback} nas modificações.
 	 */
 	@SuppressWarnings("finally")
-	public static boolean save(Object obj) {
+	protected static boolean save(Object obj) {
 		try {
 			session = getInstance();
 			transaction = session.beginTransaction();
@@ -184,7 +184,7 @@ public class HibernateUtil {
 	 *                {@code rollback} nas modificações.
 	 */
 	@SuppressWarnings("finally")
-	public static boolean saveList(List<?> objects) {
+	protected static boolean saveList(List<?> objects) {
 		try {
 			session = getInstance();
 			transaction = session.beginTransaction();
@@ -213,7 +213,7 @@ public class HibernateUtil {
 	 *                {@code rollback} nas modificações.
 	 */
 	@SuppressWarnings("finally")
-	public static boolean update(Object obj) {
+	protected static boolean update(Object obj) {
 		try {
 			session = getInstance();
 			transaction = session.beginTransaction();
@@ -239,7 +239,7 @@ public class HibernateUtil {
 	 *                {@code rollback} nas modificações.
 	 */
 	@SuppressWarnings("finally")
-	public static boolean delete(Object obj) {
+	protected static boolean delete(Object obj) {
 		try {
 			session = getInstance();
 			transaction = session.beginTransaction();
@@ -265,7 +265,7 @@ public class HibernateUtil {
 	 *                {@code rollback} nas modificações.
 	 */
 	@SuppressWarnings("finally")
-	public static boolean deleteList(List<?> objects) {
+	protected static boolean deleteList(List<?> objects) {
 		try {
 			session = getInstance();
 			transaction = session.beginTransaction();

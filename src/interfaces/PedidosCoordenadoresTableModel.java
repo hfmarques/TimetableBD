@@ -1,5 +1,7 @@
 	package interfaces;
 
+import hibernate.CursoDAO;
+import hibernate.DisciplinaDAO;
 import interfaces.PlanoDepartamentalTableModel.MyTableModel;
 
 import java.awt.Color;
@@ -26,9 +28,13 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	MyTableModel tableModel;
 	TableCellRenderer linha;
 	private static ArrayList<ArrayList<Object>> cor;
+	DisciplinaDAO discDAO;
+	CursoDAO cursoDAO;
 	
 	public PedidosCoordenadoresTableModel() {
 		super(new GridLayout(1, 0));
+		discDAO = new DisciplinaDAO();
+		cursoDAO = new CursoDAO();
 		
 		cor = new ArrayList<ArrayList<Object>>();
 
@@ -82,8 +88,20 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 		
 		public void loadTableValues(){
 			
-			ArrayList<timetable.Disciplina> _disciplina = (ArrayList<timetable.Disciplina>) hibernate.HibernateUtil.findAll(timetable.Disciplina.class);
-			ArrayList<timetable.Curso> _curso = (ArrayList<timetable.Curso>) hibernate.HibernateUtil.findAll(timetable.Curso.class);
+			ArrayList<timetable.Disciplina> _disciplina = null;
+			try {
+				_disciplina = (ArrayList<timetable.Disciplina>) discDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ArrayList<timetable.Curso> _curso = null;
+			try {
+				_curso = (ArrayList<timetable.Curso>) cursoDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			int colunasFixas = 4;			
 			int columnNumber = colunasFixas;

@@ -1,5 +1,6 @@
 package interfaces;
 
+import hibernate.DocenteDAO;
 import hibernate.GenericoDAO;
 import hibernate.HibernateUtil;
 import hibernate.TurmaDAO;
@@ -32,9 +33,22 @@ import timetable.Turma;
 
 public class PlanoDepartamental extends InterfacesTabela{
 	
+	private ArrayList<Docente> docente;
+	private DocenteDAO docenteDAO;
+	private TurmaDAO turmaDAO;
+	
 	public PlanoDepartamental() {
 		super(new PlanoDepartamentalTableModel(), "Salvar");
+		docenteDAO = new DocenteDAO();
+		turmaDAO = new TurmaDAO();
 		
+		docente = new ArrayList<Docente>();
+		try {
+			docente = (ArrayList<Docente>) docenteDAO.procuraTodos();
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		insereProfComboBox(((PlanoDepartamentalTableModel) tabela).getTable(), ((PlanoDepartamentalTableModel) tabela).getTable().getColumnModel().getColumn(6));
 		
 		ArrayList<ArrayList<Object>> cor = PlanoDepartamentalTableModel.getCor();
@@ -50,17 +64,35 @@ public class PlanoDepartamental extends InterfacesTabela{
 					if(!table.getValueAt(i, 6).toString().equals("Clique para escolher o Docente")){
 						Turma turma = null;
 						try {
-							turma = TurmaDAO.encontraTurmasPorCodigo(table.getValueAt(i, 1).toString(), table.getValueAt(i, 3).toString());
-							turma.getDocente().clear();
-							turma.getDocente().add(HibernateUtil.findDocenteByName(table.getValueAt(i, 6).toString()).get(0));
-							System.out.println(turma.getDocente().get(0).getNome());
-							System.out.println();
-							GenericoDAO dao = new GenericoDAO();
-							dao.salvaOuEdita(turma);
+							turma = turmaDAO.encontraTurmasPorCodigo(table.getValueAt(i, 1).toString(), table.getValueAt(i, 3).toString());
+						} catch (HibernateException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						} catch (Exception e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
-						}						
+						}
+						
+						if(turma == null) // condição teoricamente impossivel
+							break;
+						
+						turma.getDocente().clear();
+						Iterator<Docente> itProf = docente.iterator();
+						Docente professor = null;
+						while(itProf.hasNext()){
+							Docente aux = itProf.next();
+							System.out.println(table.getValueAt(i, 6).toString());
+							if(aux.getNomeCompleto().equals(table.getValueAt(i, 6).toString())){
+								professor = aux;
+								break;
+							}									
+						}
+						if(professor == null)
+							System.out.println("NULLLLO");
+						turma.getDocente().add(professor);
+						System.out.println(professor.getNome());
+						System.out.println();
+						genericoDAO.salvaOuEdita(turma);
 					}
 				}
 			}
@@ -68,9 +100,8 @@ public class PlanoDepartamental extends InterfacesTabela{
 	}
 
 	private void insereProfComboBox(JTable table, TableColumn ComboColumn) {
-		ArrayList<timetable.Docente> prof = (ArrayList<Docente>) hibernate.HibernateUtil.findAll(timetable.Docente.class);
 		JComboBox<String> comboBox = new JComboBox();
-		Iterator<?> it = prof.iterator();
+		Iterator<?> it = docente.iterator();
 		while(it.hasNext()){
 			comboBox.addItem(((timetable.Docente)it.next()).getNomeCompleto());
 		}
@@ -82,6 +113,13 @@ public class PlanoDepartamental extends InterfacesTabela{
 	}
 	
 	public void atualizaComboBox(){
+		try {
+			docente = (ArrayList<Docente>) docenteDAO.procuraTodos();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 		insereProfComboBox(((PlanoDepartamentalTableModel) tabela).getTable(), ((PlanoDepartamentalTableModel) tabela).getTable().getColumnModel().getColumn(6));
 		
 		ArrayList<ArrayList<Object>> cor = PlanoDepartamentalTableModel.getCor();

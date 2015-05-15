@@ -1,5 +1,7 @@
 package interfaces;
 
+import hibernate.TurmaDAO;
+
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.hibernate.HibernateException;
+
 import Utilitarios.OperacoesInterface;
 import timetable.Turma;
 
@@ -20,9 +24,11 @@ public class PlanoDepartamentalTableModel extends JPanel {
 	private JTable table;
 	private MyTableModel tableModel;
 	private static ArrayList<ArrayList<Object>> cor;
+	private TurmaDAO turmaDAO;
 	
 	public PlanoDepartamentalTableModel() {
 		super(new GridLayout(1, 0));
+		turmaDAO = new TurmaDAO();
 		
 		cor = new ArrayList<ArrayList<Object>>();
 		
@@ -78,7 +84,16 @@ public class PlanoDepartamentalTableModel extends JPanel {
 		}
 		
 		public void loadTableValues(){			
-			ArrayList<timetable.Turma> turma = (ArrayList<timetable.Turma>) hibernate.HibernateUtil.findAll(timetable.Turma.class);
+			ArrayList<timetable.Turma> turma = null;
+			try {
+				turma = (ArrayList<timetable.Turma>) turmaDAO.procuraTodos();
+			} catch (HibernateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			turma.sort(new Comparator<timetable.Turma>() {
 				@Override
 				public int compare(Turma o1, Turma o2) {

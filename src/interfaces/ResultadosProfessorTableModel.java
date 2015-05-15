@@ -21,6 +21,9 @@ import javax.swing.text.TabExpander;
 
 import org.hibernate.HibernateException;
 
+import timetable.Docente;
+import timetable.Turma;
+import hibernate.DocenteDAO;
 import hibernate.HibernateUtil;
 import hibernate.TurmaDAO;
 
@@ -35,11 +38,15 @@ public class ResultadosProfessorTableModel extends JPanel {
 	private JTable table;
 	BotaoTabela botaoExpandir;
 	MyTableModel tableModel;
+	TurmaDAO turmaDAO;
+	DocenteDAO docenteDAO;
 
 
 	public ResultadosProfessorTableModel() {
 		super(new GridLayout(1, 0));
-
+		turmaDAO = new TurmaDAO();
+		docenteDAO = new DocenteDAO();
+		
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
 
@@ -62,7 +69,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 				
 				List<?> turma = null;
 				try {
-					turma = TurmaDAO.encontraTurmas();
+					turma = turmaDAO.procuraTodos();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -142,14 +149,9 @@ public class ResultadosProfessorTableModel extends JPanel {
 	}
 	
 	public void loadTableValues(){
-		try {
-			tableModel.loadTableValues();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		tableModel.loadTableValues();
+		
 	}
-
 	public void updateTable(){
 		for(int i=0;i<tableModel.getColumnCount();i++){
 			for(int j=0;j<tableModel.getRowCount();j++){
@@ -202,17 +204,32 @@ public class ResultadosProfessorTableModel extends JPanel {
 			data = new ArrayList<ArrayList<Object>>(); // row
 		}
 
-		public void loadTableValues() throws HibernateException, Exception{
-			List<?> lista = HibernateUtil.findAll(timetable.Docente.class);
-			List<?> turma = TurmaDAO.encontraTurmas();
+		public void loadTableValues(){			
+			List<Docente> prof = null;
+			try {
+				prof = docenteDAO.procuraTodos();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			List<Turma> turma = null;
+			try {
+				turma = turmaDAO.procuraTodos();
+			} catch (HibernateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			data.clear();
 
-			for (int i = 0; i < lista.size(); i++) {
+			for (int i = 0; i < prof.size(); i++) {
 				ArrayList<Object> row = new ArrayList<Object>();
 				row.add("-");
-				row.add(((timetable.Docente) lista.get(i)).getCodigo());
-				row.add(((timetable.Docente) lista.get(i)).getNome());
+				row.add(((timetable.Docente) prof.get(i)).getCodigo());
+				row.add(((timetable.Docente) prof.get(i)).getNome());
 				String[] disc = { " " };
 				row.add(disc);
 				String[] cod = { " " };
@@ -224,7 +241,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 					for (int doc = 0; doc < ((timetable.Turma) turma.get(tur))
 							.getDocente().size(); doc++) {
 
-						if (((timetable.Docente) lista.get(i)).getCodigo()
+						if (((timetable.Docente) prof.get(i)).getCodigo()
 								.equals(((timetable.Turma) turma.get(tur))
 										.getDocente().get(doc).getCodigo())) {
 
@@ -237,7 +254,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 				// define a exibição dos creditos como atuais / esperados
 				String cred = Integer.toString(creditos)
 						+ "  /  "
-						+ Integer.toString(((timetable.Docente) lista.get(i))
+						+ Integer.toString(((timetable.Docente) prof.get(i))
 								.getCreditacaoEsperada());
 
 				row.add(cred);

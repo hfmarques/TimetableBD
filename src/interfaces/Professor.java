@@ -81,7 +81,7 @@ public class Professor extends InterfacesTabela{
 												Integer.parseInt(((ProfessorTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),2).toString()));
 					
 					// insere este novo curso no banco de dados
-					HibernateUtil.saveOrUpdate(prof);
+					genericoDAO.salvaOuEdita(prof);
 				}
 				professoresAdicionados = 0; // zera a quantidade de docentes necessários a serem adicionados
 			}

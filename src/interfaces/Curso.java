@@ -76,19 +76,17 @@ public class Curso extends InterfacesTabela {
 				CursoTableModel.MyTableModel model = (CursoTableModel.MyTableModel) ((CursoTableModel) tabela).getTable().getModel();
 
 				try{
-					for (int i = 0; i < cursosAdicionados; i++) { // para todos os novos dados inseridos confere se estes estão corretos
-						String nome = ((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),0).toString();
-						String codigo = ((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 1).toString();
-						String Turno = ((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 2).toString();
-						int numVagas1 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 3).toString());
-						int numVagas2 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 4).toString());
-						timetable.Calouros calouroSem1 = CalourosDAO.encontraCalouroPorVagas(numVagas1);
-						timetable.Calouros calouroSem2 = CalourosDAO.encontraCalouroPorVagas(numVagas2);
-						
-//						if(compare < 0 || compare > 150){
-//							throw new Exception();
-//						}
-					}
+//					for (int i = 0; i < cursosAdicionados; i++) { // para todos os novos dados inseridos confere se estes estão corretos
+//						
+//						String nome = ((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i),0).toString();
+//						String codigo = ((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 1).toString();
+//						String Turno = ((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 2).toString();
+//						int numVagas1 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 3).toString());
+//						int numVagas2 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 4).toString());
+//						timetable.Calouros calouroSem1 = CalourosDAO.encontraCalouroPorVagas(numVagas1);
+//						timetable.Calouros calouroSem2 = CalourosDAO.encontraCalouroPorVagas(numVagas2);
+//						
+//					}
 					for (int i = 0; i < cursosAdicionados; i++) { // para todos os novos dados inseridos é inserido um a um no banco de dados
 						timetable.Curso curso; // cria um novo curso captura os dados inseridos na tabela e os insere no curso
 						int numVagas1 = Integer.parseInt(((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 3).toString());
@@ -100,15 +98,11 @@ public class Curso extends InterfacesTabela {
 									((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 1).toString(),
 									((CursoTableModel) tabela).getTable().getValueAt((model.getData().size() - 1) - (i), 2).toString(),
 									calouroSem1, calouroSem2);
-							HibernateUtil.saveOrUpdate(curso);
-						} else { // arrumar o que acontece quando o erro é
-									// localizado
-							model.getData().remove(
-									(model.getData().size()) - cursosAdicionados);
+							genericoDAO.salvaOuEdita(curso);
+						} else { // arrumar o que acontece quando o erro é localizado
+							model.getData().remove((model.getData().size()) - cursosAdicionados);
 							model.fireTableStructureChanged();
-							JOptionPane.showMessageDialog(null,
-									"Calouro não encontrado", "Error",
-									JOptionPane.ERROR_MESSAGE);
+//							JOptionPane.showMessageDialog(null,"Calouro não encontrado", "Error",JOptionPane.ERROR_MESSAGE);
 							cursosAdicionados--;
 						}
 	

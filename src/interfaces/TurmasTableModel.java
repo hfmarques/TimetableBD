@@ -1,6 +1,7 @@
 package interfaces;
 
 import hibernate.HibernateUtil;
+import hibernate.TurmaDAO;
 import interfaces.DisciplinaTableModel.MyTableModel;
 
 import java.awt.Dimension;
@@ -14,6 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import org.hibernate.HibernateException;
+
+import timetable.Turma;
 import Utilitarios.OperacoesInterface;
 
 public class TurmasTableModel extends JPanel{
@@ -21,10 +25,12 @@ public class TurmasTableModel extends JPanel{
 	private final boolean DEBUG = false;
 	private JTable table;
 	private MyTableModel tableModel;
+	TurmaDAO turmaDAO;
 
 	public TurmasTableModel() {
 		super(new GridLayout(1, 0));
-
+		turmaDAO = new TurmaDAO();
+		
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -71,7 +77,16 @@ public class TurmasTableModel extends JPanel{
 		}
 		
 		public void loadTableValues(){
-			List<?> lista = HibernateUtil.findAll(timetable.Turma.class);
+			List<Turma> lista = null;
+			try {
+				lista = turmaDAO.procuraTodos();
+			} catch (HibernateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			data.clear();
 			
