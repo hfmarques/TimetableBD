@@ -1,10 +1,10 @@
-	package interfaces;
+package interfaces;
 
 import hibernate.CursoDAO;
 import hibernate.DisciplinaDAO;
-import interfaces.PlanoDepartamentalTableModel.MyTableModel;
+import hibernate.HibernateUtil;
+import interfaces.PedidosCoordenadoresTableModel.MyTableModel;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -16,21 +16,23 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import Utilitarios.OperacoesInterface;
 import timetable.Disciplina;
-import timetable.Turma;
+import Utilitarios.OperacoesInterface;
 
-public class PedidosCoordenadoresTableModel extends JPanel {
-	
+/**
+*
+* @author Héber
+*/
+
+public class CadastroPedidosTableModel extends JPanel{
+
 	private final boolean DEBUG = false;
 	private JTable table;
 	MyTableModel tableModel;
@@ -38,15 +40,17 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	DisciplinaDAO discDAO;
 	CursoDAO cursoDAO;
 	
-	public PedidosCoordenadoresTableModel() {
+	
+	public CadastroPedidosTableModel() {
 		super(new GridLayout(1, 0));
+		
 		discDAO = new DisciplinaDAO();
 		cursoDAO = new CursoDAO();
-
+		
 		tableModel = new MyTableModel();
 		table = new JTable(tableModel);
 		
-		// inicializa os cursos
+		// inicializa as disciplinas
 		tableModel.loadTable();
 
 		table.setPreferredScrollableViewportSize(new Dimension(500, 70));
@@ -63,9 +67,9 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				botaoExpandir.editingStopped();
 				
-				List<timetable.Curso> curso = null;
+				List<Disciplina> disciplina = null;
 				try {
-					curso = cursoDAO.procuraTodos();
+					disciplina = discDAO.procuraTodos();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -75,17 +79,17 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 					// caso o checkbox esteja marcado insere os dados das disciplinas
 
 					// adiciona a tabela os dados encontrados
-					int tamanhoDisc = curso.size();
+					int tamanhoDisc = disciplina.size();
 					
 					if(tamanhoDisc > 0){
 						String[] tCod = new String[tamanhoDisc];
 						for (int j = 0; j < tamanhoDisc; j++) {
-							tCod[j] = curso.get(j).getCodigo();
+							tCod[j] = disciplina.get(j).getCodigo();
 						}
 						
 						String[] tDisc = new String[tamanhoDisc];
 						for (int j = 0; j <tamanhoDisc; j++) {
-							tDisc[j] = curso.get(j).getNome();
+							tDisc[j] = disciplina.get(j).getNome();
 						}
 						
 						String[] totVagas = new String[tamanhoDisc];
@@ -103,7 +107,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 						table.getModel().setValueAt(totVagas, table.getSelectedRow(), 5);
 						table.getModel().setValueAt(periotizados, table.getSelectedRow(), 6);
 						
-						curso.clear();					
+						disciplina.clear();					
 					}
 					table.getModel().setValueAt("-", table.getSelectedRow(), 0);
 				} else { // caso contrario os retira se estiverem na tabela
@@ -115,11 +119,12 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 					table.getModel().setValueAt("+", table.getSelectedRow(), 0);
 				}
 				
-				curso.clear();
+				disciplina.clear();
 				
 			}
 		});
 	}
+		
 	
 	public void loadTableValues(){
 		tableModel.loadTableValues();
@@ -160,7 +165,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	public MyTableModel getTableModel() {
 		return tableModel;
 	}
-
+	
 	class MyTableModel extends InterfaceTableModel {
 
 		@SuppressWarnings("rawtypes")
@@ -168,10 +173,10 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			super(DEBUG, 8);
 			
 			columnNames[0] = "";
-			columnNames[1] = "Código da Disciplina";
-			columnNames[2] = "Nome da Disciplina";
-			columnNames[3] = "Código do Curso";
-			columnNames[4] = "Nome do Curso";
+			columnNames[1] = "Código do Curso";
+			columnNames[2] = "Nome do Curso";
+			columnNames[3] = "Código da Disciplina";
+			columnNames[4] = "Nome da Disciplina";
 			columnNames[5] = "Total de Vagas";
 			columnNames[6] = "Periotizados/não Periotizados";
 			columnNames[7] = "Observações";
@@ -180,9 +185,9 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 		}
 		
 		public void loadTableValues(){
-			ArrayList<timetable.Disciplina> disciplina = null;
+			ArrayList<timetable.Curso> curso = null;
 			try {
-				disciplina = (ArrayList<timetable.Disciplina>) discDAO.procuraTodos();
+				curso = (ArrayList<timetable.Curso>) cursoDAO.procuraTodos();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -191,11 +196,11 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			data.clear();
 			
 			
-			for (int i = 0; i < disciplina.size(); i++) {
+			for (int i = 0; i < curso.size(); i++) {
 				ArrayList<Object> row = new ArrayList<Object>();
-				row.add("+");
-				row.add(((timetable.Disciplina) disciplina.get(i)).getCodigo());
-				row.add(((timetable.Disciplina) disciplina.get(i)).getNome());
+				row.add("-");
+				row.add(((timetable.Curso) curso.get(i)).getCodigo());
+				row.add(((timetable.Curso) curso.get(i)).getNome());
 				String[] cod = { " " };
 				row.add(cod);
 				String[] disc = { " " };
@@ -417,5 +422,5 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			 * will need to create a TableCellEditor too.
 			 */
 		}
-	}	
+	}
 }

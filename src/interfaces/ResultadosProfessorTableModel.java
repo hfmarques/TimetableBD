@@ -44,6 +44,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 
 	public ResultadosProfessorTableModel() {
 		super(new GridLayout(1, 0));
+		
 		turmaDAO = new TurmaDAO();
 		docenteDAO = new DocenteDAO();
 		
@@ -89,10 +90,8 @@ public class ResultadosProfessorTableModel extends JPanel {
 							// busca se o professore referente a linha atual da tambela
 							// possui o mesmo codigo que o professor que está no loop,
 							// se sim adiciona sua turma
-							if (!((timetable.Turma) turma.get(j)).getDocente()
-									.isEmpty()
-									&& table.getModel()
-											.getValueAt(table.getSelectedRow(), 1)
+							if (!((timetable.Turma) turma.get(j)).getDocente().isEmpty()
+									&& table.getModel().getValueAt(table.getSelectedRow(), 1)
 											.equals(((timetable.Turma) turma.get(j))
 													.getDocente().get(k).getCodigo())) {
 								disc.add(((timetable.Turma) turma.get(j))
@@ -265,12 +264,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 		}
 		public void loadTable() {
 
-			try {
-				loadTableValues();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			loadTableValues();
 			
 			/*é criado um novo table model*/
 			AbstractTableModel modelo = new AbstractTableModel() {
@@ -340,13 +334,11 @@ public class ResultadosProfessorTableModel extends JPanel {
 			 * fields
 			 */
 			TableCellRenderer jTableCellRenderer = new TableCellRenderer() {
-				/* Magic Happens */
 				public Component getTableCellRendererComponent(JTable table,
 						Object value, boolean isSelected, boolean hasFocus,
 						int row, int column) {
 					/*
-					 * If what we're displaying isn't an array of values we
-					 * return the normal renderer
+					 * se o que está sendo mostrado não for um vetor é retornado o valor original
 					 */
 					if (!value.getClass().isArray()) {
 						return table.getDefaultRenderer(value.getClass())
@@ -355,8 +347,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 					} else {
 						final Object[] passed = (Object[]) value;
 						/*
-						 * We create the table that will hold the multivalue
-						 * fields and that will be embedded in the main table
+						 * é criado uma tabela pra mostrar os campos com varios valores
 						 */
 						JTable embedded = new JTable(new AbstractTableModel() {
 							public int getColumnCount() {
@@ -367,8 +358,7 @@ public class ResultadosProfessorTableModel extends JPanel {
 								return passed.length;
 							}
 
-							public Object getValueAt(int rowIndex,
-									int columnIndex) {
+							public Object getValueAt(int rowIndex, int columnIndex) {
 								return passed[rowIndex];
 							}
 
@@ -443,10 +433,8 @@ public class ResultadosProfessorTableModel extends JPanel {
 						});
 						
 						if (isSelected) {
-							embedded.setBackground(table
-									.getSelectionBackground());
-							embedded.setForeground(table
-									.getSelectionForeground());
+							embedded.setBackground(table.getSelectionBackground());
+							embedded.setForeground(table.getSelectionForeground());
 						}
 						if (hasFocus) {
 							embedded.setRowSelectionInterval(0, 1);

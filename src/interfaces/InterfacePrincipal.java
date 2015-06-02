@@ -32,6 +32,7 @@ public class InterfacePrincipal {
 		abas = new JTabbedPane();
 		abas.addTab("Plano Departamental", planoDepartamental.getPainel());
 		abas.addTab("Resultado", janelaResultados.getPainel());
+		abas.addTab("Cadastro de Pedidos", janelaCadastro.getPainel());
 		abas.addTab("Pedidos Coordenadores", pedidosCoordenadores.getPainel());
 		abas.addTab("Vagas Oferecidas", vagasOferecidas.getPainel());
 		abas.addTab("Historico de Vagas Atendidas", historicoAtendimento.getPainel());
@@ -40,7 +41,7 @@ public class InterfacePrincipal {
 		abas.addTab("Turmas", janelaTurmas.getPainel());
 		abas.addTab("Cursos", janelaCurso.getPainel());
 		abas.addTab("Calouros", janelaCalouros.getPainel());
-		abas.addTab("Cadastro de Pedidos", janelaCadastro.getPainel());
+		
 		janelaPrincipal.add(abas);
 		janelaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
