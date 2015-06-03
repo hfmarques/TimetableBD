@@ -37,13 +37,15 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	BotaoTabela botaoExpandir;
 	DisciplinaDAO discDAO;
 	CursoDAO cursoDAO;
+	private int column;
 	
 	public PedidosCoordenadoresTableModel() {
 		super(new GridLayout(1, 0));
 		discDAO = new DisciplinaDAO();
 		cursoDAO = new CursoDAO();
-
-		tableModel = new MyTableModel();
+		
+		column = 8; //numero de colunas
+		tableModel = new MyTableModel(column);
 		table = new JTable(tableModel);
 		
 		// inicializa os cursos
@@ -150,7 +152,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	}
 	
 	public MyTableModel getNewTableModel(){
-		return new MyTableModel();
+		return new MyTableModel(column);
 	}
 
 	public void setTable(JTable table) {
@@ -162,11 +164,14 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 	}
 
 	class MyTableModel extends InterfaceTableModel {
-
+		
+		private int column;
+		
 		@SuppressWarnings("rawtypes")
-		public MyTableModel() {
-			super(DEBUG, 8);
+		public MyTableModel(int column) {
+			super(DEBUG, column);
 			
+			this.column = column;
 			columnNames[0] = "";
 			columnNames[1] = "Código da Disciplina";
 			columnNames[2] = "Nome da Disciplina";
@@ -190,8 +195,9 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			
 			data.clear();
 			
+			int linhaCont = 0;
 			
-			for (int i = 0; i < disciplina.size(); i++) {
+			for (int i = 0; i < disciplina.size(); i++, linhaCont++) {
 				ArrayList<Object> row = new ArrayList<Object>();
 				row.add("+");
 				row.add(((timetable.Disciplina) disciplina.get(i)).getCodigo());
@@ -206,7 +212,6 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 				row.add(periotizados);
 				row.add("");
 				
-				data.add(row);
 			}			
 		}
 		
@@ -215,207 +220,20 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			loadTableValues();
 			
 			/*é criado um novo table model*/
-			AbstractTableModel modelo = new AbstractTableModel() {
-				public String getColumnName(int col) {
-					return columnNames[col].toString();
-				}
-
-				@SuppressWarnings({ "rawtypes", "unchecked" })
-				public Class getColumnClass(int col) {
-					if (getRowCount() < 1) {
-						return null;
-					}
-					return data.get(0).get(col).getClass();
-				}
-
-				public int getRowCount() {
-					return data.size();
-				}
-
-				public int getColumnCount() {
-					return columnNames.length;
-				}
-
-				public Object getValueAt(int row, int col) {
-					return data.get(row).get(col);
-				}
-
-				public boolean isCellEditable(int row, int col) {
-					return true;
-				}
-
-				public void setValueAt(Object value, int row, int col) {
-					if (DEBUG) {
-						System.out.println("Setting value at " + row + ","
-								+ col + " to " + value + " (an instance of "
-								+ value.getClass() + ")");
-					}
-
-					data.get(row).set(col, value);
-					fireTableCellUpdated(row, col);
-
-					if (DEBUG) {
-						System.out.println("New value of data:");
-						printDebugData();
-					}
-				}
-
-				private void printDebugData() {
-					int numRows = getRowCount();
-					int numCols = getColumnCount();
-
-					for (int i = 0; i < numRows; i++) {
-						System.out.print("    row " + i + ":");
-						for (int j = 0; j < numCols; j++) {
-							System.out.print("  " + data.get(i).get(j));
-						}
-						System.out.println();
-					}
-					System.out.println("--------------------------");
-				}
-
-			};
+			AbstractTableModel modelo = new InterfaceTableModel(DEBUG, tableModel.getColumnNames(), tableModel.getData()) {};
+			
 			/* é aplicado o modelo na tabela original */
 			table.setModel(modelo);
 			/*
 			 * este cell render mostra os dados nos campos com mais de um valor
 			 */
-			TableCellRenderer jTableCellRenderer = new TableCellRenderer() {
-				public Component getTableCellRendererComponent(JTable table,
-						Object value, boolean isSelected, boolean hasFocus,
-						int row, int column) {
-					/*
-					 * se o que está sendo mostrado não for um vetor é retornado o valor original
-					 */
-					if (!value.getClass().isArray()) {
-						return table.getDefaultRenderer(value.getClass())
-								.getTableCellRendererComponent(table, value,
-										isSelected, hasFocus, row, column);
-					} else {
-						final Object[] passed = (Object[]) value;
-						/*
-						 * é criado uma tabela pra mostrar os campos com varios valores
-						 */
-						JTable embedded = new JTable(new AbstractTableModel() {
-							public int getColumnCount() {
-								return 1;
-							}
-
-							public int getRowCount() {
-								return passed.length;
-							}
-
-							public Object getValueAt(int rowIndex,	int columnIndex) {
-								return passed[rowIndex];
-							}
-
-							public boolean isCellEditable(int row, int col) {
-								if (col < 0) {
-									return false;
-								} else {
-									return true;
-								}
-							}
-
-							@SuppressWarnings("unused")
-							public String[] getColumnNames() {
-								return columnNames;
-							}
-
-							@SuppressWarnings("unused")
-							public ArrayList<ArrayList<Object>> getData() {
-								return data;
-							}
-
-							@SuppressWarnings("unused")
-							public void addRow(ArrayList<Object> row) {
-								data.add(row);
-							}
-
-							@Override
-							public String getColumnName(int col) {
-								return columnNames[col];
-							}
-
-							@SuppressWarnings({ "unchecked", "rawtypes" })
-							@Override
-							public Class getColumnClass(int c) {
-								return getValueAt(0, c).getClass();
-							}
-
-							@Override
-							public void setValueAt(Object value, int row,
-									int col) {
-								if (DEBUG) {
-									System.out.println("Setting value at "
-											+ row + "," + col + " to " + value
-											+ " (an instance of "
-											+ value.getClass() + ")");
-								}
-
-								data.get(row).set(col, value);
-								fireTableCellUpdated(row, col);
-
-								if (DEBUG) {
-									System.out.println("New value of data:");
-									printDebugData();
-								}
-							}
-
-							private void printDebugData() {
-								int numRows = getRowCount();
-								int numCols = getColumnCount();
-
-								for (int i = 0; i < numRows; i++) {
-									System.out.print("    row " + i + ":");
-									for (int j = 0; j < numCols; j++) {
-										System.out.print("  "
-												+ data.get(i).get(j));
-									}
-									System.out.println();
-								}
-								System.out
-										.println("--------------------------");
-							}
-						});
-						
-						if (isSelected) {
-							embedded.setBackground(table.getSelectionBackground());
-							embedded.setForeground(table.getSelectionForeground());
-						}
-						if (hasFocus) {
-							embedded.setRowSelectionInterval(0, 1);
-						}
-						embedded.addMouseListener(new MouseAdapter() {
-							public void mouseClicked(
-									java.awt.event.MouseEvent evt) {
-								System.out.println("PEPE");
-							}
-						});
-
-						setPreferredSize(embedded.getPreferredSize());
-						if (getPreferredSize().height != table
-								.getRowHeight(row)) {
-							table.setRowHeight(row, getPreferredSize().height);
-						}
-						
-						embedded.setCellEditor(new CellEditor());
-
-						return embedded;
-					}
-				}
-			};
-			/* Finally we apply the new cellRenderer to the whole table */
+			TableCellRenderer jTableCellRenderer = new CustomTableCellRenderer(DEBUG, column) {};
+			/* é aplicado o novo cellrenderer a tabela */
 			TableColumnModel tcm = table.getColumnModel();
 			for (int it = 0; it < tcm.getColumnCount(); it++) {
 				tcm.getColumn(it).setCellRenderer(jTableCellRenderer);
 				// tcm.getColumn(it).setCellEditor(new CellEditor());
 			}
-
-			/*
-			 * Note: if we need to edit the values inside the embedded jtable we
-			 * will need to create a TableCellEditor too.
-			 */
 		}
 	}	
 }

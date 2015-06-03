@@ -17,6 +17,18 @@ public abstract class InterfaceTableModel extends AbstractTableModel{
 		DEBUG = dEBUG;
 		this.columnNames = new String[column];
 	}
+	
+	public InterfaceTableModel(boolean DEBUG, String[] columnNames, ArrayList<ArrayList<Object>> data) {
+		super();
+		DEBUG = DEBUG;
+		this.columnNames = columnNames;
+		this.data = data;
+	}
+	
+	public InterfaceTableModel(boolean dEBUG) {
+		super();
+		DEBUG = dEBUG;
+	}
 
 	public String[] getColumnNames() {
 		return columnNames;
@@ -45,7 +57,9 @@ public abstract class InterfaceTableModel extends AbstractTableModel{
 
 	@Override
 	public int getRowCount() {
-		return data.size();
+		if(data != null)
+			return data.size();
+		return 0;
 	}
 
 	@Override
