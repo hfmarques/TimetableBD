@@ -27,8 +27,9 @@ public class InterfacePrincipal {
 		HistoricoAtendimento historicoAtendimento = new HistoricoAtendimento();
 		VagasOferecidas vagasOferecidas = new VagasOferecidas();
 		CadastroPedidos janelaCadastro = new CadastroPedidos();
-
+		
 		janelaPrincipal = new JFrame("Gerador de Grade");
+		
 		abas = new JTabbedPane();
 		abas.addTab("Plano Departamental", planoDepartamental.getPainel());
 		abas.addTab("Resultado", janelaResultados.getPainel());

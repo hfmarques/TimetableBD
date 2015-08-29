@@ -104,16 +104,18 @@ public class CadastroPedidosTableModel extends JPanel{
 							periotizados[j] = "0/0";
 						}
 						
-						table.getModel().setValueAt(tCod, table.getSelectedRow(), 3);
-						table.getModel().setValueAt(tDisc, table.getSelectedRow(), 4);
-						table.getModel().setValueAt(totVagas, table.getSelectedRow(), 5);
-						table.getModel().setValueAt(periotizados, table.getSelectedRow(), 6);
+						table.setRowHeight(table.getSelectedRow(), tamanhoDisc*20);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoDisc, tCod, false), table.getSelectedRow(), 3);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoDisc, tDisc, false), table.getSelectedRow(), 4);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoDisc, totVagas, false), table.getSelectedRow(), 5);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoDisc, periotizados, true), table.getSelectedRow(), 6);
 						
 						disciplina.clear();					
 					}
 					table.getModel().setValueAt("-", table.getSelectedRow(), 0);
 				} else { // caso contrario os retira se estiverem na tabela
 					String[] empty = { "" };
+					table.setRowHeight(table.getSelectedRow(), 20);
 					table.getModel().setValueAt(empty, table.getSelectedRow(), 3);
 					table.getModel().setValueAt(empty, table.getSelectedRow(), 4);
 					table.getModel().setValueAt(empty, table.getSelectedRow(), 5);
@@ -199,8 +201,9 @@ public class CadastroPedidosTableModel extends JPanel{
 			
 			data.clear();
 			
+			int linhaCont = 0;
 			
-			for (int i = 0; i < curso.size(); i++) {
+			for (int i = 0; i < curso.size(); i++,linhaCont++) {
 				ArrayList<Object> row = new ArrayList<Object>();
 				row.add("-");
 				row.add(((timetable.Curso) curso.get(i)).getCodigo());
@@ -228,15 +231,11 @@ public class CadastroPedidosTableModel extends JPanel{
 			
 			/* é aplicado o modelo na tabela original */
 			table.setModel(modelo);
-			/*
-			 * este cell render mostra os dados nos campos com mais de um valor
-			 */
-			TableCellRenderer jTableCellRenderer = new CustomTableCellRenderer(DEBUG, column) {};
 			/* é aplicado o novo cellrenderer a tabela */
 			TableColumnModel tcm = table.getColumnModel();
-			for (int it = 0; it < tcm.getColumnCount(); it++) {
-				tcm.getColumn(it).setCellRenderer(jTableCellRenderer);
-				// tcm.getColumn(it).setCellEditor(new CellEditor());
+			for (int it = 3; it < 7; it++) {
+				tcm.getColumn(it).setCellRenderer(new CustInnerRenderer());
+				tcm.getColumn(it).setCellEditor(new CustInnerCellEditor());
 			}
 		}
 	}

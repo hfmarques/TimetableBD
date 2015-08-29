@@ -22,16 +22,15 @@ public class ColorMultTableCellRenderer extends JPanel implements TableCellRende
 		this.posicoesCores = posicoesCores;
 	}
 	
-	public Component getTableCellRendererComponent(JTable table,
-			Object value, boolean isSelected, boolean hasFocus,
-			int row, int column) {
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {		
 		/*
 		 * se o que está sendo mostrado não for um vetor é retornado o valor original
 		 */
+		
+//		this.setBackground(new Color(10,200,10));
+		
 		if (!value.getClass().isArray()) {
-			return table.getDefaultRenderer(value.getClass())
-					.getTableCellRendererComponent(table, value,
-							isSelected, hasFocus, row, column);
+			return table.getDefaultRenderer(value.getClass()).getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		} else {
 			final Object[] passed = (Object[]) value;
 			/*
@@ -49,26 +48,16 @@ public class ColorMultTableCellRenderer extends JPanel implements TableCellRende
 			embedded.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(
 						java.awt.event.MouseEvent evt) {
-					System.out.println("PEPE");
+					System.out.println("Click");
 				}
 			});
 
 			setPreferredSize(embedded.getPreferredSize());
-			if (getPreferredSize().height != table
-					.getRowHeight(row)) {
+			if (getPreferredSize().height != table.getRowHeight(row)) {
 				table.setRowHeight(row, getPreferredSize().height);
 			}
 			
-			if(!posicoesCores.isEmpty()){  
-	        	for(Iterator<?> itPosCores = posicoesCores.iterator(); itPosCores.hasNext();){
-	        		ArrayList<Object> linha = (ArrayList<Object>) itPosCores.next();
-	                int rowToPaint = (int) linha.get(0);
-	                if(rowToPaint == row)
-	                	this.setBackground((Color) linha.get(1));
-	          	}
-	        }
-			
-			embedded.setCellEditor(new CellEditor());
+			embedded.setCellEditor(new CellEditor());	
 
 			return embedded;
 		}

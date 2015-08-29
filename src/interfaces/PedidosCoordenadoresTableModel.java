@@ -77,39 +77,41 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 					// caso o checkbox esteja marcado insere os dados das disciplinas
 
 					// adiciona a tabela os dados encontrados
-					int tamanhoDisc = curso.size();
+					int tamanhoCurso = curso.size();
 					
-					if(tamanhoDisc > 0){
-						String[] tCod = new String[tamanhoDisc];
-						for (int j = 0; j < tamanhoDisc; j++) {
+					if(tamanhoCurso > 0){
+						String[] tCod = new String[tamanhoCurso];
+						for (int j = 0; j < tamanhoCurso; j++) {
 							tCod[j] = curso.get(j).getCodigo();
 						}
 						
-						String[] tDisc = new String[tamanhoDisc];
-						for (int j = 0; j <tamanhoDisc; j++) {
-							tDisc[j] = curso.get(j).getNome();
+						String[] tCurso = new String[tamanhoCurso];
+						for (int j = 0; j <tamanhoCurso; j++) {
+							tCurso[j] = curso.get(j).getNome();
 						}
 						
-						String[] totVagas = new String[tamanhoDisc];
-						for (int j = 0; j <tamanhoDisc; j++) {
+						String[] totVagas = new String[tamanhoCurso];
+						for (int j = 0; j <tamanhoCurso; j++) {
 							totVagas[j] = "0";
 						}
 						
-						String[] periotizados = new String[tamanhoDisc];
-						for (int j = 0; j <tamanhoDisc; j++) {
+						String[] periotizados = new String[tamanhoCurso];
+						for (int j = 0; j <tamanhoCurso; j++) {
 							periotizados[j] = "0/0";
 						}
 						
-						table.getModel().setValueAt(tCod, table.getSelectedRow(), 3);
-						table.getModel().setValueAt(tDisc, table.getSelectedRow(), 4);
-						table.getModel().setValueAt(totVagas, table.getSelectedRow(), 5);
-						table.getModel().setValueAt(periotizados, table.getSelectedRow(), 6);
+						table.setRowHeight(table.getSelectedRow(), tamanhoCurso*20);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoCurso, tCod, false), table.getSelectedRow(), 3);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoCurso, tCurso, false), table.getSelectedRow(), 4);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoCurso, totVagas, false), table.getSelectedRow(), 5);
+						table.getModel().setValueAt(new CustomInnerTable(tamanhoCurso, periotizados, false), table.getSelectedRow(), 6);
 						
 						curso.clear();					
 					}
 					table.getModel().setValueAt("-", table.getSelectedRow(), 0);
 				} else { // caso contrario os retira se estiverem na tabela
 					String[] empty = { "" };
+					table.setRowHeight(table.getSelectedRow(), 20);
 					table.getModel().setValueAt(empty, table.getSelectedRow(), 3);
 					table.getModel().setValueAt(empty, table.getSelectedRow(), 4);
 					table.getModel().setValueAt(empty, table.getSelectedRow(), 5);
@@ -167,7 +169,6 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 		
 		private int column;
 		
-		@SuppressWarnings("rawtypes")
 		public MyTableModel(int column) {
 			super(DEBUG, column);
 			
@@ -212,6 +213,7 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 				row.add(periotizados);
 				row.add("");
 				
+				data.add(row);				
 			}			
 		}
 		
@@ -224,15 +226,11 @@ public class PedidosCoordenadoresTableModel extends JPanel {
 			
 			/* é aplicado o modelo na tabela original */
 			table.setModel(modelo);
-			/*
-			 * este cell render mostra os dados nos campos com mais de um valor
-			 */
-			TableCellRenderer jTableCellRenderer = new CustomTableCellRenderer(DEBUG, column) {};
 			/* é aplicado o novo cellrenderer a tabela */
 			TableColumnModel tcm = table.getColumnModel();
-			for (int it = 0; it < tcm.getColumnCount(); it++) {
-				tcm.getColumn(it).setCellRenderer(jTableCellRenderer);
-				// tcm.getColumn(it).setCellEditor(new CellEditor());
+			for (int it = 3; it < 7; it++) {
+				tcm.getColumn(it).setCellRenderer(new CustInnerRenderer());
+				tcm.getColumn(it).setCellEditor(new CustInnerCellEditor());
 			}
 		}
 	}	

@@ -25,6 +25,7 @@ public class CustomTableCellRenderer extends JPanel implements TableCellRenderer
 		/*
 		 * se o que está sendo mostrado não for um vetor é retornado o valor original
 		 */
+		
 		if (!value.getClass().isArray()) {
 			return table.getDefaultRenderer(value.getClass())
 					.getTableCellRendererComponent(table, value,
@@ -46,7 +47,7 @@ public class CustomTableCellRenderer extends JPanel implements TableCellRenderer
 			embedded.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(
 						java.awt.event.MouseEvent evt) {
-					System.out.println("PEPE");
+					System.out.println("Click");
 				}
 			});
 

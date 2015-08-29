@@ -23,7 +23,6 @@ public class CadastroPedidos extends InterfacesTabela {
 		discDao = new DisciplinaDAO();
 		
 		inicializaDisciplinas();
-
 		//gera os eventos ao se clicar no botão salvar
 		botaoPadrao.addActionListener(new ActionListener() {			
 			@Override
@@ -67,14 +66,16 @@ public class CadastroPedidos extends InterfacesTabela {
 				periotizados[j] = "0/0";
 			}
 			
-			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(tCod, i, 3);
-			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(tDisc, i, 4);
-			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(totVagas,i, 5);
-			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(periotizados, i, 6);
+			((CadastroPedidosTableModel) tabela).getTable().setRowHeight(i, tamanhoDisc*20);
+			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoDisc, tCod, false), i, 3);
+			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoDisc, tDisc, false), i, 4);
+			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoDisc, totVagas, false),i, 5);
+			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoDisc, periotizados, true), i, 6);
 			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt("-", i, 0);
 			
 		} else { // caso contrario os retira se estiverem na tabela
 			String[] empty = { "" };
+			((CadastroPedidosTableModel) tabela).getTable().setRowHeight(i, 20);
 			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(empty, i, 3);
 			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(empty, i, 4);
 			((CadastroPedidosTableModel) tabela).getTable().getModel().setValueAt(empty, i, 5);

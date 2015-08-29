@@ -77,14 +77,16 @@ public class PedidosCoordenadores extends InterfacesTabela{
 				periotizados[j] = "0/0";
 			}
 			
-			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(tCod, i, 3);
-			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(tCurso, i, 4);
-			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(totVagas,i, 5);
-			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(periotizados, i, 6);
+			((CadastroPedidosTableModel) tabela).getTable().setRowHeight(i, tamanhoCurso*20);
+			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoCurso, tCod, false), i, 3);
+			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoCurso, tCurso, false), i, 4);
+			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoCurso, totVagas, false),i, 5);
+			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(new CustomInnerTable(tamanhoCurso, periotizados, false), i, 6);
 			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt("-", i, 0);
 			
 		} else { // caso contrario os retira se estiverem na tabela
 			String[] empty = { "" };
+			((CadastroPedidosTableModel) tabela).getTable().setRowHeight(i, 20);
 			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(empty, i, 3);
 			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(empty, i, 4);
 			((PedidosCoordenadoresTableModel) tabela).getTable().getModel().setValueAt(empty, i, 5);

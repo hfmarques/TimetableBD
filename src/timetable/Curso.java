@@ -1,8 +1,11 @@
 package timetable;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -53,7 +56,9 @@ public class Curso implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curso")
 	private List<Curso> curso = new ArrayList<Curso>();
 
-
+	static HashMap<String, Color> coresPerfis = new HashMap<String, Color>();
+	
+	
 	public Curso(String nome, String codigo, String turno, Calouros calourosPrimSem, Calouros calourosSegSem) {
 		this.nome = nome;
 		this.codigo = codigo;
@@ -104,5 +109,29 @@ public class Curso implements Serializable {
 
 	public void setCalouros(List<Calouros> calouros) {
 		this.calouros = calouros;
+	}
+	
+	public static Color getOrSetCoresPerfis(String key) {
+		if(coresPerfis.containsKey(key))
+			return coresPerfis.get(key);
+		else{
+			Random rnd = new Random();
+			int cont = 0;
+			while(true){
+				cont++;
+				int r = rnd.nextInt(156) + 100;
+				int g = rnd.nextInt(156) + 100;
+				int b = rnd.nextInt(156) + 100;
+				Color cor = new Color(r, g, b);
+				if(!coresPerfis.containsValue(cor)){
+					coresPerfis.put(key, cor);
+					break;
+				}else if(cont > 16581375){
+					break;
+				}		
+			}
+			
+			return coresPerfis.get(key);
+		}
 	}
 }

@@ -12,11 +12,11 @@ import javax.swing.table.TableColumnModel;
 
 public class InnerTableModel extends InterfaceTableModel{
 	
-	private Object[] passed;
+	private Object[] row;
 
 	public InnerTableModel(Object[] passed, boolean DEBUG, int column) {
 		super(DEBUG, column);
-		this.passed = passed;
+		this.row = passed;
 	}
 	
 	public int getColumnCount() {
@@ -24,11 +24,11 @@ public class InnerTableModel extends InterfaceTableModel{
 	}
 
 	public int getRowCount() {
-		return passed.length;
+		return row.length;
 	}
 
 	public Object getValueAt(int rowIndex,	int columnIndex) {
-		return passed[rowIndex];
+		return row[rowIndex];
 	}
 
 	public boolean isCellEditable(int row, int col) {
