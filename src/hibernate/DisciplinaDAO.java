@@ -1,17 +1,12 @@
 package hibernate;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
-import timetable.Calouros;
 import timetable.Disciplina;
-import timetable.Sala;
 
 public class DisciplinaDAO extends GenericoDAO{
 
@@ -20,7 +15,7 @@ public class DisciplinaDAO extends GenericoDAO{
 	}
 
 	@SuppressWarnings("finally")
-	public static Disciplina encontraDisciplinaPorCodigo(String disciplinaCodigo) throws HibernateException, Exception {
+	public Disciplina encontraDisciplinaPorCodigo(String disciplinaCodigo) throws HibernateException, Exception {
 		Disciplina disciplina = null;
 		try {
 			Criteria criteria = getSession()
@@ -35,7 +30,7 @@ public class DisciplinaDAO extends GenericoDAO{
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "finally", "unchecked" })
 	public List<Disciplina> procuraTodos() throws Exception {
 		List<Disciplina> lista = null;
 		try {

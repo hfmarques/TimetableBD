@@ -3,43 +3,74 @@ package interfaces;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-import timetable.Horario;
+import interfaceTabelas.CadastroPedidosCoordenadores;
+import interfaceTabelas.Calouros;
+import interfaceTabelas.Curso;
+import interfaceTabelas.Disciplina;
+import interfaceTabelas.Docente;
+import interfaceTabelas.PedidosCoordenadores;
+import interfaceTabelas.PlanoDepartamental;
+import interfaceTabelas.ResultadoProfessor;
+import interfaceTabelas.Turma;
 
 /**
  *
  * @author Héber
  */
 public class InterfacePrincipal {
+	private static final int ABA_PLANO_DEPARTAMENTAL = 0;
+	private static final int ABA_RESULTADO = 1;
+	private static final int ABA_CADASTRO_PEDIDOS = 2;
+	private static final int ABA_PEDIDO_COORDENADORES = 3;
+//	private static final int ABA_VAGAS_OFERECIDAS = 4;
+//	private static final int ABA_HISTORICO_VAGAS_ATENDIDAS = 5;
+	private static final int ABA_DOCENTE = 4;
+	private static final int ABA_DISCIPLINA = 5;
+	private static final int ABA_TURMAS = 6;
+	private static final int ABA_CURSOS = 7;
+	private static final int ABA_CALOUROS = 8;
+	
 	private JFrame janelaPrincipal;
 	private JTabbedPane abas;
+	
+	private Curso janelaCurso;
+	private Calouros janelaCalouros;
+	private ResultadoProfessor janelaResultados;
+	private Docente janelaDocente;
+	private Disciplina janelaDisciplina;
+	private Turma janelaTurma;
+	private PlanoDepartamental janelaPlanoDepartamental;
+	private CadastroPedidosCoordenadores janelaCadastro;
+	private PedidosCoordenadores janelaPedidosCoordenadores;
+//	private HistoricoAtendimento historicoAtendimento;
+//	private VagasOferecidas vagasOferecidas;	
 
-	// main e montaTela
-
-	public void preparaJanela() {
-		Curso janelaCurso = new Curso();
-		Calouros janelaCalouros = new Calouros();
-		ResultadoProfessor janelaResultados = new ResultadoProfessor();
-		Professor janelaProfessor = new Professor();
-		Disciplina janelaDisciplina = new Disciplina();
-		Turmas janelaTurmas = new Turmas();
-		PlanoDepartamental planoDepartamental = new PlanoDepartamental();
-		PedidosCoordenadores pedidosCoordenadores = new PedidosCoordenadores();
-		HistoricoAtendimento historicoAtendimento = new HistoricoAtendimento();
-		VagasOferecidas vagasOferecidas = new VagasOferecidas();
-		CadastroPedidos janelaCadastro = new CadastroPedidos();
+	public void preparaJanela() {		
+		janelaCurso = new Curso();
+		janelaCalouros = new Calouros();
+		janelaResultados = new ResultadoProfessor();
+		janelaDocente = new Docente();
+		janelaDisciplina = new Disciplina();
+		janelaTurma = new Turma();
+		janelaPlanoDepartamental = new PlanoDepartamental();
+		janelaCadastro = new CadastroPedidosCoordenadores();
+		janelaPedidosCoordenadores = new PedidosCoordenadores();
+//		historicoAtendimento = new HistoricoAtendimento();
+//		vagasOferecidas = new VagasOferecidas();
+		
 		
 		janelaPrincipal = new JFrame("Gerador de Grade");
 		
 		abas = new JTabbedPane();
-		abas.addTab("Plano Departamental", planoDepartamental.getPainel());
+		abas.addTab("Plano Departamental", janelaPlanoDepartamental.getPainel());
 		abas.addTab("Resultado", janelaResultados.getPainel());
 		abas.addTab("Cadastro de Pedidos", janelaCadastro.getPainel());
-		abas.addTab("Pedidos Coordenadores", pedidosCoordenadores.getPainel());
-		abas.addTab("Vagas Oferecidas", vagasOferecidas.getPainel());
-		abas.addTab("Historico de Vagas Atendidas", historicoAtendimento.getPainel());
-		abas.addTab("Docente", janelaProfessor.getPainel());
+		abas.addTab("Pedidos Coordenadores", janelaPedidosCoordenadores.getPainel());
+//		abas.addTab("Vagas Oferecidas", vagasOferecidas.getPainel());
+//		abas.addTab("Historico de Vagas Atendidas", historicoAtendimento.getPainel());
+		abas.addTab("Docente", janelaDocente.getPainel());
 		abas.addTab("Disciplinas", janelaDisciplina.getPainel());
-		abas.addTab("Turmas", janelaTurmas.getPainel());
+		abas.addTab("Turmas", janelaTurma.getPainel());
 		abas.addTab("Cursos", janelaCurso.getPainel());
 		abas.addTab("Calouros", janelaCalouros.getPainel());
 		
@@ -47,66 +78,33 @@ public class InterfacePrincipal {
 		janelaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		abas.addChangeListener(new javax.swing.event.ChangeListener() {  
-            public void stateChanged(javax.swing.event.ChangeEvent e) {
+            public void stateChanged(javax.swing.event.ChangeEvent e) {            	
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_PLANO_DEPARTAMENTAL))
+            		janelaPlanoDepartamental.updateTable();
+                            	
+            	if(abas.getSelectedComponent() == abas.getComponent(ABA_RESULTADO))
+            		janelaResultados.updateTable();
             	
-            	if (abas.getSelectedComponent() == abas.getComponent(0)) {
-                    ((PlanoDepartamentalTableModel) planoDepartamental.getTabela()).loadTableValues();
-    				((PlanoDepartamentalTableModel) planoDepartamental.getTabela()).loadDataTable();
-    				planoDepartamental.atualizaComboBox();
-                }
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_DOCENTE))
+            		janelaDocente.updateTable();
             	
-            	if (abas.getSelectedComponent() == abas.getComponent(1)) {
-                    ((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadTableValues();
-    				janelaResultados.inicializaTurmas();
-					((ResultadosProfessorTableModel) janelaResultados.getTabela()).loadDataTable();
-                }
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_DISCIPLINA))
+            		janelaDisciplina.updateTable();
             	
-            	if (abas.getSelectedComponent() == abas.getComponent(2)) {
-                    ((PedidosCoordenadoresTableModel) pedidosCoordenadores.getTabela()).loadTableValues();
-    				((PedidosCoordenadoresTableModel) pedidosCoordenadores.getTabela()).loadDataTable();
-                }
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_TURMAS))
+            		janelaTurma.updateTable();
             	
-            	if (abas.getSelectedComponent() == abas.getComponent(3)) {
-                    ((VagasOferecidasTableModel) vagasOferecidas.getTabela()).loadTableValues();
-    				((VagasOferecidasTableModel) vagasOferecidas.getTabela()).loadDataTable();
-                }
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_CURSOS))
+            		janelaCurso.updateTable();
+                           	
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_CALOUROS))
+            		janelaCalouros.updateTable();
             	
-            	if (abas.getSelectedComponent() == abas.getComponent(4)) {
-                    ((HistoricoAtendimentoTableModel) historicoAtendimento.getTabela()).loadTableValues();
-    				((HistoricoAtendimentoTableModel) historicoAtendimento.getTabela()).loadDataTable();
-                }
-            	
-            	if (abas.getSelectedComponent() == abas.getComponent(5)) {
-                    ((ProfessorTableModel) janelaProfessor.getTabela()).loadTableValues();
-    				((ProfessorTableModel) janelaProfessor.getTabela()).loadDataTable();
-                }
-            	
-            	if (abas.getSelectedComponent() == abas.getComponent(6)) {
-                    ((DisciplinaTableModel) janelaDisciplina.getTabela()).loadTableValues();
-    				((DisciplinaTableModel) janelaDisciplina.getTabela()).loadDataTable();
-                }
-            	
-            	if (abas.getSelectedComponent() == abas.getComponent(7)) {
-                    ((TurmasTableModel) janelaTurmas.getTabela()).loadTableValues();
-    				((TurmasTableModel) janelaTurmas.getTabela()).loadDataTable();
-                }
-            	
-            	if (abas.getSelectedComponent() == abas.getComponent(8)) {
-                    ((CursoTableModel) janelaCurso.getTabela()).loadTableValues();
-    				((CursoTableModel) janelaCurso.getTabela()).loadDataTable();
-    				
-                }                
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_CADASTRO_PEDIDOS))
+            		janelaCadastro.updateTable();
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_PEDIDO_COORDENADORES))
+            		janelaPedidosCoordenadores.updateTable();
                 
-                if (abas.getSelectedComponent() == abas.getComponent(9)) {
-                    ((CalourosTableModel) janelaCalouros.getTabela()).loadTableValues();
-    				((CalourosTableModel) janelaCalouros.getTabela()).loadDataTable();
-                }
-                
-                if (abas.getSelectedComponent() == abas.getComponent(10)) {
-                    ((CadastroPedidosTableModel) janelaCadastro.getTabela()).loadTableValues();
-                    janelaCadastro.inicializaDisciplinas();
-    				((CadastroPedidosTableModel) janelaCadastro.getTabela()).loadDataTable();
-                }
             }  
         });
 	}

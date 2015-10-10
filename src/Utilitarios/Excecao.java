@@ -1,5 +1,6 @@
 package Utilitarios;
 
+@SuppressWarnings("serial")
 public class Excecao extends Exception {
 	private String msg;
 	

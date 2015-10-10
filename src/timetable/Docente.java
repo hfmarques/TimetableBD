@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.annotations.GenericGenerator;
-import hibernate.HibernateUtil;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -42,15 +40,15 @@ public class Docente implements Serializable {
 	@Column(name = "creditacao_esperada", unique = false, nullable = false)
 	private int creditacaoEsperada;
 
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "docente")
+	@ManyToMany(mappedBy = "docente")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Turma> turma = new ArrayList<Turma>();
 	
 
-	public Docente() {
+	public Docente(){
 	}
 
-	public Docente(String codigo, String nome, String nomeCompleto,
-			int creditacaoEsperada) {
+	public Docente(String codigo, String nome, String nomeCompleto,	int creditacaoEsperada) {
 		this.codigo = codigo;
 		this.nome = nome;
 		this.nomeCompleto = nomeCompleto;
@@ -96,4 +94,13 @@ public class Docente implements Serializable {
 	public void setCreditacaoEsperada(int creditacaoEsperada) {
 		this.creditacaoEsperada = creditacaoEsperada;
 	}
+
+	public List<Turma> getTurma() {
+		return turma;
+	}
+
+	public void setTurma(List<Turma> turma) {
+		this.turma = turma;
+	}
+	
 }

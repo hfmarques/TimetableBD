@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,11 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.annotations.GenericGenerator;
-
-import hibernate.HibernateUtil;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -49,13 +46,16 @@ public class Curso implements Serializable {
 	@Column(name = "turno", unique = false, nullable = false)
 	private String turno;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+//	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany()
 	@JoinTable(name = "calouros_curso", joinColumns = { @JoinColumn(name = "curso_fk", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "calouros_fk", nullable = false, updatable = false) })
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Calouros> calouros = new ArrayList<Calouros>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curso")
 	private List<Curso> curso = new ArrayList<Curso>();
 
+	private static final int NUMERO_CALOUROS = 2;
 	static HashMap<String, Color> coresPerfis = new HashMap<String, Color>();
 	
 	
@@ -68,7 +68,6 @@ public class Curso implements Serializable {
 	}
 
 	public Curso() {
-
 	}
 
 	public int getIdCurso() {
@@ -109,8 +108,12 @@ public class Curso implements Serializable {
 
 	public void setCalouros(List<Calouros> calouros) {
 		this.calouros = calouros;
-	}
+	}	
 	
+	public static int getNumeroCalouros() {
+		return NUMERO_CALOUROS;
+	}
+
 	public static Color getOrSetCoresPerfis(String key) {
 		if(coresPerfis.containsKey(key))
 			return coresPerfis.get(key);

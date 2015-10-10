@@ -1,5 +1,7 @@
 package timetable;
 
+import hibernate.DisciplinaDAO;
+
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,15 +14,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.annotations.GenericGenerator;
-
-import hibernate.HibernateUtil;
 
 /**
  *
@@ -124,6 +121,21 @@ public class Disciplina implements Serializable {
 			}
 			
 			return coresPerfis.get(key);
+		}
+	}
+	
+	public static void resetCoresPerfis(){
+		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+		List<Disciplina> disciplina = null;
+		try {
+			disciplina = disciplinaDAO.procuraTodos();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for(Disciplina d: disciplina){
+			getOrSetCoresPerfis(d.getPerfil());
 		}
 	}
 }

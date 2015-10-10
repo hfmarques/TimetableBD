@@ -1,7 +1,5 @@
 package interfaces;
 
-import interfaces.ResultadosProfessorTableModel.MyTableModel;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -9,8 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
@@ -20,8 +16,6 @@ import javax.swing.UIManager;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
-
-import hibernate.HibernateUtil;
 
 /**
  *
@@ -38,12 +32,12 @@ public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer
 	public BotaoTabela(JTable table, int column) {
 		super();
 		this.table = table;
+		
 		renderButton = new JButton();
-
 		editButton = new JButton();
+		
 		editButton.setFocusPainted(false);
-
-//		editButton.addActionListener(this);
+		editButton.addActionListener(this);
 
 		TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(column).setCellRenderer(this);
@@ -71,8 +65,7 @@ public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer
 		fireEditingStopped();
 	}
 
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column) {
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		if (hasFocus) {
 			renderButton.setForeground(table.getForeground());
 			renderButton.setBackground(UIManager.getColor("Button.background"));
@@ -107,8 +100,7 @@ public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer
 		return painelBotao;
 	}
 
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int row, int column) {
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		text = (value == null) ? "" : value.toString();
 		editButton.setText(text);
 		return editButton;

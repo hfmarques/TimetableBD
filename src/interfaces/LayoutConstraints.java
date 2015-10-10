@@ -6,7 +6,7 @@ import java.awt.GridBagConstraints;
  *
  * @author Héber
  */
-class LayoutConstraints {
+public class LayoutConstraints {
 	/**
 	 * Define os valores de layout para um componente inserido num GridBagLayout
 	 * 
@@ -25,7 +25,7 @@ class LayoutConstraints {
 	 * @param weighty
 	 *            Proporção que as linhas ocupadas pelo componente terão
 	 */
-	static void setConstraints(GridBagConstraints gb, int gridx, int gridy,
+	public static void setConstraints(GridBagConstraints gb, int gridx, int gridy,
 			int gridwidth, int gridheight, int weightx, int weighty) {
 		// horizontal cordinate on grid
 		// escolhe em qual coluna o componente ficará

@@ -8,6 +8,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
+import tabelasInternas.DefaultInternalTable;
+
 /**
  * Editor de celulas da tabela
  */
@@ -17,11 +19,13 @@ public class CellEditor extends AbstractCellEditor implements TableCellEditor {
 	JComponent component = new JTextField();
 
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value,
-			boolean isSelected, int rowIndex, int vColIndex) {
-
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int vColIndex) {
+		if(value instanceof DefaultInternalTable){
+			DefaultInternalTable c = (DefaultInternalTable) value;
+			return c.getTable();
+		}
+		
 		((JTextField) component).setText((String) value);
-
 		return component;
 	}
 

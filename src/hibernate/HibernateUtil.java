@@ -1,13 +1,7 @@
 package hibernate;
 
-import interfaces.Disciplina;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -17,9 +11,6 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-
-import timetable.Calouros;
-import timetable.TimetableBD;
 
 /**
  *
@@ -38,7 +29,7 @@ public class HibernateUtil {
 		try {
 			// Create the SessionFactory from hibernate.cfg.xml
 			Configuration configuration = new Configuration()
-					.configure(new File("C:\\Users\\Héber Marques\\Copy\\TimetableBD\\src\\hibernate.cfg.xml"));
+					.configure(new File("C:\\Users\\Héber Marques\\Copy\\Bolsa\\GETComp\\TimetableBD\\src\\hibernate.cfg.xml"));
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
 					.applySetting("hibernate.connection.driver_class", "org.postgresql.Driver")

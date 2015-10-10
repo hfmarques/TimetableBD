@@ -1,6 +1,14 @@
 Semestre,Código da Disciplina,Disciplina,Turma,Horário,Créditos,Docente,Vagas
-Semestre,DCC001,Algoritmos,A,Horário,4,Carlos Roberto;,Vagas
-Semestre,DCC001,Algoritmos,B,Horário,4,Carlos Roberto;,Vagas
-Semestre,DCC001,Algoritmos,C,Horário,4,,Vagas
-Semestre,DCC001,Algoritmos,D,Horário,4,Lucas Almeida;,Vagas
-Semestre,DCC002,Estrutura de Dados,A,Horário,4,Lucas Almeida;,Vagas
+Semestre,DCC001,Algoritmos,A,Horário,4,Lidiane Teixeira; ,Vagas
+Semestre,DCC001,Algoritmos,B,Horário,4,Carlos Roberto; ,Vagas
+Semestre,DCC001,Algoritmos,C,Horário,4,Carlos Roberto; ,Vagas
+Semestre,DCC001,Algoritmos,D,Horário,4,Lucas Almeida; ,Vagas
+Semestre,DCC002,Estrutura de Dados,A,Horário,4,Lucas Almeida; ,Vagas
+Semestre,DCC005,Lab de Programação,A,Horário,4,Thiago Goldoni; ,Vagas
+Semestre,DCC005,Lab de Programação,B,Horário,4,Andre Souza; ,Vagas
+Semestre,DCC004,Computação Gráfica,A,Horário,4,Douglas Coelho; ,Vagas
+Semestre,DCC004,Computação Gráfica,B,Horário,4,Victor Souza; ,Vagas
+Semestre,DCC003,Inteligencia Artificial,A,Horário,4,Lidiane Teixeira; ,Vagas
+Semestre,DCC003,Inteligencia Artificial,B,Horário,4,Matheus Marques; ,Vagas
+Semestre,DCC006,Redes,A,Horário,4,Andre Souza; ,Vagas
+Semestre,DCC006,Redes,B,Horário,4,Igor Couto; ,Vagas

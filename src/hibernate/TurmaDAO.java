@@ -1,18 +1,13 @@
 package hibernate;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.Query;
 
-import timetable.Docente;
 import timetable.Turma;
 import hibernate.GenericoDAO;
-import hibernate.HibernateUtil;
 
 public class TurmaDAO extends GenericoDAO{
 
@@ -52,6 +47,7 @@ public class TurmaDAO extends GenericoDAO{
 		}
 	}
 	
+	@SuppressWarnings("finally")
 	public Turma encontraTurmasPorCodigo(String disciplinaCode, String turmaCode) throws HibernateException, Exception{
 		Turma turma = null;
 		try {			
@@ -61,6 +57,23 @@ public class TurmaDAO extends GenericoDAO{
 					.createAlias("disciplina", "d")					
 					.add(Restrictions.like("d.codigo", disciplinaCode));
 			turma = (Turma) criteria.uniqueResult();
+		} catch (HibernateException e) {
+			System.err.println(e.fillInStackTrace());
+		} finally {
+			getSession().close();
+			return turma;
+		}
+	}
+	
+	@SuppressWarnings({ "finally", "unchecked" })
+	public List<Turma> encontraTurmasPorCodigoDisc(String disciplinaCode) throws HibernateException, Exception{
+		List<Turma> turma = null;
+		try {			
+			Criteria criteria = getSession()
+					.createCriteria(Turma.class)
+					.createAlias("disciplina", "d")			
+					.add(Restrictions.like("d.codigo", disciplinaCode));
+			turma = criteria.list();
 		} catch (HibernateException e) {
 			System.err.println(e.fillInStackTrace());
 		} finally {

@@ -1,17 +1,13 @@
 package hibernate;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
-import timetable.Curso;
-import timetable.Disciplina;
 import timetable.Docente;
+import timetable.Turma;
 
 public class DocenteDAO extends GenericoDAO{
 
@@ -19,12 +15,13 @@ public class DocenteDAO extends GenericoDAO{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static Docente encontraDocentePorName(String nome) throws HibernateException, Exception {
+	@SuppressWarnings("finally")
+	public Docente encontraDocentePorName(String nome) throws HibernateException, Exception {
 		Docente docente = null;
 		try {
 			Criteria criteria = getSession()
 					.createCriteria(Docente.class)
-					.add(Restrictions.eq("nome", nome));	
+					.add(Restrictions.eq("nomeCompleto", nome));
 			docente = (Docente) criteria.uniqueResult();
 		} catch (HibernateException e) {
 			System.err.println(e.fillInStackTrace());
@@ -34,18 +31,39 @@ public class DocenteDAO extends GenericoDAO{
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "finally", "unchecked" })
 	public List<Docente> procuraTodos() throws Exception {
 		List<Docente> lista = null;
 		try {
 			Criteria criteria = getSession()
-					.createCriteria(Docente.class);	
+					.createCriteria(Docente.class);
 			lista = criteria.list();
 		} catch (HibernateException e) {
 			System.err.println(e.fillInStackTrace());
 		} finally {
 			getSession().close();
 			return lista;
+		}
+	}
+	
+	@SuppressWarnings({ "finally", "unchecked" })
+	public int somatorioCreditosPorCodigo(String codigo) throws HibernateException, Exception {
+		List<Turma> turma = null;
+		try {
+			Criteria criteria = getSession()
+					.createCriteria(Turma.class)
+					.createAlias("docente", "d")	
+					.add(Restrictions.eq("d.codigo", codigo));
+			turma = criteria.list();
+		} catch (HibernateException e) {
+			System.err.println(e.fillInStackTrace());
+		} finally {
+			getSession().close();
+			int creditos = 0;
+			for(Turma t: turma){
+				creditos += t.getDisciplina().getCreditos();
+			}
+			return creditos;
 		}
 	}
 

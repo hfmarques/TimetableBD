@@ -1,16 +1,11 @@
 package hibernate;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
-import timetable.Calouros;
-import timetable.Disciplina;
 import timetable.Sala;
 
 public class SalaDAO extends GenericoDAO{
@@ -19,6 +14,7 @@ public class SalaDAO extends GenericoDAO{
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("finally")
 	public static Sala encontraSalaPorNumero(String numeroSala) throws HibernateException, Exception {
 		Sala sala = null;
 		try {
@@ -34,7 +30,7 @@ public class SalaDAO extends GenericoDAO{
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "unchecked", "finally" })
 	public List<Sala> procuraTodos() throws Exception {
 		List<Sala> lista = null;
 		try {
