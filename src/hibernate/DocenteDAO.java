@@ -47,11 +47,13 @@ public class DocenteDAO extends GenericoDAO{
 	}
 	
 	@SuppressWarnings({ "finally", "unchecked" })
-	public int somatorioCreditosPorCodigo(String codigo) throws HibernateException, Exception {
+	public int somatorioCreditosPorCodigo(String codigo, int ano, int semestre) throws HibernateException, Exception {
 		List<Turma> turma = null;
 		try {
 			Criteria criteria = getSession()
 					.createCriteria(Turma.class)
+					.add(Restrictions.eq("semestre", semestre))
+					.add(Restrictions.eq("ano", ano))
 					.createAlias("docente", "d")	
 					.add(Restrictions.eq("d.codigo", codigo));
 			turma = criteria.list();

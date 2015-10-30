@@ -18,17 +18,18 @@ import interfaceTabelas.Turma;
  * @author Héber
  */
 public class InterfacePrincipal {
-	private static final int ABA_PLANO_DEPARTAMENTAL = 0;
-	private static final int ABA_RESULTADO = 1;
-	private static final int ABA_CADASTRO_PEDIDOS = 2;
-	private static final int ABA_PEDIDO_COORDENADORES = 3;
+	private static final int ABA_HOME = 0;
+	private static final int ABA_PLANO_DEPARTAMENTAL = 1;
+	private static final int ABA_RESULTADO = 2;
+	private static final int ABA_CADASTRO_PEDIDOS = 3;
+	private static final int ABA_PEDIDO_COORDENADORES = 4;
 //	private static final int ABA_VAGAS_OFERECIDAS = 4;
 //	private static final int ABA_HISTORICO_VAGAS_ATENDIDAS = 5;
-	private static final int ABA_DOCENTE = 4;
-	private static final int ABA_DISCIPLINA = 5;
-	private static final int ABA_TURMAS = 6;
-	private static final int ABA_CURSOS = 7;
-	private static final int ABA_CALOUROS = 8;
+	private static final int ABA_DOCENTE = 5;
+	private static final int ABA_DISCIPLINA = 6;
+	private static final int ABA_TURMAS = 7;
+	private static final int ABA_CURSOS = 8;
+	private static final int ABA_CALOUROS = 9;
 	
 	private JFrame janelaPrincipal;
 	private JTabbedPane abas;
@@ -42,6 +43,7 @@ public class InterfacePrincipal {
 	private PlanoDepartamental janelaPlanoDepartamental;
 	private CadastroPedidosCoordenadores janelaCadastro;
 	private PedidosCoordenadores janelaPedidosCoordenadores;
+	private Home janelaHome;
 //	private HistoricoAtendimento historicoAtendimento;
 //	private VagasOferecidas vagasOferecidas;	
 
@@ -55,6 +57,7 @@ public class InterfacePrincipal {
 		janelaPlanoDepartamental = new PlanoDepartamental();
 		janelaCadastro = new CadastroPedidosCoordenadores();
 		janelaPedidosCoordenadores = new PedidosCoordenadores();
+		janelaHome = new Home();
 //		historicoAtendimento = new HistoricoAtendimento();
 //		vagasOferecidas = new VagasOferecidas();
 		
@@ -62,6 +65,7 @@ public class InterfacePrincipal {
 		janelaPrincipal = new JFrame("Gerador de Grade");
 		
 		abas = new JTabbedPane();
+		abas.addTab("Home", janelaHome.getPainel());
 		abas.addTab("Plano Departamental", janelaPlanoDepartamental.getPainel());
 		abas.addTab("Resultado", janelaResultados.getPainel());
 		abas.addTab("Cadastro de Pedidos", janelaCadastro.getPainel());
@@ -78,12 +82,19 @@ public class InterfacePrincipal {
 		janelaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		abas.addChangeListener(new javax.swing.event.ChangeListener() {  
-            public void stateChanged(javax.swing.event.ChangeEvent e) {            	
+            public void stateChanged(javax.swing.event.ChangeEvent e) {   
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_HOME)){}
             	if (abas.getSelectedComponent() == abas.getComponent(ABA_PLANO_DEPARTAMENTAL))
             		janelaPlanoDepartamental.updateTable();
                             	
             	if(abas.getSelectedComponent() == abas.getComponent(ABA_RESULTADO))
             		janelaResultados.updateTable();
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_CADASTRO_PEDIDOS))
+            		janelaCadastro.updateTable();
+            	
+            	if (abas.getSelectedComponent() == abas.getComponent(ABA_PEDIDO_COORDENADORES))
+            		janelaPedidosCoordenadores.updateTable();
             	
             	if (abas.getSelectedComponent() == abas.getComponent(ABA_DOCENTE))
             		janelaDocente.updateTable();
@@ -98,12 +109,7 @@ public class InterfacePrincipal {
             		janelaCurso.updateTable();
                            	
             	if (abas.getSelectedComponent() == abas.getComponent(ABA_CALOUROS))
-            		janelaCalouros.updateTable();
-            	
-            	if (abas.getSelectedComponent() == abas.getComponent(ABA_CADASTRO_PEDIDOS))
-            		janelaCadastro.updateTable();
-            	if (abas.getSelectedComponent() == abas.getComponent(ABA_PEDIDO_COORDENADORES))
-            		janelaPedidosCoordenadores.updateTable();
+            		janelaCalouros.updateTable();  	
                 
             }  
         });

@@ -53,9 +53,9 @@ public class TurmaDAO extends GenericoDAO{
 		try {			
 			Criteria criteria = getSession()
 					.createCriteria(Turma.class)
-					.add(Restrictions.like("codigo", turmaCode))
+					.add(Restrictions.eq("codigo", turmaCode))
 					.createAlias("disciplina", "d")					
-					.add(Restrictions.like("d.codigo", disciplinaCode));
+					.add(Restrictions.eq("d.codigo", disciplinaCode));
 			turma = (Turma) criteria.uniqueResult();
 		} catch (HibernateException e) {
 			System.err.println(e.fillInStackTrace());
@@ -72,7 +72,24 @@ public class TurmaDAO extends GenericoDAO{
 			Criteria criteria = getSession()
 					.createCriteria(Turma.class)
 					.createAlias("disciplina", "d")			
-					.add(Restrictions.like("d.codigo", disciplinaCode));
+					.add(Restrictions.eq("d.codigo", disciplinaCode));
+			turma = criteria.list();
+		} catch (HibernateException e) {
+			System.err.println(e.fillInStackTrace());
+		} finally {
+			getSession().close();
+			return turma;
+		}
+	}
+	
+	@SuppressWarnings({ "finally", "unchecked" })
+	public List<Turma> procuraTurmasPorAnoSemestre(int ano, int semestre) throws HibernateException, Exception{
+		List<Turma> turma = null;
+		try {			
+			Criteria criteria = getSession()
+					.createCriteria(Turma.class)
+					.add(Restrictions.eq("ano", ano))
+					.add(Restrictions.eq("semestre", semestre));
 			turma = criteria.list();
 		} catch (HibernateException e) {
 			System.err.println(e.fillInStackTrace());

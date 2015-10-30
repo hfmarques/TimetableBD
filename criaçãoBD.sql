@@ -61,6 +61,8 @@ create table Turma(
 	CODIGO VARCHAR(21) not null,
 	TURNO VARCHAR (10) not null,
 	MAX_VAGAS INT not null,
+	ANO INT not null,
+	SEMESTRE INT not null,
 	DISCIPLINA_FK NUMERIC(19,0) not null,
 	SALA_FK NUMERIC(19,0) not null,
 	primary key(ID)
@@ -152,7 +154,7 @@ create table pedidos_coordenadores(
 	SEMESTRE INT not null,
 	ANO INT not null,
 	DATA DATE not null,
-	NOME_COORDENADOR INT not null,
+	NOME_COORDENADOR VARCHAR(21) not null,
 	CURSO_FK NUMERIC(19,0) not null,
 	primary key(ID)
 );

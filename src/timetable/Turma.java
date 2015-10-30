@@ -38,6 +38,10 @@ public class Turma implements Serializable {
 	private String turno;
 	@Column(name = "max_vagas", unique = false, nullable = false)
 	private int maxVagas;
+	@Column(name = "ano", unique = false, nullable = false)
+	private int ano;
+	@Column(name = "semestre", unique = false, nullable = false)
+	private int semestre;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "disciplina_fk", nullable = false, unique = false)
@@ -52,13 +56,17 @@ public class Turma implements Serializable {
 	private List<Docente> docente = new ArrayList<Docente>();
 	
 	public Turma() {
+		this.semestre = 0;
+		this.ano = 0;
 	}
 
-	public Turma(String codigo, String turno, int maxVagas,	Disciplina disciplina, Sala sala, Docente docente) {
+	public Turma(String codigo, String turno, int maxVagas,	Disciplina disciplina, Sala sala, Docente docente, int ano, int semestre) {
 		this.codigo = codigo;
 		this.turno = turno;
 		this.maxVagas = maxVagas;
 		this.disciplina = disciplina;
+		this.ano = ano;
+		this.semestre = semestre;
 		if(sala != null)
 			this.sala = sala;
 		if(docente != null)
@@ -111,6 +119,22 @@ public class Turma implements Serializable {
 
 	public void setSala(Sala sala) {
 		this.sala = sala;
+	}
+
+	public int getAno() {
+		return ano;
+	}
+
+	public void setAno(int ano) {
+		this.ano = ano;
+	}
+
+	public int getSemestre() {
+		return semestre;
+	}
+
+	public void setSemestre(int semestre) {
+		this.semestre = semestre;
 	}
 
 	public List<Docente> getDocente() {
