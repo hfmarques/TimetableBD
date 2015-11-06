@@ -8,9 +8,8 @@ import javax.swing.table.AbstractTableModel;
 
 import timetable.Curso;
 import timetable.Disciplina;
-import timetable.Turma;
 import hibernate.CursoDAO;
-import hibernate.TurmaDAO;
+import hibernate.DisciplinaDAO;
 import interfaces.Home;
 import tabelasInternas.DefaultInternalTable;
 
@@ -33,17 +32,17 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 	private static final int COL_OBSERVACOES = 8;
 	private String[] colunas = new String[]{ "", "Código do Curso", "Nome do Curso", "Código da Disciplina", "Nome da Disciplina", "Total de Vagas", "Periotizados", "Não Periotizados", "Observações"};
 	private ArrayList<Curso> linhas;
-	private ArrayList<Turma> turma;
-	private TurmaDAO turmaDAO;
+	private ArrayList<Disciplina> disciplina;
 	private CursoDAO cursoDAO;
+	private DisciplinaDAO disciplinaDAO;
 	private ArrayList<Boolean> botao;	
 	
 	public CadastroPedidosCoordenadoresTableModel() {	
 		linhas = new ArrayList<Curso>();
-		turma = new ArrayList<Turma>();
+		disciplina = new ArrayList<Disciplina>();
 		botao = new ArrayList<Boolean>();
 		cursoDAO = new CursoDAO();
-		turmaDAO = new TurmaDAO();
+		disciplinaDAO = new DisciplinaDAO();
 	}
 
 	@Override
@@ -78,52 +77,49 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 			case COL_NOME_CURSO:
 				return curso.getNome();
 			case COL_CODIGO_DISCIPLINA:				
-				if(turma.size()>=0 && botao.get(rowIndex)){
-					for(Turma t: turma){
-						dadosInternos.add(t.getDisciplina().getCodigo() + " - " + t.getCodigo());
-						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getDisciplina().getPerfil()));
+				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					for(Disciplina t: disciplina){
+						dadosInternos.add(t.getCodigo());
+						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
 					}
 					return new DefaultInternalTable(dadosInternos, coresInternas, true);
 				}
 				else
 					return "";
 			case COL_NOME_DISCIPLINA:
-				if(turma.size()>=0 && botao.get(rowIndex)){
-					for(Turma t: turma){
-						dadosInternos.add(t.getDisciplina().getNome());
-						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getDisciplina().getPerfil()));
+				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					for(Disciplina t: disciplina){
+						dadosInternos.add(t.getNome());
+						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
 					}
 					return new DefaultInternalTable(dadosInternos, coresInternas, true);
 				}
 				else
 					return "";
 			case COL_TOTAL_VAGAS:
-				if(turma.size()>=0 && botao.get(rowIndex)){
-					for(Turma t: turma){
-						dadosInternos.add(Integer.toString(t.getMaxVagas()));
-						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getDisciplina().getPerfil()));
+				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					for(Disciplina t: disciplina){
+						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
 					}
-					return new DefaultInternalTable(dadosInternos, coresInternas, true);
+					return new DefaultInternalTable(disciplina.get(rowIndex).getVagasSolicitadas(), coresInternas, true, 0);
 				}
 				else
 					return "";
 			case COL_PERIOTIZADOS:
-				if(turma.size()>=0 && botao.get(rowIndex)){
-					for(Turma t: turma){
-						dadosInternos.add("0");
-						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getDisciplina().getPerfil()));
-					}
-					return new DefaultInternalTable(dadosInternos, coresInternas, true, true);
+				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					for(Disciplina t: disciplina){
+						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
+					}					
+					return new DefaultInternalTable(disciplina.get(rowIndex).getVagasSolicitadas(), coresInternas, true, 1);
 				}
 				else
 					return "";
 			case COL_NAO_PERIOTIZADOS:
-				if(turma.size()>=0 && botao.get(rowIndex)){
-					for(Turma t: turma){
-						dadosInternos.add("0");
-						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getDisciplina().getPerfil()));
+				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					for(Disciplina t: disciplina){
+						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
 					}
-					return new DefaultInternalTable(dadosInternos, coresInternas, true, true);
+					return new DefaultInternalTable(disciplina.get(rowIndex).getVagasSolicitadas(), coresInternas, true, 3);
 				}
 				else
 					return "";
@@ -139,7 +135,7 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if(columnIndex == COL_BOTAO || columnIndex == COL_PERIOTIZADOS || columnIndex == COL_NAO_PERIOTIZADOS)
+		if(columnIndex == COL_BOTAO || columnIndex == COL_TOTAL_VAGAS ||columnIndex == COL_PERIOTIZADOS || columnIndex == COL_NAO_PERIOTIZADOS)
 			return true;
 		return false;
 	}
@@ -148,7 +144,7 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 		linhas.clear();
 		try {
 			if(Home.getAno()!=0 && Home.getSemestre()!= 0)
-				turma = (ArrayList<Turma>) turmaDAO.procuraTurmasPorAnoSemestre(Home.getAno(), Home.getSemestre());
+				disciplina = (ArrayList<Disciplina>) disciplinaDAO.procuraTodos();
 			linhas = (ArrayList<Curso>) cursoDAO.procuraTodos();
 			
 		} catch (Exception e) {
@@ -166,13 +162,13 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 			}
 		});
 		
-		turma.sort(new Comparator<Turma>() {
+		disciplina.sort(new Comparator<Disciplina>() {
 			@Override
-			public int compare(Turma objeto1, Turma objeto2) {
-				if(objeto1.getDisciplina().getNome().equals(objeto2.getDisciplina().getNome())){
+			public int compare(Disciplina objeto1, Disciplina objeto2) {
+				if(objeto1.getNome().equals(objeto2.getNome())){
 					return objeto1.getCodigo().compareTo(objeto2.getCodigo());
 				}
-				return objeto1.getDisciplina().getNome().compareTo(objeto2.getDisciplina().getNome());
+				return objeto1.getNome().compareTo(objeto2.getNome());
 			}
 		});	
 		
@@ -188,8 +184,8 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 
 	public int getInternalTableHeight(int rowIndex){
 		int height = 16;
-		if(botao.get(rowIndex) && turma.size() > 0){
-			height = height * turma.size();
+		if(botao.get(rowIndex) && disciplina.size() > 0){
+			height = height * disciplina.size();
 		}
 		return height;
 	}

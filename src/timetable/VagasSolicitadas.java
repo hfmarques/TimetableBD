@@ -1,7 +1,5 @@
 package timetable;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,9 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "vagas_solicitadas")
-public class VagasSolicitadas implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
+public class VagasSolicitadas implements GenericsVagas{
 	@Id
 	@Column(name = "id", unique = true, nullable = false)
 	@GeneratedValue(generator = "increment")
@@ -44,6 +40,10 @@ public class VagasSolicitadas implements Serializable{
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="pedidos_coordenadores_fk")
 	private PedidosCoordenadores pedidosCoordenadores;
+
+	public VagasSolicitadas() {
+		super();
+	}
 
 	public VagasSolicitadas(Disciplina disciplina, PedidosCoordenadores pedidosCoordenadores) {
 		super();

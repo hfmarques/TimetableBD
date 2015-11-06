@@ -1,12 +1,12 @@
 package tabelasInternas;
 
 import interfaces.CellRenderer;
-import timetable.VagasAtendidas;
-import timetable.VagasSolicitadas;
+import timetable.GenericsVagas;
 
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -41,19 +41,13 @@ public class DefaultInternalTable extends JPanel{
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public DefaultInternalTable(ArrayList<?> linhas, ArrayList<Color> coresLinhas, boolean cores, boolean editable, String dadosExibidos, Object tipoClasse){
+	public DefaultInternalTable(List<? extends GenericsVagas> linhas, ArrayList<Color> coresLinhas, boolean editable, int campoExibicao){
 		super(new GridLayout(1, 0));
 		
-		if(tipoClasse.getClass() == VagasAtendidas.class){
-			tableModel = new VagasAtendidasInternalTableModel((ArrayList<VagasAtendidas>) linhas, editable, dadosExibidos);
-		}
-		else if(tipoClasse.getClass() == VagasSolicitadas.class){
-			tableModel = new VagasSolicitadasInternalTableModel((ArrayList<VagasSolicitadas>) linhas, editable, dadosExibidos);
-		}
+		tableModel = new VagasGenericsInternalTableModel(linhas, editable, campoExibicao);
 		table  = new JTable(tableModel);
 		
-		if(cores){		
+		if(!coresLinhas.isEmpty()){		
 			table.getColumnModel().getColumn(0).setCellRenderer(new CellRenderer(coresLinhas));
 		}
 	}

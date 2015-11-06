@@ -98,5 +98,24 @@ public class TurmaDAO extends GenericoDAO{
 			return turma;
 		}
 	}
-
+	
+	@SuppressWarnings({ "finally", "unchecked" })
+	public int encontraMaxVagasPorCodigoDisc(String disciplinaCode) throws HibernateException, Exception{
+		List<Turma> turma = null;
+		try {			
+			Criteria criteria = getSession()
+					.createCriteria(Turma.class)
+					.createAlias("disciplina", "d")					
+					.add(Restrictions.eq("d.codigo", disciplinaCode));
+			turma = criteria.list();
+		} catch (HibernateException e) {
+			System.err.println(e.fillInStackTrace());
+		} finally {
+			getSession().close();
+			int totalVagas = 0;
+			for(Turma t: turma)
+				totalVagas += t.getMaxVagas();
+			return totalVagas;
+		}
+	}
 }

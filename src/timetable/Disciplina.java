@@ -11,13 +11,14 @@ import java.util.Random;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -45,8 +46,17 @@ public class Disciplina implements Serializable {
 	@Column(name = "perfil", unique = false, nullable = true)
 	private String perfil;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "disciplina")
+	@OneToMany(mappedBy = "disciplina")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Turma> turma = new ArrayList<Turma>();
+	
+	@OneToMany(mappedBy = "disciplina")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<VagasAtendidas> vagasAtendidas = new ArrayList<VagasAtendidas>();
+	
+	@OneToMany(mappedBy = "disciplina")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<VagasSolicitadas> vagasSolicitadas = new ArrayList<VagasSolicitadas>();
 	
 	static HashMap<String, Color> coresPerfis = new HashMap<String, Color>();
 
@@ -58,6 +68,15 @@ public class Disciplina implements Serializable {
 		this.creditos = creditos;
 		this.nome = nome;
 		this.perfil = perfil;
+	}	
+	
+	public Disciplina(String codigo, int creditos, String nome, String perfil, List<VagasSolicitadas> vagasSolicitadas) {
+		super();
+		this.codigo = codigo;
+		this.creditos = creditos;
+		this.nome = nome;
+		this.perfil = perfil;
+		this.vagasSolicitadas = vagasSolicitadas;
 	}
 
 	public int getIdDisciplina() {
@@ -98,6 +117,22 @@ public class Disciplina implements Serializable {
 
 	public void setPerfil(String perfil) {
 		this.perfil = perfil;
+	}
+
+	public List<VagasAtendidas> getVagasAtendidas() {
+		return vagasAtendidas;
+	}
+
+	public void setVagasAtendidas(List<VagasAtendidas> vagasAtendidas) {
+		this.vagasAtendidas = vagasAtendidas;
+	}
+
+	public List<VagasSolicitadas> getVagasSolicitadas() {
+		return vagasSolicitadas;
+	}
+
+	public void setVagasSolicitadas(List<VagasSolicitadas> vagasSolicitadas) {
+		this.vagasSolicitadas = vagasSolicitadas;
 	}
 
 	public static Color getOrSetCoresPerfis(String key) {
