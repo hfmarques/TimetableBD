@@ -54,8 +54,21 @@ public class Curso implements Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curso")
 	private List<Curso> curso = new ArrayList<Curso>();
+	
+	@OneToMany(mappedBy = "curso")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<PedidosCoordenadores> pedidosCoordenadores = new ArrayList<PedidosCoordenadores>();
+	
+	public List<PedidosCoordenadores> getPedidosCoordenadores() {
+		return pedidosCoordenadores;
+	}
 
-	private static final int NUMERO_CALOUROS = 2;
+	public void setPedidosCoordenadores(
+			List<PedidosCoordenadores> pedidosCoordenadores) {
+		this.pedidosCoordenadores = pedidosCoordenadores;
+	}
+
+	static final int NUMERO_CALOUROS = 2;
 	static HashMap<String, Color> coresPerfis = new HashMap<String, Color>();
 	
 	

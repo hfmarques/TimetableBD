@@ -19,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 
 @Entity
-@Table(name = "diccurr")
+@Table(name = "disccurr")
 public class DiscCurr implements Serializable {
 	/**
 	 * 

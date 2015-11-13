@@ -76,7 +76,7 @@ public class PedidosCoordenadores extends InterfacesTabela {
 		coresLinhas.clear();
 		Disciplina.resetCoresPerfis();
 		for(int i=0; i<numeroLinhas;i++){
-			Color cor = Disciplina.getOrSetCoresPerfis(((PedidosCoordenadoresTableModel)tableModel).getLinhas().get(i).getDisciplina().getPerfil());
+			Color cor = Disciplina.getOrSetCoresPerfis(((PedidosCoordenadoresTableModel)tableModel).getLinhas().get(i).getPerfil());
 			coresLinhas.add(cor);
 		}
 	}

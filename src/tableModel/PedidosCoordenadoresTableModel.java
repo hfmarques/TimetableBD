@@ -3,15 +3,24 @@ package tableModel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import timetable.Curso;
+import timetable.Disciplina;
+import timetable.PedidosCoordenadores;
 import timetable.Turma;
+import timetable.VagasAtendidas;
+import timetable.VagasSolicitadas;
 import hibernate.CursoDAO;
+import hibernate.DisciplinaDAO;
 import hibernate.TurmaDAO;
 import interfaces.Home;
 import tabelasInternas.DefaultInternalTable;
+import tabelasInternas.TotalVagasInternalTable;
+import tabelasInternas.VagasDesperiotizadosInternalTable;
+import tabelasInternas.VagasPeriotizadosInternalTable;
 
 /**
 *
@@ -23,26 +32,28 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 
 	private static final int COL_BOTAO = 0;
 	private static final int COL_CODIGO_DISCIPLINA = 1;
-	private static final int COL_NOME_DISCIPLINA = 2;
-	private static final int COL_TOTAL_VAGAS = 3;
-	private static final int COL_CODIGO_CURSO = 4;
-	private static final int COL_NOME_CURSO = 5;	
-	private static final int COL_NAO_PERIOTIZADOS = 6;
-	private static final int COL_PERIOTIZADOS = 7;
-	private static final int COL_OBSERVACOES = 8;
-	private String[] colunas = new String[]{ "", "Código do Curso", "Nome do Curso", "Código da Disciplina", "Nome da Disciplina", "Total de Vagas", "Periotizados", "Não Periotizados", "Observações"};
-	private ArrayList<Turma> linhas;
+	private static final int COL_NOME_DISCIPLINA = 2;	
+	private static final int COL_CODIGO_CURSO = 3;
+	private static final int COL_NOME_CURSO = 4;
+	private static final int COL_TOTAL_VAGAS = 5;
+	private static final int COL_PERIOTIZADOS_SOLICITADOS = 6;
+	private static final int COL_PERIOTIZADOS_ATENDIDOS = 7;
+	private static final int COL_NAO_PERIOTIZADOS_SOLICITADOS = 8;
+	private static final int COL_NAO_PERIOTIZADOS_ATENDIDOS = 9;	
+	private static final int COL_OBSERVACOES = 10;
+	private String[] colunas = new String[]{ "", "Código da Disciplina", "Nome da Disciplina", "Código do Curso", "Nome do Curso", "Total de Vagas", "Periotizados Solicitados", "Periotizados Atendidos", "Não Periotizados Solicitado", "Não Periotizados Atendidos", "Observações"};
+	private ArrayList<Disciplina> linhas;
 	private ArrayList<Curso> curso;
-	private TurmaDAO turmaDAO;
+	private DisciplinaDAO disciplinaDAO;
 	private CursoDAO cursoDAO;
 	private ArrayList<Boolean> botao;	
 	
 	public PedidosCoordenadoresTableModel() {	
-		linhas = new ArrayList<Turma>();
+		linhas = new ArrayList<Disciplina>();
 		curso = new ArrayList<Curso>();
 		botao = new ArrayList<Boolean>();
 		cursoDAO = new CursoDAO();
-		turmaDAO = new TurmaDAO();
+		disciplinaDAO = new DisciplinaDAO();
 	}
 
 	@Override
@@ -62,7 +73,7 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Turma turma = linhas.get(rowIndex);
+		Disciplina disciplina = linhas.get(rowIndex);
 		ArrayList<String> dadosInternos = new ArrayList<String>();
 		ArrayList<Color> coresInternas = new ArrayList<Color>();
 		
@@ -73,11 +84,9 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 				else
 					return "+";
 			case COL_CODIGO_DISCIPLINA:
-				return turma.getDisciplina().getCodigo() + " - " + turma.getCodigo();
+				return disciplina.getCodigo();
 			case COL_NOME_DISCIPLINA:
-				return turma.getDisciplina().getNome();
-			case COL_TOTAL_VAGAS:
-				return turma.getMaxVagas();
+				return disciplina.getNome();
 			case COL_CODIGO_CURSO:				
 				if(curso.size()>=0 && botao.get(rowIndex)){
 					for(Curso c: curso){
@@ -96,38 +105,133 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 				}
 				else
 					return "";
-			
-			case COL_PERIOTIZADOS:
+				
+			case COL_TOTAL_VAGAS:
 				if(curso.size()>=0 && botao.get(rowIndex)){
-					for(int c = 0;c<curso.size();c++){
-						dadosInternos.add("0");
+					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(Curso c: curso){
+						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
+							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+								pedidosCoordenadores = p;
+							}
+						}
+						List<VagasSolicitadas> vagas = linhas.get(rowIndex).getVagasSolicitadas();
+						for(VagasSolicitadas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasSolicitadas.add(vs);
+								break;
+							}
+						}
 					}
-					return new DefaultInternalTable(dadosInternos, coresInternas, false, true);
+					return new TotalVagasInternalTable(vagasSolicitadas, coresInternas);
 				}
 				else
 					return "";
-			case COL_NAO_PERIOTIZADOS:
+			
+			case COL_PERIOTIZADOS_SOLICITADOS:
 				if(curso.size()>=0 && botao.get(rowIndex)){
-					for(int c = 0;c<curso.size();c++){
-						dadosInternos.add("0");
+					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(Curso c: curso){
+						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
+							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+								pedidosCoordenadores = p;
+							}
+						}
+						List<VagasSolicitadas> vagas = linhas.get(rowIndex).getVagasSolicitadas();
+						for(VagasSolicitadas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasSolicitadas.add(vs);
+								break;
+							}
+						}
 					}
-					return new DefaultInternalTable(dadosInternos, coresInternas, false, true);
+					return new VagasPeriotizadosInternalTable(vagasSolicitadas, coresInternas);
+				}
+				else
+					return "";
+			
+			case COL_PERIOTIZADOS_ATENDIDOS:
+				if(curso.size()>=0 && botao.get(rowIndex)){
+					List<VagasAtendidas> vagasAtendidas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(Curso c: curso){
+						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
+							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+								pedidosCoordenadores = p;
+							}
+						}
+						List<VagasAtendidas> vagas = linhas.get(rowIndex).getVagasAtendidas();
+						for(VagasAtendidas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasAtendidas.add(vs);
+								break;
+							}
+						}
+					}
+					return new VagasPeriotizadosInternalTable(vagasAtendidas, coresInternas);
+				}
+				else
+					return "";
+				
+			case COL_NAO_PERIOTIZADOS_SOLICITADOS:
+				if(curso.size()>=0 && botao.get(rowIndex)){
+					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(Curso c: curso){
+						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
+							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+								pedidosCoordenadores = p;
+							}
+						}
+						List<VagasSolicitadas> vagas = linhas.get(rowIndex).getVagasSolicitadas();
+						for(VagasSolicitadas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasSolicitadas.add(vs);
+								break;
+							}
+						}
+					}
+					return new VagasDesperiotizadosInternalTable(vagasSolicitadas, coresInternas);
+				}
+				else
+					return "";
+			
+			case COL_NAO_PERIOTIZADOS_ATENDIDOS:
+				if(curso.size()>=0 && botao.get(rowIndex)){
+					List<VagasAtendidas> vagasAtendidas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(Curso c: curso){
+						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
+							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+								pedidosCoordenadores = p;
+							}
+						}
+						List<VagasAtendidas> vagas = linhas.get(rowIndex).getVagasAtendidas();
+						for(VagasAtendidas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasAtendidas.add(vs);
+								break;
+							}
+						}
+					}
+					return new VagasDesperiotizadosInternalTable(vagasAtendidas, coresInternas);
 				}
 				else
 					return "";
 			case COL_OBSERVACOES:
 				return "";
+				
 			default:
 				System.out.println("Coluna inválida");
 				return null;
 		}
 	}
 	
-	public void setValueAt(Object value, int rowIndex, int columnIndex){}
-	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if(columnIndex == COL_BOTAO || columnIndex == COL_PERIOTIZADOS || columnIndex == COL_NAO_PERIOTIZADOS)
+		if(columnIndex == COL_BOTAO || columnIndex == COL_PERIOTIZADOS_ATENDIDOS || columnIndex == COL_NAO_PERIOTIZADOS_ATENDIDOS)
 			return true;
 		return false;
 	}
@@ -136,7 +240,7 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 		linhas.clear();
 		try {
 			if(Home.getAno()!=0 && Home.getSemestre()!= 0)
-				linhas = (ArrayList<Turma>) turmaDAO.procuraTurmasPorAnoSemestre(Home.getAno(), Home.getSemestre());
+				linhas = (ArrayList<Disciplina>) disciplinaDAO.procuraTodos();
 			curso = (ArrayList<Curso>) cursoDAO.procuraTodos();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -153,13 +257,13 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 			}
 		});
 		
-		linhas.sort(new Comparator<Turma>() {
+		linhas.sort(new Comparator<Disciplina>() {
 			@Override
-			public int compare(Turma objeto1, Turma objeto2) {
-				if(objeto1.getDisciplina().getNome().equals(objeto2.getDisciplina().getNome())){
+			public int compare(Disciplina objeto1, Disciplina objeto2) {
+				if(objeto1.getNome().equals(objeto2.getNome())){
 					return objeto1.getCodigo().compareTo(objeto2.getCodigo());
 				}
-				return objeto1.getDisciplina().getNome().compareTo(objeto2.getDisciplina().getNome());
+				return objeto1.getNome().compareTo(objeto2.getNome());
 			}
 		});	
 		
@@ -188,7 +292,7 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 			botao.set(index, true);
 	}
 
-	public ArrayList<Turma> getLinhas() {
+	public ArrayList<Disciplina> getLinhas() {
 		return linhas;
 	}
 }

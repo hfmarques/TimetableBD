@@ -29,7 +29,7 @@ public class HibernateUtil {
 		try {
 			// Create the SessionFactory from hibernate.cfg.xml
 			Configuration configuration = new Configuration()
-					.configure(new File("C:\\Users\\Héber Marques\\Copy\\Bolsa\\GETComp\\TimetableBD\\src\\hibernate.cfg.xml"));
+					.configure(new File("src\\hibernate.cfg.xml"));
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
 					.applySetting("hibernate.connection.driver_class", "org.postgresql.Driver")

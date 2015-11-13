@@ -28,11 +28,11 @@ public class CadastroPedidosCoordenadores extends InterfacesTabela {
 		editor = new CellEditor();
 		
 		for(int i=1;i<table.getColumnCount(); i++){
-			table.getColumnModel().getColumn(i).setCellRenderer(renderer);
-			table.getColumnModel().getColumn(i).setCellEditor(editor);
+			table.getColumnModel().getColumn(i).setCellRenderer(new CellRenderer());
+			table.getColumnModel().getColumn(i).setCellEditor(new CellEditor());
 		}
 		
-		botaoExpandir.getEditButton().addActionListener(new ActionListener(){			
+		botaoExpandir.getEditButton().addActionListener(new ActionListener(){	
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				botaoExpandir.editingStopped();

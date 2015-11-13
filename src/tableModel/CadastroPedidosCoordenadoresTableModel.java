@@ -3,15 +3,21 @@ package tableModel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
 import timetable.Curso;
 import timetable.Disciplina;
+import timetable.PedidosCoordenadores;
+import timetable.VagasSolicitadas;
 import hibernate.CursoDAO;
 import hibernate.DisciplinaDAO;
 import interfaces.Home;
 import tabelasInternas.DefaultInternalTable;
+import tabelasInternas.TotalVagasInternalTable;
+import tabelasInternas.VagasDesperiotizadosInternalTable;
+import tabelasInternas.VagasPeriotizadosInternalTable;
 
 /**
 *
@@ -98,28 +104,70 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 					return "";
 			case COL_TOTAL_VAGAS:
 				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(PedidosCoordenadores p: linhas.get(rowIndex).getPedidosCoordenadores()){
+						if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+							pedidosCoordenadores = p;
+						}
+					}
 					for(Disciplina t: disciplina){
 						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
+						List<VagasSolicitadas> vagas = t.getVagasSolicitadas();
+						for(VagasSolicitadas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasSolicitadas.add(vs);
+								break;
+							}
+						}
 					}
-					return new DefaultInternalTable(disciplina.get(rowIndex).getVagasSolicitadas(), coresInternas, true, 0);
+					return new TotalVagasInternalTable(vagasSolicitadas, coresInternas);
 				}
 				else
 					return "";
 			case COL_PERIOTIZADOS:
 				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(PedidosCoordenadores p: linhas.get(rowIndex).getPedidosCoordenadores()){
+						if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+							pedidosCoordenadores = p;
+						}
+					}
 					for(Disciplina t: disciplina){
 						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
-					}					
-					return new DefaultInternalTable(disciplina.get(rowIndex).getVagasSolicitadas(), coresInternas, true, 1);
+						List<VagasSolicitadas> vagas = t.getVagasSolicitadas();
+						for(VagasSolicitadas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasSolicitadas.add(vs);
+								break;
+							}
+						}
+					}
+					return new VagasPeriotizadosInternalTable(vagasSolicitadas, coresInternas);
 				}
 				else
 					return "";
 			case COL_NAO_PERIOTIZADOS:
 				if(disciplina.size()>=0 && botao.get(rowIndex)){
+					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(PedidosCoordenadores p: linhas.get(rowIndex).getPedidosCoordenadores()){
+						if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+							pedidosCoordenadores = p;
+						}
+					}
 					for(Disciplina t: disciplina){
 						coresInternas.add(Disciplina.getOrSetCoresPerfis(t.getPerfil()));
+						List<VagasSolicitadas> vagas = t.getVagasSolicitadas();
+						for(VagasSolicitadas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasSolicitadas.add(vs);
+								break;
+							}
+						}
 					}
-					return new DefaultInternalTable(disciplina.get(rowIndex).getVagasSolicitadas(), coresInternas, true, 3);
+					return new VagasDesperiotizadosInternalTable(vagasSolicitadas, coresInternas);
 				}
 				else
 					return "";
@@ -131,17 +179,15 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 		}
 	}
 	
-	public void setValueAt(Object value, int rowIndex, int columnIndex){}
-	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if(columnIndex == COL_BOTAO || columnIndex == COL_TOTAL_VAGAS ||columnIndex == COL_PERIOTIZADOS || columnIndex == COL_NAO_PERIOTIZADOS)
+		if(columnIndex == COL_BOTAO || columnIndex == COL_PERIOTIZADOS || columnIndex == COL_NAO_PERIOTIZADOS)
 			return true;
 		return false;
 	}
 
 	public void updateDataRows(){
-		linhas.clear();
+		linhas.clear(); 
 		try {
 			if(Home.getAno()!=0 && Home.getSemestre()!= 0)
 				disciplina = (ArrayList<Disciplina>) disciplinaDAO.procuraTodos();
@@ -170,7 +216,7 @@ public class CadastroPedidosCoordenadoresTableModel extends AbstractTableModel{
 				}
 				return objeto1.getNome().compareTo(objeto2.getNome());
 			}
-		});	
+		});
 		
 		botao.clear(); 
 		

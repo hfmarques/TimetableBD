@@ -18,6 +18,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import timetable.Curso;
@@ -47,7 +49,7 @@ public class Home extends JPanel{
 		super(new GridLayout(1, 0));
 		// inicializa as variáveis
 		this.painel = new JPanel();
-		this.botaoIncluir = new JButton("Incluir/Pesquisar Semestre");
+		this.botaoIncluir = new JButton("Incluir / Pesquisar Semestre");
 		this.gridBag = new GridBagLayout();
 		this.constraints = new GridBagConstraints();
 		this.coordenadoresDAO = new PedidosCoordenadoresDAO();
@@ -131,28 +133,31 @@ public class Home extends JPanel{
 					Home.semestre = Integer.parseInt((String) comboBoxSemestre.getSelectedItem());
 					
 					if(coordenadoresDAO.existePedidosCoordenadoresPorAnoSemestre(Home.ano, Home.semestre) == false){
-						List<Curso> curso = null;
-						List<Disciplina> disciplinas = null;
-						try {
-							disciplinas = disciplinaDAO.procuraTodos();
-							curso = cursoDAO.procuraTodos();
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
-						if(curso != null && disciplinas != null){
-							for(Curso c: curso){
-								PedidosCoordenadores pedidosCoordenadores = new PedidosCoordenadores(Home.semestre,	Home.ano, new Date(System.currentTimeMillis()),	"coordenador", c);
-								coordenadoresDAO.salvaOuEdita(pedidosCoordenadores);
-								for(Disciplina d: disciplinas){
-									VagasAtendidas atendidas = new VagasAtendidas(d, pedidosCoordenadores);
-									atendidasDAO.salvaOuEdita(atendidas);
-									VagasSolicitadas solicitadas = new VagasSolicitadas(d, pedidosCoordenadores);
-									solicitadasDAO.salvaOuEdita(solicitadas);
+						int resposta = JOptionPane.showConfirmDialog(new JFrame(), "Este semestre não existe, deseja incluir um novo?");
+						if(resposta == JOptionPane.YES_OPTION){	
+							List<Curso> curso = null;
+							List<Disciplina> disciplinas = null;
+							try {
+								disciplinas = disciplinaDAO.procuraTodos();
+								curso = cursoDAO.procuraTodos();
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+							if(curso != null && disciplinas != null){
+								for(Curso c: curso){
+									PedidosCoordenadores pedidosCoordenadores = new PedidosCoordenadores(Home.semestre,	Home.ano, new Date(System.currentTimeMillis()),	"coordenador", c);
+									coordenadoresDAO.salvaOuEdita(pedidosCoordenadores);
+									for(Disciplina d: disciplinas){
+										VagasAtendidas atendidas = new VagasAtendidas(d, pedidosCoordenadores);
+										atendidasDAO.salvaOuEdita(atendidas);
+										VagasSolicitadas solicitadas = new VagasSolicitadas(d, pedidosCoordenadores);
+										solicitadasDAO.salvaOuEdita(solicitadas);
+									}
 								}
 							}
-						}				
+						}
 					}
 				}
 			}

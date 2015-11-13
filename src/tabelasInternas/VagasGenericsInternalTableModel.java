@@ -50,18 +50,18 @@ public class VagasGenericsInternalTableModel extends AbstractTableModel{
 			switch(columnIndex){
 				case COL_DEFAULT:
 					switch (campoExibicao) {
-						case TOTAL_VAGAS:
-							return linhas.get(rowIndex).getTotalVagas();
-						case PERIOTIZADOS:
-							return linhas.get(rowIndex).getVagasPeriotOfert();
-						case PERIOTIZADOS_N:
-							return linhas.get(rowIndex).getVagasPeriotNaoOfert();
-						case DESPERIOTIZADOS:
-							return linhas.get(rowIndex).getVagasDesperiotOfert();
-						case DESPERIOTIZADOS_N:
-							return linhas.get(rowIndex).getVagasDesperiotNaoOfert();
-						default:
-							System.out.println("Coluna inválida");
+					case TOTAL_VAGAS:
+						return linhas.get(rowIndex).getTotalVagas();
+					case PERIOTIZADOS:
+						return linhas.get(rowIndex).getVagasPeriotOfert();
+					case PERIOTIZADOS_N:
+						return linhas.get(rowIndex).getVagasPeriotNaoOfert();
+					case DESPERIOTIZADOS:
+						return linhas.get(rowIndex).getVagasDesperiotOfert();
+					case DESPERIOTIZADOS_N:
+						return linhas.get(rowIndex).getVagasDesperiotNaoOfert();
+					default:
+						System.out.println("Coluna inválida");
 					}
 					return linhas.get(rowIndex).getVagasDesperiotOfert();
 				default:
@@ -78,10 +78,12 @@ public class VagasGenericsInternalTableModel extends AbstractTableModel{
 					linhas.get(rowIndex).setTotalVagas(Integer.parseInt(value.toString()));
 				case PERIOTIZADOS:
 					linhas.get(rowIndex).setVagasPeriotOfert(Integer.parseInt(value.toString()));
+					linhas.get(rowIndex).setTotalVagas(linhas.get(rowIndex).getVagasPeriotOfert() + linhas.get(rowIndex).getVagasDesperiotOfert());
 				case PERIOTIZADOS_N:
 					linhas.get(rowIndex).setVagasPeriotNaoOfert(Integer.parseInt(value.toString()));
 				case DESPERIOTIZADOS:
 					linhas.get(rowIndex).setVagasDesperiotOfert(Integer.parseInt(value.toString()));
+					linhas.get(rowIndex).setTotalVagas(linhas.get(rowIndex).getVagasPeriotOfert() + linhas.get(rowIndex).getVagasDesperiotOfert());
 				case DESPERIOTIZADOS_N:
 					linhas.get(rowIndex).setVagasDesperiotNaoOfert(Integer.parseInt(value.toString()));
 				default:

@@ -1,29 +1,23 @@
 package tabelasInternas;
 
-import java.util.ArrayList;
+import hibernate.GenericoDAO;
+
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-/**
-*
-* @author Héber
-*/
 
-//tabela interna com apenas uma coluna
+import timetable.GenericsVagas;
+
 @SuppressWarnings("serial")
-public class DefaultInternalTableModel extends AbstractTableModel{
+public class TotalVagasInternalTableModel extends AbstractTableModel{
 	private static final int COL_DEFAULT = 0;
 	private String[] colunas = new String[]{""};
-	private ArrayList<String> linhas;
-	private boolean editable;
+	private List<? extends GenericsVagas> linhas;
+	public GenericoDAO dao;
 	
-	public DefaultInternalTableModel(ArrayList<String> linhas) {		
+	public TotalVagasInternalTableModel(List<? extends GenericsVagas> linhas) {		
 		this.linhas  = linhas;
-		editable = false;
-	}
-	
-	public DefaultInternalTableModel(ArrayList<String> linhas, boolean editable) {		
-		this.linhas  = linhas;
-		this.editable = editable;
+		this.dao = new GenericoDAO();
 	}
 
 	@Override
@@ -46,7 +40,7 @@ public class DefaultInternalTableModel extends AbstractTableModel{
 		
 		switch(columnIndex){
 			case COL_DEFAULT:
-				return linhas.get(rowIndex);
+				return linhas.get(rowIndex).getTotalVagas();
 			default:
 				System.out.println("Coluna inválida");
 				return null;
@@ -54,22 +48,19 @@ public class DefaultInternalTableModel extends AbstractTableModel{
 	}
 	
 	public void setValueAt(Object value, int rowIndex, int columnIndex){
-		switch(columnIndex){
-		case COL_DEFAULT:
-			linhas.set(rowIndex, value.toString());
-		}
+		
 	}
 	
-	public ArrayList<String> getLinhas() {
+	public List<? extends GenericsVagas> getLinhas() {
 		return linhas;
 	}
 
-	public void setLinhas(ArrayList<String> linhas) {
+	public void setLinhas(List<? extends GenericsVagas> linhas) {
 		this.linhas = linhas;
 	}
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return editable;
+		return false;
 	}
 }
