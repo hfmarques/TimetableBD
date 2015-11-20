@@ -90,8 +90,9 @@ public class CalourosTableModel extends AbstractTableModel {
 	}
 	
 	public void removeCalouro(int indiceLinha) { 
-		linhas.remove(indiceLinha); 
+		Calouros c = linhas.remove(indiceLinha); 
 		fireTableRowsDeleted(indiceLinha, indiceLinha); 
+		calourosDAO.exclui(c);
 	}
 
 	public ArrayList<Calouros> getLinhas() {

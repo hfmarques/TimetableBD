@@ -100,8 +100,9 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 	}
 	
 	public void removeDisciplina(int indiceLinha) { 
-		linhas.remove(indiceLinha); 
-		fireTableRowsDeleted(indiceLinha, indiceLinha); 
+		Disciplina d = linhas.remove(indiceLinha); 
+		fireTableRowsDeleted(indiceLinha, indiceLinha);
+		disciplinaDAO.exclui(d);
 	}
 
 	public ArrayList<Disciplina> getLinhas() {

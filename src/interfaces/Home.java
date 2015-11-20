@@ -125,14 +125,19 @@ public class Home extends JPanel{
 		gridBag.setConstraints(comboBoxAno, constraints);
 		
 		botaoIncluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
+			public void actionPerformed(ActionEvent e) {				
 				if(comboBoxAno.getSelectedItem() != ""){				
 					Home.ano = Integer.parseInt((String) comboBoxAno.getSelectedItem());
 					Home.semestre = Integer.parseInt((String) comboBoxSemestre.getSelectedItem());
 					
-					if(coordenadoresDAO.existePedidosCoordenadoresPorAnoSemestre(Home.ano, Home.semestre) == false){
+					boolean existeSemestreAno = false; 
+					for(PedidosCoordenadores pc: coordenadores){
+						if(pc.getAno() == Home.ano && pc.getSemestre() == Home.semestre){
+							existeSemestreAno = true;
+							break;
+						}
+					}
+					if(existeSemestreAno == false){
 						int resposta = JOptionPane.showConfirmDialog(new JFrame(), "Este semestre não existe, deseja incluir um novo?");
 						if(resposta == JOptionPane.YES_OPTION){	
 							List<Curso> curso = null;

@@ -92,8 +92,9 @@ public class DocenteTableModel extends AbstractTableModel /* extends AbstractTab
 	}
 	
 	public void removeDocente(int indiceLinha) { 
-		linhas.remove(indiceLinha); 
-		fireTableRowsDeleted(indiceLinha, indiceLinha); 
+		Docente d = linhas.remove(indiceLinha); 
+		fireTableRowsDeleted(indiceLinha, indiceLinha);
+		docenteDAO.exclui(d);
 	}
 
 	public ArrayList<Docente> getLinhas() {

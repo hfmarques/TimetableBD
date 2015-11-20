@@ -1,7 +1,5 @@
 package tabelasInternas;
 
-import interfaces.CellRenderer;
-
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -11,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import estruturasAuxiliaresTabelas.CellRenderer;
 import timetable.GenericsVagas;
 
 @SuppressWarnings("serial")

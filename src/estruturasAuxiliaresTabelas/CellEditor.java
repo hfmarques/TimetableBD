@@ -1,34 +1,28 @@
-package interfaces;
+package estruturasAuxiliaresTabelas;
 
-import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.Component;
 
+import javax.swing.AbstractCellEditor;
+import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.JTextField;
+import javax.swing.table.TableCellEditor;
 
 import tabelasInternas.DefaultInternalTable;
 import tabelasInternas.TotalVagasInternalTable;
 import tabelasInternas.VagasDesperiotizadosInternalTable;
 import tabelasInternas.VagasPeriotizadosInternalTable;
 
+/**
+ * Editor de celulas da tabela
+ */
 @SuppressWarnings("serial")
-public class CellRenderer extends DefaultTableCellRenderer{
-	
-	private ArrayList<Color> coresLinhas;
-	
-	public CellRenderer(){
-		this.coresLinhas = null;
-	}
-	
-	public CellRenderer(ArrayList<Color> coresLinhas){
-		this.coresLinhas = coresLinhas;
-	}
-	
+public class CellEditor extends AbstractCellEditor implements TableCellEditor {
+
+	JComponent component = new JTextField();
+
 	@Override
-	public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		if(coresLinhas != null){
-			this.setBackground(coresLinhas.get(row));
-		}
+	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int vColIndex) {
 		if(value instanceof DefaultInternalTable){
 			DefaultInternalTable c = (DefaultInternalTable) value;
 			return c.getTable();
@@ -45,16 +39,13 @@ public class CellRenderer extends DefaultTableCellRenderer{
 			VagasDesperiotizadosInternalTable c = (VagasDesperiotizadosInternalTable) value;
 			return c.getTable();
 		}
-		return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		
+		((JTextField) component).setText((String) value);
+		return component;
 	}
 
-	public ArrayList<Color> getCoresLinhas() {
-		return coresLinhas;
+	@Override
+	public Object getCellEditorValue() {
+		return ((JTextField) component).getText();
 	}
-
-	public void setCoresLinhas(ArrayList<Color> coresLinhas) {
-		this.coresLinhas = coresLinhas;
-	}
-	
-	
 }

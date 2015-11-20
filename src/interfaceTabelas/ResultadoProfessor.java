@@ -1,7 +1,6 @@
 package interfaceTabelas;
 
 import hibernate.TurmaDAO;
-import interfaces.CellRenderer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +13,8 @@ import java.util.Iterator;
 
 import org.hibernate.HibernateException;
 
-import interfaces.BotaoTabela;
+import estruturasAuxiliaresTabelas.BotaoTabela;
+import estruturasAuxiliaresTabelas.CellRenderer;
 import tableModel.ResultadosProfessorTableModel;
 
 /**

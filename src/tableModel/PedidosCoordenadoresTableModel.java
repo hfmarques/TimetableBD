@@ -10,12 +10,10 @@ import javax.swing.table.AbstractTableModel;
 import timetable.Curso;
 import timetable.Disciplina;
 import timetable.PedidosCoordenadores;
-import timetable.Turma;
 import timetable.VagasAtendidas;
 import timetable.VagasSolicitadas;
 import hibernate.CursoDAO;
 import hibernate.DisciplinaDAO;
-import hibernate.TurmaDAO;
 import interfaces.Home;
 import tabelasInternas.DefaultInternalTable;
 import tabelasInternas.TotalVagasInternalTable;
@@ -35,13 +33,14 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 	private static final int COL_NOME_DISCIPLINA = 2;	
 	private static final int COL_CODIGO_CURSO = 3;
 	private static final int COL_NOME_CURSO = 4;
-	private static final int COL_TOTAL_VAGAS = 5;
-	private static final int COL_PERIOTIZADOS_SOLICITADOS = 6;
-	private static final int COL_PERIOTIZADOS_ATENDIDOS = 7;
-	private static final int COL_NAO_PERIOTIZADOS_SOLICITADOS = 8;
-	private static final int COL_NAO_PERIOTIZADOS_ATENDIDOS = 9;	
-	private static final int COL_OBSERVACOES = 10;
-	private String[] colunas = new String[]{ "", "Código da Disciplina", "Nome da Disciplina", "Código do Curso", "Nome do Curso", "Total de Vagas", "Periotizados Solicitados", "Periotizados Atendidos", "Não Periotizados Solicitado", "Não Periotizados Atendidos", "Observações"};
+	private static final int COL_TOTAL_VAGAS_SOLICITADAS = 5;
+	private static final int COL_TOTAL_VAGAS_ATENDIDAS = 6;
+	private static final int COL_PERIOTIZADOS_SOLICITADOS = 7;
+	private static final int COL_PERIOTIZADOS_ATENDIDOS = 8;
+	private static final int COL_NAO_PERIOTIZADOS_SOLICITADOS = 9;
+	private static final int COL_NAO_PERIOTIZADOS_ATENDIDOS = 10;	
+	private static final int COL_OBSERVACOES = 11;
+	private String[] colunas = new String[]{ "", "Código da Disciplina", "Nome da Disciplina", "Código do Curso", "Nome do Curso", "Total de Vagas Solicitadas", "Total de Vagas Atendidas", "Periotizados Solicitados", "Periotizados Atendidos", "Não Periotizados Solicitado", "Não Periotizados Atendidos", "Observações"};
 	private ArrayList<Disciplina> linhas;
 	private ArrayList<Curso> curso;
 	private DisciplinaDAO disciplinaDAO;
@@ -106,7 +105,7 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 				else
 					return "";
 				
-			case COL_TOTAL_VAGAS:
+			case COL_TOTAL_VAGAS_SOLICITADAS:
 				if(curso.size()>=0 && botao.get(rowIndex)){
 					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
 					PedidosCoordenadores pedidosCoordenadores = null;
@@ -125,6 +124,29 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 						}
 					}
 					return new TotalVagasInternalTable(vagasSolicitadas, coresInternas);
+				}
+				else
+					return "";
+				
+			case COL_TOTAL_VAGAS_ATENDIDAS:
+				if(curso.size()>=0 && botao.get(rowIndex)){
+					List<VagasAtendidas> vagasAtendidas = new ArrayList<>();
+					PedidosCoordenadores pedidosCoordenadores = null;
+					for(Curso c: curso){
+						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
+							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+								pedidosCoordenadores = p;
+							}
+						}
+						List<VagasAtendidas> vagas = linhas.get(rowIndex).getVagasAtendidas();
+						for(VagasAtendidas vs: vagas){
+							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
+								vagasAtendidas.add(vs);
+								break;
+							}
+						}
+					}
+					return new TotalVagasInternalTable(vagasAtendidas, coresInternas);
 				}
 				else
 					return "";

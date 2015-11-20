@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.DefaultCellEditor;
 
-import interfaces.CellRenderer;
+import estruturasAuxiliaresTabelas.CellRenderer;
 import tableModel.PlanoDepartamentalTableModel;
 import timetable.Disciplina;
 

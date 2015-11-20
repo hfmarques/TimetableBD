@@ -1,14 +1,13 @@
 package interfaceTabelas;
 
-import interfaces.CellEditor;
-import interfaces.CellRenderer;
-
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import interfaces.BotaoTabela;
+import estruturasAuxiliaresTabelas.BotaoTabela;
+import estruturasAuxiliaresTabelas.CellEditor;
+import estruturasAuxiliaresTabelas.CellRenderer;
 import tableModel.PedidosCoordenadoresTableModel;
 import timetable.Disciplina;
 

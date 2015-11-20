@@ -1,6 +1,5 @@
 package tabelasInternas;
 
-import interfaces.CellRenderer;
 import timetable.GenericsVagas;
 
 import java.awt.Color;
@@ -11,6 +10,8 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+
+import estruturasAuxiliaresTabelas.CellRenderer;
 
 @SuppressWarnings("serial")
 public class DefaultInternalTable extends JPanel{

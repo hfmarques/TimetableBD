@@ -1,28 +1,34 @@
-package interfaces;
+package estruturasAuxiliaresTabelas;
 
-import java.awt.Component;
+import java.awt.Color;
+import java.util.ArrayList;
 
-import javax.swing.AbstractCellEditor;
-import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.TableCellEditor;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import tabelasInternas.DefaultInternalTable;
 import tabelasInternas.TotalVagasInternalTable;
 import tabelasInternas.VagasDesperiotizadosInternalTable;
 import tabelasInternas.VagasPeriotizadosInternalTable;
 
-/**
- * Editor de celulas da tabela
- */
 @SuppressWarnings("serial")
-public class CellEditor extends AbstractCellEditor implements TableCellEditor {
-
-	JComponent component = new JTextField();
-
+public class CellRenderer extends DefaultTableCellRenderer{
+	
+	private ArrayList<Color> coresLinhas;
+	
+	public CellRenderer(){
+		this.coresLinhas = null;
+	}
+	
+	public CellRenderer(ArrayList<Color> coresLinhas){
+		this.coresLinhas = coresLinhas;
+	}
+	
 	@Override
-	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int vColIndex) {
+	public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		if(coresLinhas != null){
+			this.setBackground(coresLinhas.get(row));
+		}
 		if(value instanceof DefaultInternalTable){
 			DefaultInternalTable c = (DefaultInternalTable) value;
 			return c.getTable();
@@ -39,13 +45,16 @@ public class CellEditor extends AbstractCellEditor implements TableCellEditor {
 			VagasDesperiotizadosInternalTable c = (VagasDesperiotizadosInternalTable) value;
 			return c.getTable();
 		}
-		
-		((JTextField) component).setText((String) value);
-		return component;
+		return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 	}
 
-	@Override
-	public Object getCellEditorValue() {
-		return ((JTextField) component).getText();
+	public ArrayList<Color> getCoresLinhas() {
+		return coresLinhas;
 	}
+
+	public void setCoresLinhas(ArrayList<Color> coresLinhas) {
+		this.coresLinhas = coresLinhas;
+	}
+	
+	
 }

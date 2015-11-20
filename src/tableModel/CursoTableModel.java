@@ -151,8 +151,9 @@ public class CursoTableModel extends AbstractTableModel {
 	}
 	
 	public void removeCurso(int indiceLinha) { 
-		linhas.remove(indiceLinha); 
-		fireTableRowsDeleted(indiceLinha, indiceLinha); 
+		Curso c = linhas.remove(indiceLinha); 
+		fireTableRowsDeleted(indiceLinha, indiceLinha);
+		cursoDAO.exclui(c);
 	}
 
 	public ArrayList<Curso> getLinhas() {

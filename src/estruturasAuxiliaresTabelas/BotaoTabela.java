@@ -1,4 +1,6 @@
-package interfaces;
+package estruturasAuxiliaresTabelas;
+
+import interfaces.LayoutConstraints;
 
 import java.awt.Component;
 import java.awt.Dimension;

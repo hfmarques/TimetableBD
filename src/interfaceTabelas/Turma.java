@@ -14,8 +14,11 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
+import estruturasAuxiliaresTabelas.TableMouseListener;
 import tableModel.TurmaTableModel;
 
 /**
@@ -23,9 +26,11 @@ import tableModel.TurmaTableModel;
  * @author Héber
  */
 @SuppressWarnings("serial")
-public class Turma extends InterfacesTabela {
+public class Turma extends InterfacesTabela implements ActionListener{
 
 	private JButton botaoImportaTurmas;
+	private JPopupMenu popupMenu;
+    private JMenuItem menuRemoverItem;
 	
 	public Turma(){		
 		super(new TurmaTableModel(), "Inserir Turma");
@@ -34,6 +39,17 @@ public class Turma extends InterfacesTabela {
 		
 		painelBotao.add(botaoImportaTurmas);
 		
+		popupMenu = new JPopupMenu();
+        menuRemoverItem = new JMenuItem("Remover Turma");
+        
+        menuRemoverItem.addActionListener(this);
+        
+        popupMenu.add(menuRemoverItem);
+        
+        table.setComponentPopupMenu(popupMenu);
+        
+        table.addMouseListener(new TableMouseListener(table));
+        
 		// seta a posição do botão salvar
 		LayoutConstraints.setConstraints(constraints, 1, 1, 1, 1, 1, 1);
 		constraints.insets = new Insets(0, 0, 0, 170);
@@ -127,6 +143,13 @@ public class Turma extends InterfacesTabela {
 			}
 		});
 	}
+	
+	public void actionPerformed(ActionEvent event) {
+        JMenuItem menu = (JMenuItem) event.getSource();
+        if (menu == menuRemoverItem) {
+            ((TurmaTableModel)tableModel).removeTurma(table.getSelectedRow());  
+        }
+    }
 	
 	public void updateTable() {
 		((TurmaTableModel)tableModel).updateDataRows();

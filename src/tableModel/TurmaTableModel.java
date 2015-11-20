@@ -160,8 +160,9 @@ public class TurmaTableModel extends AbstractTableModel {
 	}
 	
 	public void removeTurma(int indiceLinha) { 
-		linhas.remove(indiceLinha); 
-		fireTableRowsDeleted(indiceLinha, indiceLinha); 
+		Turma t = linhas.remove(indiceLinha); 
+		fireTableRowsDeleted(indiceLinha, indiceLinha);
+		turmaDAO.exclui(t);
 	}
 
 	public ArrayList<Turma> getLinhas() {

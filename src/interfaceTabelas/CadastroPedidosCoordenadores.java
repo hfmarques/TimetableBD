@@ -1,12 +1,11 @@
 package interfaceTabelas;
 
-import interfaces.CellEditor;
-import interfaces.CellRenderer;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import interfaces.BotaoTabela;
+import estruturasAuxiliaresTabelas.BotaoTabela;
+import estruturasAuxiliaresTabelas.CellEditor;
+import estruturasAuxiliaresTabelas.CellRenderer;
 import tableModel.CadastroPedidosCoordenadoresTableModel;
 
 /**
@@ -28,8 +27,8 @@ public class CadastroPedidosCoordenadores extends InterfacesTabela {
 		editor = new CellEditor();
 		
 		for(int i=1;i<table.getColumnCount(); i++){
-			table.getColumnModel().getColumn(i).setCellRenderer(new CellRenderer());
-			table.getColumnModel().getColumn(i).setCellEditor(new CellEditor());
+			table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+			table.getColumnModel().getColumn(i).setCellEditor(editor);
 		}
 		
 		botaoExpandir.getEditButton().addActionListener(new ActionListener(){	
