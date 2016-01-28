@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 
 import timetable.Calouros;
 import timetable.Curso;
+import timetable.Disciplina;
 import hibernate.CalourosDAO;
 import hibernate.CursoDAO;
 
@@ -22,7 +23,7 @@ public class CursoTableModel extends AbstractTableModel {
 	private static final int COL_TURNO = 2;
 	private static final int COL_CALOURO_PRIMEIRO = 3;
 	private static final int COL_CALOURO_SEGUNDO = 4;
-	private String[] colunas = new String[]{"Nome", "Código", "Turno", "Calouros no Priemiro Semestre", "Calouros no Segundo Semestre"};
+	private String[] colunas = new String[]{"Nome", "Código", "Turno", "Calouros no Primeiro Semestre", "Calouros no Segundo Semestre"};
 	private ArrayList<Curso> linhas;
 	private CursoDAO cursoDAO;
 	private CalourosDAO calourosDAO;
@@ -84,12 +85,28 @@ public class CursoTableModel extends AbstractTableModel {
 			curso.setNome(nome);
 			break;
 		case COL_CODIGO:
-			String codigo = value.toString();
-			curso.setCodigo(codigo);
+			Boolean existeCódigo = false;
+			for(Curso c: linhas){
+				if(c.getCodigo() != null && c.getCodigo().equals(value.toString())){
+					existeCódigo = true;
+				}
+			}
+			if(existeCódigo){
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Código\" já existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				fireTableCellUpdated(rowIndex, columnIndex);
+			}else{
+				String codigo = value.toString();
+				curso.setCodigo(codigo);
+			}
 			break;
 		case COL_TURNO:
-			String turno = value.toString();
-			curso.setTurno(turno);
+			if(value.toString().equals("Diurno") || value.toString().equals("Noturno")){
+				String turno = value.toString();
+				curso.setTurno(turno);
+			}else{
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Turno\" é diferente de \"Diurno\" ou \"Noturno\", por favor insira um destes dois valores", "Erro",  JOptionPane.ERROR_MESSAGE);
+				fireTableCellUpdated(rowIndex, columnIndex);
+			}
 			break;
 		case COL_CALOURO_PRIMEIRO:
 			int numeroCalouros = Integer.parseInt(value.toString());

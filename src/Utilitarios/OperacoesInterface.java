@@ -1,7 +1,5 @@
-//package Utilitarios;
-//
-//import interfaces.InterfaceTableModel;
-//
+package Utilitarios;
+
 //import java.awt.Component;
 //import java.awt.Dimension;
 //
@@ -9,8 +7,8 @@
 //import javax.swing.table.DefaultTableColumnModel;
 //import javax.swing.table.TableCellRenderer;
 //import javax.swing.table.TableColumn;
-//
-//public abstract class OperacoesInterface {
+
+public abstract class OperacoesInterface {
 //
 //	//dimensiona as colunas da tabela de acordo com o maior texto, e o tamanho total da tabela
 //	public static void dimensionaTabela(JTable tabela) { 
@@ -87,4 +85,4 @@
 //        col.setPreferredWidth(width);  
 //    } 
 //
-//}
+}

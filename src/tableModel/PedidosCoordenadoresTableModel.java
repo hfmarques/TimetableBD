@@ -42,14 +42,20 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 	private static final int COL_OBSERVACOES = 11;
 	private String[] colunas = new String[]{ "", "Código da Disciplina", "Nome da Disciplina", "Código do Curso", "Nome do Curso", "Total de Vagas Solicitadas", "Total de Vagas Atendidas", "Periotizados Solicitados", "Periotizados Atendidos", "Não Periotizados Solicitado", "Não Periotizados Atendidos", "Observações"};
 	private ArrayList<Disciplina> linhas;
-	private ArrayList<Curso> curso;
+	private ArrayList<ArrayList<Curso>> curso;
+	private ArrayList<PedidosCoordenadores> pedidosCoordenadores; //o indice indica um curso
+	private ArrayList<ArrayList<VagasSolicitadas>> vagasSolicitadas; //o primeiro indice indica um disciplina o segundo uma curso
+	private ArrayList<ArrayList<VagasAtendidas>> vagasAtendidas; //o primeiro indice indica um disciplina o segundo uma curso
 	private DisciplinaDAO disciplinaDAO;
 	private CursoDAO cursoDAO;
 	private ArrayList<Boolean> botao;	
 	
 	public PedidosCoordenadoresTableModel() {	
 		linhas = new ArrayList<Disciplina>();
-		curso = new ArrayList<Curso>();
+		curso = new ArrayList<ArrayList<Curso>>();
+		pedidosCoordenadores = new ArrayList<>();
+		vagasSolicitadas = new ArrayList<>();
+		vagasAtendidas = new ArrayList<>();
 		botao = new ArrayList<Boolean>();
 		cursoDAO = new CursoDAO();
 		disciplinaDAO = new DisciplinaDAO();
@@ -87,8 +93,8 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 			case COL_NOME_DISCIPLINA:
 				return disciplina.getNome();
 			case COL_CODIGO_CURSO:				
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					for(Curso c: curso){
+				if(curso.size()>=0 && curso.get(rowIndex).size()>=0 && botao.get(rowIndex)){
+					for(Curso c: curso.get(rowIndex)){
 						dadosInternos.add(c.getCodigo());
 					}
 					return new DefaultInternalTable(dadosInternos, coresInternas, false);
@@ -96,8 +102,8 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 				else
 					return "";
 			case COL_NOME_CURSO:
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					for(Curso c: curso){
+				if(curso.size()>=0 && curso.get(rowIndex).size()>=0 && botao.get(rowIndex)){
+					for(Curso c: curso.get(rowIndex)){
 						dadosInternos.add(c.getNome());
 					}
 					return new DefaultInternalTable(dadosInternos, coresInternas, false);
@@ -106,139 +112,43 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 					return "";
 				
 			case COL_TOTAL_VAGAS_SOLICITADAS:
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
-					PedidosCoordenadores pedidosCoordenadores = null;
-					for(Curso c: curso){
-						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
-							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
-								pedidosCoordenadores = p;
-							}
-						}
-						List<VagasSolicitadas> vagas = linhas.get(rowIndex).getVagasSolicitadas();
-						for(VagasSolicitadas vs: vagas){
-							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
-								vagasSolicitadas.add(vs);
-								break;
-							}
-						}
-					}
-					return new TotalVagasInternalTable(vagasSolicitadas, coresInternas);
+				if(curso.size()>0 && curso.get(rowIndex).size()>0 && botao.get(rowIndex)){
+					return new TotalVagasInternalTable(vagasSolicitadas.get(rowIndex), coresInternas);
 				}
 				else
 					return "";
 				
 			case COL_TOTAL_VAGAS_ATENDIDAS:
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					List<VagasAtendidas> vagasAtendidas = new ArrayList<>();
-					PedidosCoordenadores pedidosCoordenadores = null;
-					for(Curso c: curso){
-						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
-							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
-								pedidosCoordenadores = p;
-							}
-						}
-						List<VagasAtendidas> vagas = linhas.get(rowIndex).getVagasAtendidas();
-						for(VagasAtendidas vs: vagas){
-							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
-								vagasAtendidas.add(vs);
-								break;
-							}
-						}
-					}
-					return new TotalVagasInternalTable(vagasAtendidas, coresInternas);
+				if(curso.size()>0 && curso.get(rowIndex).size()>0 && botao.get(rowIndex)){
+					return new TotalVagasInternalTable(vagasAtendidas.get(rowIndex), coresInternas);
 				}
 				else
 					return "";
 			
 			case COL_PERIOTIZADOS_SOLICITADOS:
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
-					PedidosCoordenadores pedidosCoordenadores = null;
-					for(Curso c: curso){
-						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
-							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
-								pedidosCoordenadores = p;
-							}
-						}
-						List<VagasSolicitadas> vagas = linhas.get(rowIndex).getVagasSolicitadas();
-						for(VagasSolicitadas vs: vagas){
-							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
-								vagasSolicitadas.add(vs);
-								break;
-							}
-						}
-					}
-					return new VagasPeriotizadosInternalTable(vagasSolicitadas, coresInternas);
+				if(curso.size()>=0 && curso.get(rowIndex).size()>=0 && botao.get(rowIndex)){
+					return new VagasPeriotizadosInternalTable(vagasSolicitadas.get(rowIndex), coresInternas);
 				}
 				else
 					return "";
 			
 			case COL_PERIOTIZADOS_ATENDIDOS:
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					List<VagasAtendidas> vagasAtendidas = new ArrayList<>();
-					PedidosCoordenadores pedidosCoordenadores = null;
-					for(Curso c: curso){
-						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
-							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
-								pedidosCoordenadores = p;
-							}
-						}
-						List<VagasAtendidas> vagas = linhas.get(rowIndex).getVagasAtendidas();
-						for(VagasAtendidas vs: vagas){
-							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
-								vagasAtendidas.add(vs);
-								break;
-							}
-						}
-					}
-					return new VagasPeriotizadosInternalTable(vagasAtendidas, coresInternas);
+				if(curso.size()>=0 && curso.get(rowIndex).size()>=0 && botao.get(rowIndex)){
+					return new VagasPeriotizadosInternalTable(vagasAtendidas.get(rowIndex), coresInternas);
 				}
 				else
 					return "";
 				
 			case COL_NAO_PERIOTIZADOS_SOLICITADOS:
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					List<VagasSolicitadas> vagasSolicitadas = new ArrayList<>();
-					PedidosCoordenadores pedidosCoordenadores = null;
-					for(Curso c: curso){
-						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
-							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
-								pedidosCoordenadores = p;
-							}
-						}
-						List<VagasSolicitadas> vagas = linhas.get(rowIndex).getVagasSolicitadas();
-						for(VagasSolicitadas vs: vagas){
-							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
-								vagasSolicitadas.add(vs);
-								break;
-							}
-						}
-					}
-					return new VagasDesperiotizadosInternalTable(vagasSolicitadas, coresInternas);
+				if(curso.size()>=0 && curso.get(rowIndex).size()>=0 && botao.get(rowIndex)){
+					return new VagasDesperiotizadosInternalTable(vagasSolicitadas.get(rowIndex), coresInternas);
 				}
 				else
 					return "";
 			
 			case COL_NAO_PERIOTIZADOS_ATENDIDOS:
-				if(curso.size()>=0 && botao.get(rowIndex)){
-					List<VagasAtendidas> vagasAtendidas = new ArrayList<>();
-					PedidosCoordenadores pedidosCoordenadores = null;
-					for(Curso c: curso){
-						for(PedidosCoordenadores p: c.getPedidosCoordenadores()){
-							if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
-								pedidosCoordenadores = p;
-							}
-						}
-						List<VagasAtendidas> vagas = linhas.get(rowIndex).getVagasAtendidas();
-						for(VagasAtendidas vs: vagas){
-							if(vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.getIdPedidosCoordenadores()){
-								vagasAtendidas.add(vs);
-								break;
-							}
-						}
-					}
-					return new VagasDesperiotizadosInternalTable(vagasAtendidas, coresInternas);
+				if(curso.size()>=0 && curso.get(rowIndex).size()>=0 && botao.get(rowIndex)){
+					return new VagasDesperiotizadosInternalTable(vagasAtendidas.get(rowIndex), coresInternas);
 				}
 				else
 					return "";
@@ -258,36 +168,103 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void updateDataRows(){
-		linhas.clear();
+		linhas.clear(); 
+		curso.clear();
+		pedidosCoordenadores.clear();
+		vagasSolicitadas.clear();		
+		vagasAtendidas.clear();
+		
 		try {
-			if(Home.getAno()!=0 && Home.getSemestre()!= 0)
-				linhas = (ArrayList<Disciplina>) disciplinaDAO.procuraTodos();
-			curso = (ArrayList<Curso>) cursoDAO.procuraTodos();
+			linhas = (ArrayList<Disciplina>) disciplinaDAO.procuraTodos();			
+			ArrayList<Curso> auxCurso = (ArrayList<Curso>) cursoDAO.procuraTodos();
+			
+			pedidosCoordenadores = new ArrayList<PedidosCoordenadores>();
+			curso = new ArrayList<ArrayList<Curso>>();
+			vagasSolicitadas = new ArrayList<ArrayList<VagasSolicitadas>>();
+			vagasAtendidas = new ArrayList<ArrayList<VagasAtendidas>>();
+			
+			//inicializa as variaveis
+			for(int i=0;i<linhas.size();i++){
+				curso.add((ArrayList<Curso>) auxCurso.clone());
+				vagasSolicitadas.add(new ArrayList<VagasSolicitadas>());
+				vagasAtendidas.add(new ArrayList<VagasAtendidas>());
+				for(int j=0;j<auxCurso.size();j++){
+					vagasSolicitadas.get(i).add(null);
+					vagasAtendidas.get(i).add(null);
+				}
+			}
+			
+			for(int i=0;i<auxCurso.size();i++){
+				pedidosCoordenadores.add(null);
+			}
+			
+			if(Home.getAno()!=0 && Home.getSemestre()!= 0){	
+				//procura o pedido de coordenadores referente a aquele ano para aquele curso (o curso pode ser novo, então tem que passar por todos)
+								
+				for(int i=0;i<auxCurso.size();i++){
+					for(PedidosCoordenadores p: auxCurso.get(i).getPedidosCoordenadores()){
+						if(p.getAno() == Home.getAno() && p.getSemestre() == Home.getSemestre()){
+							pedidosCoordenadores.set(i, p);
+						}
+					}
+				}
+				for(int i=0;i<linhas.size();i++){
+					for(int j=0;j<curso.get(i).size();j++){
+						for(VagasSolicitadas vs: linhas.get(i).getVagasSolicitadas()){
+							if(pedidosCoordenadores.get(j) != null && vs.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.get(j).getIdPedidosCoordenadores()){
+								vagasSolicitadas.get(i).set(j, vs);
+							}
+						}
+						
+						for(VagasAtendidas va: linhas.get(i).getVagasAtendidas()){
+							if(pedidosCoordenadores.get(j) != null && va.getPedidosCoordenadores().getIdPedidosCoordenadores() == pedidosCoordenadores.get(j).getIdPedidosCoordenadores()){
+								vagasAtendidas.get(i).set(j, va);
+							}
+						}
+						
+						if(vagasSolicitadas.get(i).get(j) == null){
+							curso.get(i).remove(j);
+							vagasSolicitadas.get(i).remove(j);
+							vagasAtendidas.get(i).remove(j);
+							j--;
+						}						
+					}
+					
+				}
+				
+				for(int i=0;i<linhas.size();i++){
+					if(curso.get(i).isEmpty()){
+						linhas.remove(i);
+						i--;
+					}				
+				}
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		curso.sort(new Comparator<Curso>() {
-			@Override
-			public int compare(Curso objeto1, Curso objeto2) {
-				if(objeto1.getNome().equals(objeto2.getNome())){
-					return objeto1.getCodigo().compareTo(objeto2.getCodigo());
-				}
-				return objeto1.getNome().compareTo(objeto2.getNome());
-			}
-		});
-		
-		linhas.sort(new Comparator<Disciplina>() {
-			@Override
-			public int compare(Disciplina objeto1, Disciplina objeto2) {
-				if(objeto1.getNome().equals(objeto2.getNome())){
-					return objeto1.getCodigo().compareTo(objeto2.getCodigo());
-				}
-				return objeto1.getNome().compareTo(objeto2.getNome());
-			}
-		});	
+//		curso.sort(new Comparator<Curso>() {
+//			@Override
+//			public int compare(Curso objeto1, Curso objeto2) {
+//				if(objeto1.getNome().equals(objeto2.getNome())){
+//					return objeto1.getCodigo().compareTo(objeto2.getCodigo());
+//				}
+//				return objeto1.getNome().compareTo(objeto2.getNome());
+//			}
+//		});
+//		
+//		linhas.sort(new Comparator<Disciplina>() {
+//			@Override
+//			public int compare(Disciplina objeto1, Disciplina objeto2) {
+//				if(objeto1.getNome().equals(objeto2.getNome())){
+//					return objeto1.getCodigo().compareTo(objeto2.getCodigo());
+//				}
+//				return objeto1.getNome().compareTo(objeto2.getNome());
+//			}
+//		});	
 		
 		botao.clear(); 
 		

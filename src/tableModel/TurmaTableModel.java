@@ -91,14 +91,24 @@ public class TurmaTableModel extends AbstractTableModel {
 		
 		switch(columnIndex){
 		case COL_CODIGO:
-			turma.setCodigo(value.toString());			
+			turma.setCodigo(value.toString());		
 			break;
 		case COL_TURNO:
-			turma.setTurno(value.toString());
+			if(value.toString().equals("Diurno") || value.toString().equals("Noturno")){
+				turma.setTurno(value.toString());
+			}else{
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Turno\" é diferente de \"Diurno\" ou \"Noturno\", por favor insira um destes dois valores", "Erro",  JOptionPane.ERROR_MESSAGE);
+				fireTableCellUpdated(rowIndex, columnIndex);
+			}
 			break;
 		case COL_MAXIMO_VAGAS:
-			int maxVagas = Integer.parseInt(value.toString());
-			turma.setMaxVagas(maxVagas);
+			if(value.toString().matches("^[0-9]*$")){
+				int maxVagas = Integer.parseInt(value.toString());
+				turma.setMaxVagas(maxVagas);
+			}else{
+				JOptionPane.showMessageDialog(new JFrame(), "O campo \"Máximo de vagas\" não é um número, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				fireTableCellUpdated(rowIndex, columnIndex);
+			}				
 			break;
 		case COL_CODIGO_DISCIPLINA:
 			Disciplina disciplina = null;
@@ -110,6 +120,7 @@ public class TurmaTableModel extends AbstractTableModel {
 			}
 			if(disciplina != null){
 				turma.setDisciplina(disciplina);
+				fireTableCellUpdated(rowIndex, COL_NOME_DISCOPLINA);
 			}
 			else{
 				JOptionPane.showMessageDialog(new JFrame(), "Código da disciplina não existe, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
@@ -139,7 +150,21 @@ public class TurmaTableModel extends AbstractTableModel {
 				turma.setAno(Home.getAno());
 				turma.setSemestre(Home.getSemestre());
 			}
-			turmaDAO.salvaOuEdita(turma);
+			
+			Boolean existeTurma = false;
+			for(Turma t: linhas){
+				if(t.getDisciplina().getCodigo().equals(turma.getDisciplina().getCodigo()) && t.getCodigo().equals(turma.getCodigo()) && !t.equals(turma)){
+					existeTurma = true;
+				}
+			}
+			
+			if(existeTurma){
+				JOptionPane.showMessageDialog(new JFrame(), "Já existe turma \"" + turma.getCodigo() + "\" da diciplina \"" + turma.getDisciplina().getNome() + "\"", "Erro",  JOptionPane.ERROR_MESSAGE);
+				fireTableCellUpdated(rowIndex, columnIndex);
+			}else{
+				turmaDAO.salvaOuEdita(turma);
+			}
+			
 		}
 
 	}

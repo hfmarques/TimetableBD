@@ -65,7 +65,8 @@ create table Turma(
 	SEMESTRE INT not null,
 	DISCIPLINA_FK NUMERIC(19,0) not null,
 	SALA_FK NUMERIC(19,0) not null,
-	primary key(ID)
+	primary key(ID),
+	UNIQUE (DISCIPLINA_FK)
 );
 
 create table CreditoMinistrado(

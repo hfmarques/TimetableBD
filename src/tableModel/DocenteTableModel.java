@@ -2,6 +2,8 @@ package tableModel;
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import hibernate.DocenteDAO;
@@ -58,15 +60,35 @@ public class DocenteTableModel extends AbstractTableModel /* extends AbstractTab
 		
 		switch(columnIndex){
 			case COL_CODIGO:
-				docente.setCodigo(value.toString());
+				Boolean existeCódigo = false;
+				for(Docente d: linhas){
+					if(d.getCodigo() != null && d.getCodigo().equals(value.toString())){
+						existeCódigo = true;
+					}
+				}
+				if(existeCódigo){
+					JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Código\" já existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+					fireTableCellUpdated(rowIndex, columnIndex);
+				}else
+					docente.setCodigo(value.toString());
 				break;
 			case COL_NOME_COMPLETO:
-				docente.setNomeCompleto(value.toString());
-				docente.setNome(value.toString().substring(0, value.toString().indexOf(" ")));
+				if(value.toString().indexOf(" ") == -1){
+					JOptionPane.showMessageDialog(new JFrame(), "Insira nome e sobrenome do prefessor no campo \"Nome Completo\"", "Erro",  JOptionPane.ERROR_MESSAGE);
+					fireTableCellUpdated(rowIndex, columnIndex);
+				}else{
+					docente.setNomeCompleto(value.toString());
+					docente.setNome(value.toString().substring(0, value.toString().indexOf(" ")));
+				}
 				break;
 			case COL_CREDITACAO_ESPERADA:
-				int creditacaoEsperada = Integer.parseInt(value.toString());
-				docente.setCreditacaoEsperada(creditacaoEsperada);
+				if(value.toString().matches("^[0-9]*$")){
+					int creditacaoEsperada = Integer.parseInt(value.toString());
+					docente.setCreditacaoEsperada(creditacaoEsperada);
+				}else{
+					JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Creditação esperada\" não é um número, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+					fireTableCellUpdated(rowIndex, columnIndex);
+				}
 				break;
 			default:
 				System.out.println("Coluna inválida");

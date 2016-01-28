@@ -1,6 +1,6 @@
 package hibernate;
 
-import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -27,9 +27,10 @@ public class HibernateUtil {
 
 	private static void buildSessionFactory() {
 		try {
+			URL config = HibernateUtil.class.getResource("hibernate.cfg.xml");
 			// Create the SessionFactory from hibernate.cfg.xml
 			Configuration configuration = new Configuration()
-					.configure(new File("src\\hibernate.cfg.xml"));
+					.configure(config);
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
 					.applySetting("hibernate.connection.driver_class", "org.postgresql.Driver")

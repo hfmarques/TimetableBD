@@ -2,10 +2,13 @@ package tableModel;
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import hibernate.DisciplinaDAO;
 import timetable.Disciplina;
+import timetable.Docente;
 
 @SuppressWarnings("serial")
 public class DisciplinaTableModel extends AbstractTableModel /* extends AbstractTableModel */{
@@ -13,7 +16,7 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 	private static final int COL_CREDITO = 1;
 	private static final int COL_NOME = 2;
 	private static final int COL_PERFIL = 3;
-	private String[] colunas = new String[]{"Código", "Céditos", "Nome", "Perfil"};
+	private String[] colunas = new String[]{"Código", "Créditos", "Nome", "Perfil"};
 	private ArrayList<Disciplina> linhas;
 	private DisciplinaDAO disciplinaDAO;
 
@@ -61,12 +64,28 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 		
 		switch(columnIndex){
 		case COL_CODIGO:
-			String codigo = value.toString();
-			disciplina.setCodigo(codigo);
+			Boolean existeCódigo = false;
+			for(Disciplina d: linhas){
+				if(d.getCodigo() != null && d.getCodigo().equals(value.toString())){
+					existeCódigo = true;
+				}
+			}
+			if(existeCódigo){
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Código\" já existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				fireTableCellUpdated(rowIndex, columnIndex);
+			}else{
+				String codigo = value.toString();
+				disciplina.setCodigo(codigo);
+			}
 			break;
 		case COL_CREDITO:
-			int credito = Integer.parseInt(value.toString());
-			disciplina.setCreditos(credito);
+			if(value.toString().matches("^[0-9]*$")){
+				int credito = Integer.parseInt(value.toString());
+				disciplina.setCreditos(credito);
+			}else{
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Créditos\" não é um número, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				fireTableCellUpdated(rowIndex, columnIndex);
+			}
 			break;
 		case COL_NOME:
 			String nome = value.toString();

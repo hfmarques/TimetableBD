@@ -2,6 +2,8 @@ package tableModel;
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import timetable.Calouros;
@@ -16,7 +18,7 @@ import hibernate.CalourosDAO;
 public class CalourosTableModel extends AbstractTableModel {		
 	private static final int COL_ID = 0;
 	private static final int COL_NUMERO_VAGAS = 1;
-	private String[] colunas = new String[]{"ID", "Numero de Vagas"};
+	private String[] colunas = new String[]{"ID", "Número de Vagas"};
 	private ArrayList<Calouros> linhas;
 	private CalourosDAO calourosDAO;
 	
@@ -64,8 +66,13 @@ public class CalourosTableModel extends AbstractTableModel {
 				calouro.setIdCalouro(id);
 				break;
 			case COL_NUMERO_VAGAS:
-				int numeroVagas = Integer.parseInt(value.toString());
-				calouro.setNumVagas(numeroVagas);				
+				if(value.toString().matches("^[0-9]*$")){
+					int numeroVagas = Integer.parseInt(value.toString());
+					calouro.setNumVagas(numeroVagas);
+				}else{
+					JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Número de Vagas\" não é um número, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+					fireTableCellUpdated(rowIndex, columnIndex);
+				}
 				break;
 			default:
 				System.out.println("Coluna inválida");
@@ -105,9 +112,9 @@ public class CalourosTableModel extends AbstractTableModel {
 	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if(rowIndex != COL_ID)
-			return true;
-		return false;
+		if(columnIndex == COL_ID)
+			return false;
+		return true;
 	}
 	
 	public void updateDataRows(){

@@ -36,8 +36,7 @@ public class TotalVagasInternalTableModel extends AbstractTableModel{
 	}
 
 	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		
+	public Object getValueAt(int rowIndex, int columnIndex) {		
 		switch(columnIndex){
 			case COL_DEFAULT:
 				return linhas.get(rowIndex).getTotalVagas();

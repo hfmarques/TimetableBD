@@ -21,6 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import timetable.Curso;
 import timetable.Disciplina;
@@ -45,7 +46,7 @@ public class Home extends JPanel{
 	private static int semestre = 0;
 	private static int ano = 0;
 
-	public Home() {
+	public Home(JTabbedPane abas) {
 		super(new GridLayout(1, 0));
 		// inicializa as variáveis
 		this.painel = new JPanel();
@@ -126,7 +127,10 @@ public class Home extends JPanel{
 		
 		botaoIncluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				if(comboBoxAno.getSelectedItem() != ""){				
+				if(comboBoxAno.getSelectedItem() != ""){
+					int anoAnterior = Home.ano;
+					int semestreAnterior = Home.semestre;
+					
 					Home.ano = Integer.parseInt((String) comboBoxAno.getSelectedItem());
 					Home.semestre = Integer.parseInt((String) comboBoxSemestre.getSelectedItem());
 					
@@ -162,7 +166,26 @@ public class Home extends JPanel{
 									}
 								}
 							}
+							
+							existeSemestreAno = true;
+						}else{
+							Home.ano = anoAnterior;
+							Home.semestre = semestreAnterior;
+							
+							InterfacePrincipal.desabilitaAba(1);
+							InterfacePrincipal.desabilitaAba(2);
+							InterfacePrincipal.desabilitaAba(3);
+							InterfacePrincipal.desabilitaAba(4);
+							InterfacePrincipal.desabilitaAba(5);
 						}
+					}
+						
+					if(existeSemestreAno){
+						InterfacePrincipal.habilitaAba(1);
+						InterfacePrincipal.habilitaAba(2);
+						InterfacePrincipal.habilitaAba(3);
+						InterfacePrincipal.habilitaAba(4);
+						InterfacePrincipal.habilitaAba(5);
 					}
 				}
 			}
