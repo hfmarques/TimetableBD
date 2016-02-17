@@ -126,7 +126,8 @@ public class ResultadoProfessor extends InterfacesTabela {
 		((ResultadosProfessorTableModel)tableModel).fireTableDataChanged();
 		for(int i= 0; i<table.getRowCount(); i++){
 			height = ((ResultadosProfessorTableModel)tableModel).getInternalTableHeight(i);
-			table.setRowHeight(i, height);
+			if(height > 0)
+				table.setRowHeight(i, height);
 		}
 		
 	}
