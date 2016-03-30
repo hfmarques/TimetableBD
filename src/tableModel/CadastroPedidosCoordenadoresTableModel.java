@@ -2,12 +2,8 @@ package tableModel;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
 
-import sun.reflect.generics.scope.DummyScope;
 import timetable.Curso;
 import timetable.Disciplina;
 import timetable.PedidosCoordenadores;

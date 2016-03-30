@@ -8,7 +8,6 @@ import javax.swing.table.AbstractTableModel;
 
 import timetable.Calouros;
 import timetable.Curso;
-import timetable.Disciplina;
 import hibernate.CalourosDAO;
 import hibernate.CursoDAO;
 

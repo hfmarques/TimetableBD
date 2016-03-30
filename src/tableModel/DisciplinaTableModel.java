@@ -1,6 +1,7 @@
 package tableModel;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -8,7 +9,6 @@ import javax.swing.table.AbstractTableModel;
 
 import hibernate.DisciplinaDAO;
 import timetable.Disciplina;
-import timetable.Docente;
 
 @SuppressWarnings("serial")
 public class DisciplinaTableModel extends AbstractTableModel /* extends AbstractTableModel */{
@@ -144,5 +144,12 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		linhas.sort(new Comparator<Disciplina>() {
+			@Override
+			public int compare(Disciplina objeto1, Disciplina objeto2) {
+				return objeto1.getCodigo().compareTo(objeto2.getCodigo());
+			}
+		});
 	}
 }

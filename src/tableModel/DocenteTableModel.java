@@ -1,12 +1,14 @@
 package tableModel;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import hibernate.DocenteDAO;
+import timetable.Disciplina;
 import timetable.Docente;
 
 @SuppressWarnings("serial")
@@ -139,5 +141,12 @@ public class DocenteTableModel extends AbstractTableModel /* extends AbstractTab
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		linhas.sort(new Comparator<Docente>() {
+			@Override
+			public int compare(Docente objeto1, Docente objeto2) {
+				return objeto1.getNomeCompleto().compareTo(objeto2.getNomeCompleto());
+			}
+		});
 	}
 }
