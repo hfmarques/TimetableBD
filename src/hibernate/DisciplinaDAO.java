@@ -7,7 +7,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 
 import timetable.Disciplina;
-
+/*
+ * gerencia as buscas no banco de dados para a classe/tabela disciplina
+ */
 public class DisciplinaDAO extends GenericoDAO{
 
 	public DisciplinaDAO() {

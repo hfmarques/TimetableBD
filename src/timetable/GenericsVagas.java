@@ -1,5 +1,8 @@
 package timetable;
 
+/*
+ * interface genérica para controlar quais classes herdam desta classe
+ */
 public interface GenericsVagas {
 	public int getTotalVagas();
 

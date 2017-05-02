@@ -2,22 +2,29 @@ package tableModel;
 
 import interfaces.Home;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import timetable.Disciplina;
+import timetable.Horario;
 import timetable.Sala;
 import timetable.Turma;
 import hibernate.DisciplinaDAO;
+import hibernate.HorarioDAO;
 import hibernate.SalaDAO;
 import hibernate.TurmaDAO;
 
 /**
  *
- * @author Héber
+ * @author Hï¿½ber
  */
 
 @SuppressWarnings("serial")
@@ -28,10 +35,14 @@ public class TurmaTableModel extends AbstractTableModel {
 	private static final int COL_NOME_DISCOPLINA = 3;
 	private static final int COL_CODIGO_DISCIPLINA = 4;
 	private static final int COL_SALA = 5;
-	private String[] colunas = new String[]{"Código", "Turno", "Máximo de Vagas", "Nome da Diciplina", "Código da Disciplina", "Sala"};
+	private static final int COL_HORARIO_1 = 6;
+	private static final int COL_HORARIO_2 = 7;
+	private static final int COL_HORARIO_FIXO = 8;
+	private String[] colunas = new String[]{"Codigo", "Turno", "Maximo de Vagas", "Nome da Diciplina", "Codigo da Disciplina", "Sala", "Dia", "Dia", "Horario Fixo"};
 	private ArrayList<Turma> linhas;
 	private TurmaDAO turmaDAO;
 	private DisciplinaDAO disciplinaDAO;
+	private HorarioDAO horarioDAO;
 	@SuppressWarnings("unused")
 	private SalaDAO salaDAO;
 	
@@ -40,6 +51,7 @@ public class TurmaTableModel extends AbstractTableModel {
 		turmaDAO = new TurmaDAO();
 		salaDAO = new SalaDAO();
 		disciplinaDAO = new DisciplinaDAO();
+		horarioDAO = new HorarioDAO();
 	}
 
 	@Override
@@ -80,8 +92,18 @@ public class TurmaTableModel extends AbstractTableModel {
 				if(turma.getSala() == null)
 					return "";
 				return turma.getSala().getNumero();
+			case COL_HORARIO_1:
+				if(turma.getHorario() == null)
+					return "";
+				return turma.getHorario().getDia1();
+			case COL_HORARIO_2:
+				if(turma.getHorario() == null)
+					return "";
+				return turma.getHorario().getDia2();
+			case COL_HORARIO_FIXO:
+				return turma.isHorarioFixo();
 			default:
-				System.out.println("Coluna inválida");
+				System.out.println("Coluna invï¿½lida");
 				return null;
 		}
 	}
@@ -97,7 +119,7 @@ public class TurmaTableModel extends AbstractTableModel {
 			if(value.toString().equals("Diurno") || value.toString().equals("Noturno")){
 				turma.setTurno(value.toString());
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Turno\" é diferente de \"Diurno\" ou \"Noturno\", por favor insira um destes dois valores", "Erro",  JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Turno\" ï¿½ diferente de \"Diurno\" ou \"Noturno\", por favor insira um destes dois valores", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}
 			break;
@@ -106,7 +128,7 @@ public class TurmaTableModel extends AbstractTableModel {
 				int maxVagas = Integer.parseInt(value.toString());
 				turma.setMaxVagas(maxVagas);
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), "O campo \"Máximo de vagas\" não é um número, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "O campo \"Mï¿½ximo de vagas\" nï¿½o ï¿½ um nï¿½mero, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}				
 			break;
@@ -123,7 +145,7 @@ public class TurmaTableModel extends AbstractTableModel {
 				fireTableCellUpdated(rowIndex, COL_NOME_DISCOPLINA);
 			}
 			else{
-				JOptionPane.showMessageDialog(new JFrame(), "Código da disciplina não existe, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "Cï¿½digo da disciplina nï¿½o existe, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}
 			break;
@@ -135,17 +157,53 @@ public class TurmaTableModel extends AbstractTableModel {
 				e.printStackTrace();				
 			}
 			if (sala == null){
-				JOptionPane.showMessageDialog(new JFrame(), "Número da sala não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "Nï¿½mero da sala nï¿½o encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
 				fireTableRowsUpdated(rowIndex, rowIndex);
 				break;
 			}
 			turma.setSala(sala);
 			break;
+			
+		case COL_HORARIO_1:
+			if(turma.getHorario() == null){
+				turma.setHorario(new Horario());
+			}
+			SimpleDateFormat formatter = new SimpleDateFormat("EEE HH:mm");
+			Date data;
+			try {
+				data = formatter.parse(value.toString());
+			} catch (ParseException e2) {
+				JOptionPane.showMessageDialog(new JFrame(), "Formato de data incorreto, Exemplo: \"seg 08:00.\"", "Erro", JOptionPane.ERROR_MESSAGE);
+				fireTableRowsUpdated(rowIndex, rowIndex);
+				break;
+			}
+			turma.getHorario().setDia1(data);
+			fireTableCellUpdated(rowIndex, COL_HORARIO_1);
+			break;
+		case COL_HORARIO_2:
+			if(turma.getHorario() == null){
+				turma.setHorario(new Horario());
+			}
+			SimpleDateFormat formatter2 = new SimpleDateFormat("EEE HH:mm");
+			Date data2;
+			try {
+				data2 = formatter2.parse(value.toString());
+			} catch (ParseException e) {
+				JOptionPane.showMessageDialog(new JFrame(), "Formato de data incorreto, Exemplo: \"seg 08:00.\"", "Erro", JOptionPane.ERROR_MESSAGE);
+				fireTableRowsUpdated(rowIndex, rowIndex);
+				break;
+			}
+			turma.getHorario().setDia2(data2);
+			fireTableCellUpdated(rowIndex, COL_HORARIO_2);
+			break;
+		case COL_HORARIO_FIXO:
+			turma.setHorarioFixo((boolean) value);
+			break;
 		default:
-			System.out.println("Coluna inválida");
+			System.out.println("Coluna invï¿½lida");
 		}
 		
-		if(turma.getCodigo() != "" && turma.getTurno() != "" && turma.getMaxVagas() != 0 && turma.getDisciplina() != null && turma.getSala()!= null){
+		if(turma.getCodigo() != "" && turma.getTurno() != "" && turma.getMaxVagas() != 0 && turma.getDisciplina() != null && turma.getHorario() != null && turma.getHorario().getDia1() != null){
 			if(turma.getAno() == 0 || turma.getSemestre() == 0){
 				turma.setAno(Home.getAno());
 				turma.setSemestre(Home.getSemestre());
@@ -162,6 +220,7 @@ public class TurmaTableModel extends AbstractTableModel {
 				JOptionPane.showMessageDialog(new JFrame(), "Já existe turma \"" + turma.getCodigo() + "\" da diciplina \"" + turma.getDisciplina().getNome() + "\"", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}else{
+				horarioDAO.salvaOuEdita(turma.getHorario());
 				turmaDAO.salvaOuEdita(turma);
 			}
 			
@@ -169,6 +228,22 @@ public class TurmaTableModel extends AbstractTableModel {
 
 	}
 	
+	@Override  
+    public Class<?> getColumnClass(int col) {  
+        if (col == COL_HORARIO_FIXO)  
+            return Boolean.class;  
+        else  
+            return super.getColumnClass(col);  
+    }
+	
+	public static int getColHorario1() {
+		return COL_HORARIO_1;
+	}
+	
+	public static int getColHorario2() {
+		return COL_HORARIO_2;
+	}
+
 	public Turma getTurma(int rowIndex){
 		return linhas.get(rowIndex);
 	}
@@ -215,4 +290,5 @@ public class TurmaTableModel extends AbstractTableModel {
 			e.printStackTrace();
 		}
 	}
+
 }

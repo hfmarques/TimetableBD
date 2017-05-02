@@ -6,7 +6,9 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 
 import timetable.VagasAtendidas;
-
+/*
+ * gerencia as buscas no banco de dados para a classe/tabela vagasAtendidas
+ */
 public class VagasAtendidasDAO extends GenericoDAO{
 	
 	public VagasAtendidasDAO() {

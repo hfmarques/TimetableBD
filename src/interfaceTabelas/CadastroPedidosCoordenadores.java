@@ -9,8 +9,8 @@ import estruturasAuxiliaresTabelas.CellRenderer;
 import tableModel.CadastroPedidosCoordenadoresTableModel;
 
 /**
- *
- * @author Héber
+ * 
+ * @author Hï¿½ber
  */
 @SuppressWarnings("serial")
 public class CadastroPedidosCoordenadores extends InterfacesTabela {

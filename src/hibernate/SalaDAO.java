@@ -7,7 +7,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 
 import timetable.Sala;
-
+/*
+ * gerencia as buscas no banco de dados para a classe/tabela sala
+ */
 public class SalaDAO extends GenericoDAO{
 
 	public SalaDAO() {

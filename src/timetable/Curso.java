@@ -59,6 +59,10 @@ public class Curso implements Serializable {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<PedidosCoordenadores> pedidosCoordenadores = new ArrayList<PedidosCoordenadores>();
 	
+	@OneToMany(mappedBy = "curso")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Periodo> periodo = new ArrayList<Periodo>();
+	
 	public List<PedidosCoordenadores> getPedidosCoordenadores() {
 		return pedidosCoordenadores;
 	}
@@ -125,6 +129,14 @@ public class Curso implements Serializable {
 	
 	public static int getNumeroCalouros() {
 		return NUMERO_CALOUROS;
+	}
+	
+	public List<Periodo> getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(List<Periodo> periodo) {
+		this.periodo = periodo;
 	}
 
 	public static Color getOrSetCoresPerfis(String key) {

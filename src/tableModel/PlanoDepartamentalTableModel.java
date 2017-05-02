@@ -1,13 +1,19 @@
 package tableModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import timetable.Docente;
+import timetable.Horario;
 import timetable.Turma;
 import hibernate.DocenteDAO;
 import hibernate.TurmaDAO;
@@ -23,11 +29,12 @@ public class PlanoDepartamentalTableModel extends AbstractTableModel {
 	private static final int COL_SEMESTRE = 0;
 	private static final int COL_NOME_DISCIPLINA = 1;
 	private static final int COL_CODIGO_TURMA = 2;
-	private static final int COL_HORARIO = 3;
-	private static final int COL_CREDITOS = 4;
-	private static final int COL_DOCENTE = 5;
-	private static final int COL_VAGA = 6;
-	private String[] colunas = new String[]{"Semestre", "Nome", "Código", "Horário", "Créditos", "Docente", "Numero de Vagas"};
+	private static final int COL_HORARIO1 = 3;
+	private static final int COL_HORARIO2 = 4;
+	private static final int COL_CREDITOS = 5;
+	private static final int COL_DOCENTE = 6;
+	private static final int COL_VAGA = 7;
+	private String[] colunas = new String[]{"Semestre", "Nome", "Código", "Horário 1", "Horário 2", "Créditos", "Docente", "Numero de Vagas"};
 	private ArrayList<Turma> linhas;
 	private ArrayList<Docente> docente;
 	private TurmaDAO turmaDAO;
@@ -63,13 +70,19 @@ public class PlanoDepartamentalTableModel extends AbstractTableModel {
 		
 		switch(columnIndex){
 			case COL_SEMESTRE:
-				return "Semestre";
+				return Home.getSemestre();
 			case COL_NOME_DISCIPLINA:
 				return turma.getDisciplina().getNome();
 			case COL_CODIGO_TURMA:
 				return turma.getDisciplina().getCodigo() + " - " + turma.getCodigo();
-			case COL_HORARIO:
-				return "Horário";
+			case COL_HORARIO1:
+				if(turma.getHorario() == null)
+					return "";
+				return turma.getHorario().getDia1();
+			case COL_HORARIO2:
+				if(turma.getHorario() == null || turma.getHorario().getDia2() == null)
+					return "";
+				return turma.getHorario().getDia2();
 			case COL_CREDITOS:
 				return turma.getDisciplina().getCreditos();
 			case COL_DOCENTE:

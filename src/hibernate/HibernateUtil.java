@@ -13,8 +13,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 /**
- *
- * @author Héber
+ * responsÃ¡vel pela configuraÃ§Ã£o e conexÃ£o do banco de dados.
+ * @author Hï¿½ber
  */
 public class HibernateUtil {
 
@@ -34,7 +34,7 @@ public class HibernateUtil {
 			StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
 					.applySettings(configuration.getProperties())
 					.applySetting("hibernate.connection.driver_class", "org.postgresql.Driver")
-					.applySetting("hibernate.connection.url", "jdbc:postgresql://localhost:5432/TimetableBD")
+					.applySetting("hibernate.connection.url", "jdbc:postgresql://localhost:5433/TimetableBD")
 					.applySetting("hibernate.connection.username", "postgres")
 					.applySetting("hibernate.connection.password", "root")
 					.applySetting("dialect", "org.hibernate.dialect.PostgreSQLDialect");
@@ -112,14 +112,14 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Atualiza ou salva um objeto passado por parâmetro retornando {@code true}
-	 * caso tenha sucesso e {@code false} caso não atualize.
+	 * Atualiza ou salva um objeto passado por parï¿½metro retornando {@code true}
+	 * caso tenha sucesso e {@code false} caso nï¿½o atualize.
 	 *
 	 * @param obj
 	 * @return boolean
 	 * @exception HibernateException
-	 *                em caso de erro de transação, executando um
-	 *                {@code rollback} nas modificações.
+	 *                em caso de erro de transaï¿½ï¿½o, executando um
+	 *                {@code rollback} nas modificaï¿½ï¿½es.
 	 */
 	@SuppressWarnings("finally")
 	protected static boolean saveOrUpdate(Object obj) {
@@ -139,14 +139,14 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Salva um objeto passado por parâmetro retornando {@code true} caso tenha
-	 * sucesso e {@code false} caso não atualize.
+	 * Salva um objeto passado por parï¿½metro retornando {@code true} caso tenha
+	 * sucesso e {@code false} caso nï¿½o atualize.
 	 *
 	 * @param obj
 	 * @return boolean
 	 * @exception HibernateException
-	 *                em caso de erro de transação, executando um
-	 *                {@code rollback} nas modificações.
+	 *                em caso de erro de transaï¿½ï¿½o, executando um
+	 *                {@code rollback} nas modificaï¿½ï¿½es.
 	 */
 	@SuppressWarnings("finally")
 	protected static boolean save(Object obj) {
@@ -166,14 +166,14 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Salva um objeto passado por parâmetro retornando {@code true} caso tenha
-	 * sucesso e {@code false} caso não atualize.
+	 * Salva um objeto passado por parï¿½metro retornando {@code true} caso tenha
+	 * sucesso e {@code false} caso nï¿½o atualize.
 	 *
 	 * @param obj
 	 * @return boolean
 	 * @exception HibernateException
-	 *                em caso de erro de transação, executando um
-	 *                {@code rollback} nas modificações.
+	 *                em caso de erro de transaï¿½ï¿½o, executando um
+	 *                {@code rollback} nas modificaï¿½ï¿½es.
 	 */
 	@SuppressWarnings("finally")
 	protected static boolean saveList(List<?> objects) {
@@ -195,14 +195,14 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Atualiza o objeto passado por parâmetro retornando {@code true} caso
-	 * tenha sucesso e {@code false} caso não atualize.
+	 * Atualiza o objeto passado por parï¿½metro retornando {@code true} caso
+	 * tenha sucesso e {@code false} caso nï¿½o atualize.
 	 *
 	 * @param obj
 	 * @return boolean
 	 * @exception HibernateException
-	 *                em caso de erro de transação, executando um
-	 *                {@code rollback} nas modificações.
+	 *                em caso de erro de transaï¿½ï¿½o, executando um
+	 *                {@code rollback} nas modificaï¿½ï¿½es.
 	 */
 	@SuppressWarnings("finally")
 	protected static boolean update(Object obj) {
@@ -222,13 +222,13 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Exclui o objeto passado por parâmetro
+	 * Exclui o objeto passado por parï¿½metro
 	 *
 	 * @param obj
 	 * @return boolean
 	 * @exception HibernateException
-	 *                em caso de erro de transação, executando um
-	 *                {@code rollback} nas modificações.
+	 *                em caso de erro de transaï¿½ï¿½o, executando um
+	 *                {@code rollback} nas modificaï¿½ï¿½es.
 	 */
 	@SuppressWarnings("finally")
 	protected static boolean delete(Object obj) {
@@ -248,13 +248,13 @@ public class HibernateUtil {
 	}
 
 	/**
-	 * Exclui o vários objetos passados por parâmetro
+	 * Exclui o vï¿½rios objetos passados por parï¿½metro
 	 *
 	 * @param objects
 	 * @return boolean
 	 * @exception HibernateException
-	 *                em caso de erro de transação, executando um
-	 *                {@code rollback} nas modificações.
+	 *                em caso de erro de transaï¿½ï¿½o, executando um
+	 *                {@code rollback} nas modificaï¿½ï¿½es.
 	 */
 	@SuppressWarnings("finally")
 	protected static boolean deleteList(List<?> objects) {

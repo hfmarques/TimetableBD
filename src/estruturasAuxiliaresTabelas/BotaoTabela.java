@@ -21,14 +21,15 @@ import javax.swing.table.TableColumnModel;
 
 /**
  *
- * @author Héber
+ * @author Hï¿½ber
+ * classe responsÃ¡vel por criar e renderizar um botÃ£o dentro de uma tabela
  */
 @SuppressWarnings("serial")
 public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer, TableCellEditor, ActionListener {
 
 	JTable table;
-	JButton renderButton; //botão de exibição
-	JButton editButton; //botão que realiza a ação
+	JButton renderButton; //botï¿½o de exibiï¿½ï¿½o
+	JButton editButton; //botï¿½o que realiza a aï¿½ï¿½o
 	String text;
 
 	public BotaoTabela(JTable table, int column) {
@@ -66,7 +67,11 @@ public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer
 	public void editingStopped(){
 		fireEditingStopped();
 	}
-
+	
+	/*
+	 * funÃ§Ã£o resposÃ¡vel por renderizar o botÃ£o dentro da tabela
+	 * @see javax.swing.table.TableCellRenderer#getTableCellRendererComponent(javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
+	 */
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		if (hasFocus) {
 			renderButton.setForeground(table.getForeground());
@@ -81,19 +86,19 @@ public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer
 
 		renderButton.setText((value == null) ? "" : value.toString());
 		
-		//cria um novo painel para o controle do tamanho do botão
+		//cria um novo painel para o controle do tamanho do botï¿½o
 		JPanel painelBotao = new JPanel();
 		GridBagLayout btnGridBag = new GridBagLayout();
 		painelBotao.setLayout(btnGridBag);
-		//adiciona este botão ao painel
+		//adiciona este botï¿½o ao painel
 		painelBotao.add(renderButton);
 		
-		// seta a posição e tamanho do botão dentro da tabela
+		// seta a posiï¿½ï¿½o e tamanho do botï¿½o dentro da tabela
 		GridBagConstraints constraints = new GridBagConstraints();
 		LayoutConstraints.setConstraints(constraints, 1, 1, 1, 1, 1, 1);
-		constraints.insets = new Insets(0, 0, 0, 60);
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets = new Insets(0, 0, 0, 0);
+		constraints.fill = GridBagConstraints.CENTER;
+		constraints.anchor = GridBagConstraints.CENTER;
 		renderButton.setPreferredSize(new Dimension(50, 20));
 		renderButton.setMaximumSize(new Dimension(50,20));
 		renderButton.setMinimumSize(new Dimension(50,20));
@@ -113,7 +118,7 @@ public class BotaoTabela extends AbstractCellEditor implements	TableCellRenderer
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		//não utilizado		
+		//nï¿½o utilizado		
 	}
 
 	public JButton getRenderButton() {

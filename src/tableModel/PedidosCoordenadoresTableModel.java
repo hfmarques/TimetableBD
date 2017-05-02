@@ -276,8 +276,8 @@ public class PedidosCoordenadoresTableModel extends AbstractTableModel{
 
 	public int getInternalTableHeight(int rowIndex){
 		int height = 16;
-		if(botao.get(rowIndex) && curso.size() > 0){
-			height = height * curso.size();
+		if(botao.get(rowIndex) && curso.get(rowIndex).size() > 0){
+			height = height * curso.get(rowIndex).size();
 		}
 		return height;
 	}

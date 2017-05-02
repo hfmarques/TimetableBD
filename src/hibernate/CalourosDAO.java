@@ -7,7 +7,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 
 import timetable.Calouros;
-
+/*
+ * gerencia as buscas no banco de dados para a classe/tabela calouros
+ */
 public class CalourosDAO extends GenericoDAO {
 
 	public CalourosDAO(){

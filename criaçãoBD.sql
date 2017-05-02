@@ -1,4 +1,7 @@
-﻿drop table CURSO cascade;
+﻿
+drop table HORARIO cascade;
+
+drop table CURSO cascade;
 
 drop table DISCIPLINA cascade;
 
@@ -16,8 +19,6 @@ drop table CURRICULO cascade;
 
 drop table CALOUROS cascade;
 
-drop table HORARIO cascade;
-
 drop table CALOUROS_CURSO cascade;
 
 drop table PEDIDOS_COORDENADORES cascade;
@@ -25,6 +26,19 @@ drop table PEDIDOS_COORDENADORES cascade;
 drop table VAGAS_SOLICITADAS cascade;
 
 drop table VAGAS_ATENDIDAS cascade;
+
+drop table PERIODO cascade;
+
+drop table PERIODO_DISCIPLINA cascade;
+
+drop table Horarios_Docentes cascade;
+
+create table Horario(
+	ID NUMERIC(19,0) not null,
+	DIA1 TIMESTAMP,
+	DIA2 TIMESTAMP,
+	primary key (ID)
+);
 
 
 create table Curso (
@@ -40,7 +54,7 @@ create table Disciplina (
 	ID NUMERIC(19,0) not null,
 	CODIGO VARCHAR(21) not null,
 	CREDITO int not null,
-	NOME VARCHAR(50) not null,
+	NOME VARCHAR(128) not null,
 	PERFIL VARCHAR(50) not null,
 	primary key (ID),
 	UNIQUE (CODIGO)
@@ -63,10 +77,11 @@ create table Turma(
 	MAX_VAGAS INT not null,
 	ANO INT not null,
 	SEMESTRE INT not null,
+	HORARIO_FIXO BOOLEAN not null,
 	DISCIPLINA_FK NUMERIC(19,0) not null,
-	SALA_FK NUMERIC(19,0) not null,
-	primary key(ID),
-	UNIQUE (DISCIPLINA_FK)
+	SALA_FK NUMERIC(19,0),
+	HORARIO_FK NUMERIC(19, 0) not null,
+	primary key(ID)
 );
 
 create table CreditoMinistrado(
@@ -108,20 +123,11 @@ create table Calouros(
 	UNIQUE(NUM_VAGAS)
 );
 
-create table Horario(
-	ID NUMERIC(19,0) not null,
-	HORARIO VARCHAR(21) not null,
-	TURMA_FK NUMERIC(19,0) not null,
-	primary key (ID)
-);
-
 create table Calouros_Curso(
 	ID SERIAL PRIMARY KEY,
 	CURSO_FK NUMERIC(19,0) not null,
 	CALOUROS_FK NUMERIC(19,0) not null
 );
-
-
 
 create table vagas_solicitadas(
 	ID NUMERIC(19,0) not null,
@@ -160,6 +166,56 @@ create table pedidos_coordenadores(
 	primary key(ID)
 );
 
+create table periodo(
+	ID numeric(19,0) not null,
+	NUMERO_PERIODO numeric(19, 0) not null,
+	CURSO_FK numeric(19,0) not null,
+	primary key(ID)
+);
+
+create table Periodo_Disciplina(
+	ID SERIAL PRIMARY KEY,
+	PERIODO_FK NUMERIC(19,0) not null,
+	TURMA_FK NUMERIC(19,0) not null
+);
+
+create table Horarios_Docentes(
+	ID SERIAL PRIMARY KEY,
+	DIA VARCHAR(21) not null,
+	OITO BOOLEAN not null,
+	NOVE BOOLEAN not null,
+	DEZ BOOLEAN not null,
+	ONZE BOOLEAN not null,
+	DOZE BOOLEAN not null,
+	TREZE BOOLEAN not null,
+	QUATORZE BOOLEAN not null,
+	QUINZE BOOLEAN not null,
+	DEZESSEIS BOOLEAN not null,
+	DEZESSETE BOOLEAN not null,
+	DEZOITO BOOLEAN not null,
+	DEZENOVE BOOLEAN not null,
+	VINTE BOOLEAN not null,
+	VINTE_UM BOOLEAN not null,
+    VINTE_DOIS BOOLEAN not null,
+	DOCENTE_FK NUMERIC(10, 0) not null
+);
+
+alter table HORARIOS_DOCENTES
+	add constraint FKC_DOCENTE
+	foreign key (DOCENTE_FK)
+	references DOCENTE;
+	
+	
+alter table PERIODO_DISCIPLINA
+	add constraint FKC_PERIODO
+	foreign key (PERIODO_FK)
+	references PERIODO;
+
+alter table PERIODO_DISCIPLINA
+	add constraint FKC_TURMA
+	foreign key (TURMA_FK)
+	references TURMA;
+	
 alter table TURMA
        add constraint FKC_TURMA_DISCIPLINA
        foreign key (DISCIPLINA_FK) 
@@ -169,6 +225,11 @@ alter table TURMA
        add constraint FKC_TURMA_SALA
        foreign key (SALA_FK) 
        references SALA;
+
+alter table TURMA 
+       add constraint FKC_TURMA_HORARIO
+       foreign key (HORARIO_FK) 
+       references HORARIO;
 	   
 alter table CREDITOMINISTRADO 
        add constraint FKC_CREDITOMINASTRADO_DOCENTE
@@ -194,11 +255,6 @@ alter table CURRICULO
        add constraint FKC_CURRICULO_CURSO
        foreign key (CURSO_FK) 
        references CURSO;
-
-alter table HORARIO
-       add constraint FKC_HORARIO_TURMA
-       foreign key (TURMA_FK)
-       references TURMA;
 
 alter table CALOUROS_CURSO
 	add constraint FKC_CURSO
@@ -235,3 +291,7 @@ alter table VAGAS_ATENDIDAS
 	foreign key (PEDIDOS_COORDENADORES_FK)
 	references PEDIDOS_COORDENADORES;
 
+alter table PERIODO
+	add constraint FKC_CURSO
+	foreign key (CURSO_FK)
+	references CURSO;

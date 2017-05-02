@@ -3,8 +3,7 @@ package hibernate;
 import org.hibernate.Session;
 
 /**
- *
- * @author Héber
+ * @author Hï¿½ber
  */
 
 public class EventManager {

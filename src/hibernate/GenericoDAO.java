@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
+/*
+ * gerencia as buscas bÃ¡sicas no banco de dados para todas as classes.
+ */
 public class GenericoDAO {
 
 	private static Session session;
@@ -14,7 +16,7 @@ public class GenericoDAO {
 		if (objeto != null) {
 			retorno = HibernateUtil.save(objeto);
 		} else {
-			System.out.println("O Objeto enviado está vazio.");
+			System.out.println("O Objeto enviado estï¿½ vazio.");
 		}
 		return retorno;
 	}
@@ -24,7 +26,7 @@ public class GenericoDAO {
 		if (objetos != null && !objetos.isEmpty()) {
 			retorno = HibernateUtil.saveList(objetos);
 		} else {
-			System.out.println("A lista enviada está vazia.");
+			System.out.println("A lista enviada estï¿½ vazia.");
 		}
 		return retorno;
 	}
@@ -34,7 +36,7 @@ public class GenericoDAO {
 		if (objeto != null) {
 			retorno = HibernateUtil.update(objeto);
 		} else {
-			System.out.println("O Objeto enviado está vazio.");
+			System.out.println("O Objeto enviado estï¿½ vazio.");
 		}
 		return retorno;
 	}
@@ -44,7 +46,7 @@ public class GenericoDAO {
 		if (objeto != null) {
 			retorno = HibernateUtil.saveOrUpdate(objeto);
 		} else {
-			System.out.println("O Objeto enviado está vazio.");
+			System.out.println("O Objeto enviado estï¿½ vazio.");
 		}
 		return retorno;
 	}
@@ -55,7 +57,7 @@ public class GenericoDAO {
 		if (id >= 0 && classe != null) {
 			objeto = HibernateUtil.find(classe, id);
 		} else {
-			System.out.println("O ID ou a Classe enviada está nula.");
+			System.out.println("O ID ou a Classe enviada estï¿½ nula.");
 		}
 		return objeto;
 	}
@@ -66,7 +68,7 @@ public class GenericoDAO {
 		if (classe != null) {
 			objetos = HibernateUtil.findAll(classe, inicio, fim);
 		} else {
-			System.out.println("O ID ou a Classe enviada está nula.");
+			System.out.println("O ID ou a Classe enviada estï¿½ nula.");
 		}
 		return objetos;
 	}
@@ -76,7 +78,7 @@ public class GenericoDAO {
 		if (objeto != null) {
 			retorno = HibernateUtil.delete(objeto);
 		} else {
-			System.out.println("O Objeto enviado está vazio.");
+			System.out.println("O Objeto enviado estï¿½ vazio.");
 		}
 		return retorno;
 	}
@@ -86,7 +88,7 @@ public class GenericoDAO {
 		if (objetos != null && !objetos.isEmpty()) {
 			retorno = HibernateUtil.deleteList(objetos);
 		} else {
-			System.out.println("A lista enviada está vazia.");
+			System.out.println("A lista enviada estï¿½ vazia.");
 		}
 		return retorno;
 	}

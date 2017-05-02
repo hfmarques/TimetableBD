@@ -7,7 +7,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 
 import timetable.PedidosCoordenadores;
-
+/*
+ * gerencia as buscas no banco de dados para a classe/tabela pedidoCoordenadores
+ */
 public class PedidosCoordenadoresDAO extends GenericoDAO{
 
 	public PedidosCoordenadoresDAO() {

@@ -28,7 +28,9 @@ import timetable.Disciplina;
 import timetable.PedidosCoordenadores;
 import timetable.VagasAtendidas;
 import timetable.VagasSolicitadas;
-
+/*
+ * interface inicial do programa
+ */
 @SuppressWarnings("serial")
 public class Home extends JPanel{
 	private JPanel painel; // painel principal
@@ -48,7 +50,7 @@ public class Home extends JPanel{
 
 	public Home(JTabbedPane abas) {
 		super(new GridLayout(1, 0));
-		// inicializa as variáveis
+		// inicializa as variï¿½veis
 		this.painel = new JPanel();
 		this.botaoIncluir = new JButton("Incluir / Pesquisar Semestre");
 		this.gridBag = new GridBagLayout();
@@ -98,27 +100,27 @@ public class Home extends JPanel{
 		painel.add(comboBoxSemestre);
 		painel.add(comboBoxAno);
 		
-		// seta a posição do painel
+		// seta a posiï¿½ï¿½o do painel
 		LayoutConstraints.setConstraints(constraints, 0, 0, 100, 100, 100, 100);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.anchor = GridBagConstraints.CENTER;
 		gridBag.setConstraints(painel, constraints);
 
-		// seta a posição do painel onde se localiza o botão
+		// seta a posiï¿½ï¿½o do painel onde se localiza o botï¿½o
 		LayoutConstraints.setConstraints(constraints, 0, 0, 1, 1, 1, 1);
 		constraints.insets = new Insets(0, 280, 0, 0);
 		constraints.fill = GridBagConstraints.RELATIVE;
 		constraints.anchor = GridBagConstraints.CENTER;
 		gridBag.setConstraints(botaoIncluir, constraints);
 		
-		// seta a posição do painel onde se localiza o combobox
+		// seta a posiï¿½ï¿½o do painel onde se localiza o combobox
 		LayoutConstraints.setConstraints(constraints, 0, 0, 1, 1, 1, 1);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		constraints.fill = GridBagConstraints.RELATIVE;
 		constraints.anchor = GridBagConstraints.CENTER;
 		gridBag.setConstraints(comboBoxSemestre, constraints);
 		
-		// seta a posição do painel onde se localiza o combobox
+		// seta a posiï¿½ï¿½o do painel onde se localiza o combobox
 		LayoutConstraints.setConstraints(constraints, 0, 0, 1, 1, 1, 1);
 		constraints.insets = new Insets(0, 0, 0, 200);
 		constraints.fill = GridBagConstraints.RELATIVE;
@@ -142,7 +144,7 @@ public class Home extends JPanel{
 						}
 					}
 					if(existeSemestreAno == false){
-						int resposta = JOptionPane.showConfirmDialog(new JFrame(), "Este semestre não existe, deseja incluir um novo?");
+						int resposta = JOptionPane.showConfirmDialog(new JFrame(), "Este semestre nï¿½o existe, deseja incluir um novo?");
 						if(resposta == JOptionPane.YES_OPTION){	
 							List<Curso> curso = null;
 							List<Disciplina> disciplinas = null;

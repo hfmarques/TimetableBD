@@ -13,7 +13,7 @@ import hibernate.CursoDAO;
 
 /**
  *
- * @author Héber
+ * @author Hï¿½ber
  */
 @SuppressWarnings("serial")
 public class CursoTableModel extends AbstractTableModel {		
@@ -22,7 +22,7 @@ public class CursoTableModel extends AbstractTableModel {
 	private static final int COL_TURNO = 2;
 	private static final int COL_CALOURO_PRIMEIRO = 3;
 	private static final int COL_CALOURO_SEGUNDO = 4;
-	private String[] colunas = new String[]{"Nome", "Código", "Turno", "Calouros no Primeiro Semestre", "Calouros no Segundo Semestre"};
+	private String[] colunas = new String[]{"Nome", "Cï¿½digo", "Turno", "Calouros no Primeiro Semestre", "Calouros no Segundo Semestre"};
 	private ArrayList<Curso> linhas;
 	private CursoDAO cursoDAO;
 	private CalourosDAO calourosDAO;
@@ -68,7 +68,7 @@ public class CursoTableModel extends AbstractTableModel {
 				return "";
 			return curso.getCalouros().get(1).getNumVagas();			
 		default:
-			System.out.println("Coluna inválida");
+			System.out.println("Coluna invï¿½lida");
 			return null;
 		}
 	}
@@ -84,14 +84,14 @@ public class CursoTableModel extends AbstractTableModel {
 			curso.setNome(nome);
 			break;
 		case COL_CODIGO:
-			Boolean existeCódigo = false;
+			Boolean existeCodigo = false;
 			for(Curso c: linhas){
 				if(c.getCodigo() != null && c.getCodigo().equals(value.toString())){
-					existeCódigo = true;
+					existeCodigo = true;
 				}
 			}
-			if(existeCódigo){
-				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Código\" já existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+			if(existeCodigo){
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Cï¿½digo\" jï¿½ existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}else{
 				String codigo = value.toString();
@@ -103,7 +103,7 @@ public class CursoTableModel extends AbstractTableModel {
 				String turno = value.toString();
 				curso.setTurno(turno);
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Turno\" é diferente de \"Diurno\" ou \"Noturno\", por favor insira um destes dois valores", "Erro",  JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Turno\" ï¿½ diferente de \"Diurno\" ou \"Noturno\", por favor insira um destes dois valores", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}
 			break;
@@ -121,7 +121,7 @@ public class CursoTableModel extends AbstractTableModel {
 					curso.getCalouros().set(0, calouros);
 			}
 			else{
-				JOptionPane.showMessageDialog(new JFrame(), "Número de calouros não existe, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "Nï¿½mero de calouros nï¿½o existe, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}
 			break;
@@ -139,16 +139,17 @@ public class CursoTableModel extends AbstractTableModel {
 					curso.getCalouros().set(1, calouros);
 			}
 			else{
-				JOptionPane.showMessageDialog(new JFrame(), "Número de calouros não existe, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "Nï¿½mero de calouros nï¿½o existe, por favor insira-o e tente novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}
 			break;
 			default:
-				System.out.println("Coluna inválida");
+				System.out.println("Coluna invï¿½lida");
 		}
 		
-		if(curso.getNome() != null && curso.getCodigo() != null && curso.getTurno() != null && curso.getCalouros().size() == Curso.getNumeroCalouros())
-			cursoDAO.salvaOuEdita(curso);			
+		if(curso.getNome() != null && curso.getCodigo() != null && curso.getTurno() != null && curso.getCalouros().size() == Curso.getNumeroCalouros()){
+			cursoDAO.salvaOuEdita(curso);
+		}
 	}
 	
 	public Curso getCurso(int rowIndex){

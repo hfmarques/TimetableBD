@@ -8,7 +8,9 @@ import org.hibernate.criterion.Restrictions;
 
 import timetable.Turma;
 import hibernate.GenericoDAO;
-
+/*
+ * gerencia as buscas no banco de dados para a classe/tabela turma
+ */
 public class TurmaDAO extends GenericoDAO{
 
 	public TurmaDAO() {
@@ -116,6 +118,23 @@ public class TurmaDAO extends GenericoDAO{
 			for(Turma t: turma)
 				totalVagas += t.getMaxVagas();
 			return totalVagas;
+		}
+	}
+	
+	@SuppressWarnings({ "finally", "unchecked" })
+	public List<Turma> encontraTurmasPorNomeDisc(String disciplinaNome) throws HibernateException, Exception{
+		List<Turma> turma = null;
+		try {			
+			Criteria criteria = getSession()
+					.createCriteria(Turma.class)
+					.createAlias("disciplina", "d")			
+					.add(Restrictions.eq("d.nome", disciplinaNome));
+			turma = criteria.list();
+		} catch (HibernateException e) {
+			System.err.println(e.fillInStackTrace());
+		} finally {
+			getSession().close();
+			return turma;
 		}
 	}
 }

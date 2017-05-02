@@ -16,7 +16,7 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 	private static final int COL_CREDITO = 1;
 	private static final int COL_NOME = 2;
 	private static final int COL_PERFIL = 3;
-	private String[] colunas = new String[]{"Código", "Créditos", "Nome", "Perfil"};
+	private String[] colunas = new String[]{"Cï¿½digo", "Crï¿½ditos", "Nome", "Perfil"};
 	private ArrayList<Disciplina> linhas;
 	private DisciplinaDAO disciplinaDAO;
 
@@ -54,7 +54,7 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 			case COL_PERFIL:
 				return disciplina.getPerfil();
 			default:
-				System.out.println("Coluna inválida");
+				System.out.println("Coluna invï¿½lida");
 				return null;
 		}
 	}
@@ -64,14 +64,14 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 		
 		switch(columnIndex){
 		case COL_CODIGO:
-			Boolean existeCódigo = false;
+			Boolean existeCodigo = false;
 			for(Disciplina d: linhas){
 				if(d.getCodigo() != null && d.getCodigo().equals(value.toString())){
-					existeCódigo = true;
+					existeCodigo = true;
 				}
 			}
-			if(existeCódigo){
-				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Código\" já existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+			if(existeCodigo){
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Cï¿½digo\" jï¿½ existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}else{
 				String codigo = value.toString();
@@ -83,7 +83,7 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 				int credito = Integer.parseInt(value.toString());
 				disciplina.setCreditos(credito);
 			}else{
-				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Créditos\" não é um número, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Crï¿½ditos\" nï¿½o ï¿½ um nï¿½mero, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 				fireTableCellUpdated(rowIndex, columnIndex);
 			}
 			break;
@@ -96,7 +96,7 @@ public class DisciplinaTableModel extends AbstractTableModel /* extends Abstract
 			disciplina.setPerfil(perfil);
 			break;
 		default:
-			System.out.println("Coluna inválida");
+			System.out.println("Coluna invï¿½lida");
 		}
 		
 		if(disciplina.getCodigo() != null && disciplina.getCreditos() != 0 && disciplina.getNome() != null && disciplina.getPerfil() != null)

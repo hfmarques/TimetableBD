@@ -15,7 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-
+/*
+ * Interface padrÃ£o para qualquer interface com tabela
+ * possui todo o layout pronto para a tal.
+ */
 @SuppressWarnings("serial")
 public abstract class InterfacesTabela extends JPanel{
 
@@ -32,7 +35,7 @@ public abstract class InterfacesTabela extends JPanel{
 
 	public InterfacesTabela(AbstractTableModel tableModel, String textoBotao) {
 		super(new GridLayout(1, 0));
-		// inicializa as variáveis
+		// inicializa as variï¿½veis
 		this.tableModel = tableModel;
 		this.painel = new JPanel();
 		this.table = new JTable(tableModel);
@@ -58,7 +61,7 @@ public abstract class InterfacesTabela extends JPanel{
 		painel.add(scroll);
 		painel.add(painelBotao);		
 
-		// seta a posição do painel onde se localiza as tabelas
+		// seta a posiï¿½ï¿½o do painel onde se localiza as tabelas
 		LayoutConstraints.setConstraints(constraints, 0, 0, 100, 100, 100, 100);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
@@ -71,14 +74,14 @@ public abstract class InterfacesTabela extends JPanel{
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		gridBag.setConstraints(scroll, constraints);
 		
-		// seta a posição do painel onde se localiza os botões
+		// seta a posiï¿½ï¿½o do painel onde se localiza os botï¿½es
 		LayoutConstraints.setConstraints(constraints, 0, 1, 1, 1, 1, 1);
 		constraints.insets = new Insets(2, 2, 20, 2);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.anchor = GridBagConstraints.SOUTH;
 		gridBag.setConstraints(painelBotao, constraints);
 		
-		// seta a posição do botão salvar
+		// seta a posiï¿½ï¿½o do botï¿½o salvar
 		LayoutConstraints.setConstraints(constraints, 1, 1, 1, 1, 1, 1);
 		constraints.insets = new Insets(0, 0, 0, 40);
 		constraints.fill = GridBagConstraints.NONE;
@@ -89,7 +92,7 @@ public abstract class InterfacesTabela extends JPanel{
 	
 	public InterfacesTabela(AbstractTableModel tableModel) {
 		super(new GridLayout(1, 0));
-		// inicializa as variáveis
+		// inicializa as variï¿½veis
 		this.tableModel = tableModel;
 		this.painel = new JPanel();
 		this.table = new JTable(tableModel);
@@ -110,7 +113,7 @@ public abstract class InterfacesTabela extends JPanel{
 
 		painel.add(scroll);	
 
-		// seta a posição do painel onde se localiza as tabelas
+		// seta a posiï¿½ï¿½o do painel onde se localiza as tabelas
 		LayoutConstraints.setConstraints(constraints, 0, 0, 100, 100, 100, 100);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;

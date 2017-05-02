@@ -14,8 +14,9 @@ import interfaceTabelas.ResultadoProfessor;
 import interfaceTabelas.Turma;
 
 /**
- *
- * @author Héber
+ * controla todas as interfaces do programa
+ * responsÃ¡vel por inserir e excluir interfaces
+ * @author Hï¿½ber
  */
 public class InterfacePrincipal {
 	private static final int ABA_HOME = 0;

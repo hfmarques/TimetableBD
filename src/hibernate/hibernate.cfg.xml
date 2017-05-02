@@ -11,11 +11,13 @@
     <!--<mapping class="timetable.CreditoMinistrado"/>-->
     <mapping class="timetable.DiscCurr"/>
     <mapping class="timetable.Docente"/>
-    <!--<mapping class="timetable.Horario"/>-->
+    <mapping class="timetable.Horario"/>
     <mapping class="timetable.Turma"/>
     <mapping class="timetable.Sala"/>
     <mapping class="timetable.PedidosCoordenadores"/>
     <mapping class="timetable.VagasAtendidas"/>
     <mapping class="timetable.VagasSolicitadas"/>
+    <mapping class="timetable.Periodo"/>
+    <mapping class="timetable.HorariosDocentes"/>
   </session-factory>
 </hibernate-configuration>

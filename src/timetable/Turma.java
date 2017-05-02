@@ -3,6 +3,8 @@ package timetable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -42,35 +46,63 @@ public class Turma implements Serializable {
 	private int ano;
 	@Column(name = "semestre", unique = false, nullable = false)
 	private int semestre;
+	@Column(name = "horario_fixo", unique = false, nullable = false)
+	private boolean horarioFixo;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "horario_fk", nullable = false, unique = false)
+	private Horario horario;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "disciplina_fk", nullable = false, unique = false)
 	private Disciplina disciplina;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "sala_fk", nullable = false, unique = false)
+	@JoinColumn(name = "sala_fk", nullable = true, unique = false)
 	private Sala sala;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany()
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "creditoministrado", joinColumns = { @JoinColumn(name = "turma_fk", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "docente_fk", nullable = false, updatable = false) })
 	private List<Docente> docente = new ArrayList<Docente>();
+	
+	@ManyToMany(mappedBy = "turma")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Periodo> periodo = new ArrayList<Periodo>();
 	
 	public Turma() {
 		this.semestre = 0;
 		this.ano = 0;
 	}
 
-	public Turma(String codigo, String turno, int maxVagas,	Disciplina disciplina, Sala sala, Docente docente, int ano, int semestre) {
+	public Turma(String codigo, String turno, int maxVagas,	Disciplina disciplina, Sala sala, Docente docente, int ano, int semestre, boolean horarioFixo) {
 		this.codigo = codigo;
 		this.turno = turno;
 		this.maxVagas = maxVagas;
 		this.disciplina = disciplina;
 		this.ano = ano;
 		this.semestre = semestre;
+		this.horarioFixo = horarioFixo;
 		if(sala != null)
 			this.sala = sala;
 		if(docente != null)
 			this.docente.add(docente);
+	}
+	
+	public void setHorarioFixo(boolean horarioFixo) {
+		this.horarioFixo = horarioFixo;
+	}
+	
+	public boolean isHorarioFixo() {
+		return horarioFixo;
+	}
+
+	public Horario getHorario() {
+		return horario;
+	}
+
+	public void setHorario(Horario horario) {
+		this.horario = horario;
 	}
 
 	public int getIdTurma() {

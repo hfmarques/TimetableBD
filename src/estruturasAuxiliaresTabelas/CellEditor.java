@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
 import tabelasInternas.DefaultInternalTable;
+import tabelasInternas.GradeInternalTable;
 import tabelasInternas.TotalVagasInternalTable;
 import tabelasInternas.VagasDesperiotizadosInternalTable;
 import tabelasInternas.VagasPeriotizadosInternalTable;
@@ -37,6 +38,10 @@ public class CellEditor extends AbstractCellEditor implements TableCellEditor {
 		}
 		if(value instanceof VagasDesperiotizadosInternalTable){
 			VagasDesperiotizadosInternalTable c = (VagasDesperiotizadosInternalTable) value;
+			return c.getTable();
+		}
+		if(value instanceof GradeInternalTable){
+			GradeInternalTable c = (GradeInternalTable) value;
 			return c.getTable();
 		}
 		

@@ -1,0 +1,2 @@
+cd timetableMH
+Timetable.exe

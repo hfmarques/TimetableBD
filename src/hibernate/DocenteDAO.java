@@ -8,7 +8,9 @@ import org.hibernate.criterion.Restrictions;
 
 import timetable.Docente;
 import timetable.Turma;
-
+/*
+ * gerencia as buscas no banco de dados para a classe/tabela docente
+ */
 public class DocenteDAO extends GenericoDAO{
 
 	public DocenteDAO() {

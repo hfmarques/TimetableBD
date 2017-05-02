@@ -16,7 +16,7 @@ public class DocenteTableModel extends AbstractTableModel /* extends AbstractTab
 	private static final int COL_CODIGO = 0;
 	private static final int COL_NOME_COMPLETO = 1;
 	private static final int COL_CREDITACAO_ESPERADA = 2;
-	private String[] colunas = new String[]{"Código", "Nome Completo", "Creditação Esperada"};
+	private String[] colunas = new String[]{"Cï¿½digo", "Nome Completo", "Creditaï¿½ï¿½o Esperada"};
 	private ArrayList<Docente> linhas;
 	private DocenteDAO docenteDAO;
 	
@@ -52,7 +52,7 @@ public class DocenteTableModel extends AbstractTableModel /* extends AbstractTab
 			case COL_CREDITACAO_ESPERADA:
 				return docente.getCreditacaoEsperada();
 			default:
-				System.out.println("Coluna inválida");
+				System.out.println("Coluna invï¿½lida");
 				return null;
 		}
 	}
@@ -62,13 +62,13 @@ public class DocenteTableModel extends AbstractTableModel /* extends AbstractTab
 		
 		switch(columnIndex){
 			case COL_CODIGO:
-				Boolean existeCódigo = false;
+				Boolean existeCodigo = false;
 				for(Docente d: linhas){
 					if(d.getCodigo() != null && d.getCodigo().equals(value.toString())){
-						existeCódigo = true;
+						existeCodigo = true;
 					}
 				}
-				if(existeCódigo){
+				if(existeCodigo){
 					JOptionPane.showMessageDialog(new JFrame(), "O valor inserido no campo \"Código\" já existe, por favor insira-o novamente", "Erro",  JOptionPane.ERROR_MESSAGE);
 					fireTableCellUpdated(rowIndex, columnIndex);
 				}else
@@ -96,8 +96,24 @@ public class DocenteTableModel extends AbstractTableModel /* extends AbstractTab
 				System.out.println("Coluna inválida");
 		}
 		
-		if(docente.getCodigo() != null && docente.getNome() != null && docente.getNomeCompleto() != null && docente.getCreditacaoEsperada() != 0)
-			docenteDAO.salvaOuEdita(docente);
+		if(docente.getCodigo() != null && docente.getNome() != null && docente.getNomeCompleto() != null && docente.getCreditacaoEsperada() != 0){
+			if(docente.getHorariosDocentes().isEmpty()){
+				ArrayList<timetable.HorariosDocentes> h = new ArrayList<timetable.HorariosDocentes>();
+				h.add(new timetable.HorariosDocentes("Segunda", docente));
+				h.add(new timetable.HorariosDocentes("Terça", docente));
+				h.add(new timetable.HorariosDocentes("Quarta", docente));
+				h.add(new timetable.HorariosDocentes("Quinta", docente));
+				h.add(new timetable.HorariosDocentes("Sexta", docente));
+				docente.setHorariosDocentes(h);
+				docenteDAO.salvaOuEdita(docente);
+				for (timetable.HorariosDocentes horariosDocentes : h) {
+					docenteDAO.salvaOuEdita(horariosDocentes);							
+				}		
+			}
+			else
+				docenteDAO.salvaOuEdita(docente);
+			
+		}
 	}
 	
 	public Docente getDocente(int rowIndex){

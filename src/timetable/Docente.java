@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
@@ -39,6 +43,10 @@ public class Docente implements Serializable {
 	private String nomeCompleto;
 	@Column(name = "creditacao_esperada", unique = false, nullable = false)
 	private int creditacaoEsperada;
+	
+	@OneToMany(mappedBy = "docente")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<HorariosDocentes> horariosDocentes = new ArrayList<HorariosDocentes>();
 
 	@ManyToMany(mappedBy = "docente")
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -102,5 +110,14 @@ public class Docente implements Serializable {
 	public void setTurma(List<Turma> turma) {
 		this.turma = turma;
 	}
+
+	public List<HorariosDocentes> getHorariosDocentes() {
+		return horariosDocentes;
+	}
+
+	public void setHorariosDocentes(List<HorariosDocentes> horariosDocentes) {
+		this.horariosDocentes = horariosDocentes;
+	}
+	
 	
 }
